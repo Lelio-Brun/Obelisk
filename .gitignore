@@ -1,0 +1,26 @@
+*.annot
+*.cmo
+*.cma
+*.cmi
+*.a
+*.o
+*.cmx
+*.cmxs
+*.cmxa
+
+# ocamlbuild working directory
+_build/
+menhirbrav
+
+# ocamlbuild targets
+*.byte
+*.native
+
+# latex
+*.tex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.pdf
+auto
