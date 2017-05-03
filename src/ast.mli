@@ -6,15 +6,9 @@ and rule = {
   groups: group list
 }
 
-and group = {
-  prods: production list;
-  g_prec: string option
-}
+and group = production list
 
-and production = {
-  producers: producer list;
-  p_prec: string option
-}
+and production = producer list
 
 and producer = {
   bind: string option;

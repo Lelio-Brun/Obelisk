@@ -28,9 +28,9 @@ module Make (H : HELPER) : PRINTER = struct
         List.fold_left add_terminal_group ts gs
     and add_terminal_producer ts {actual} =
       add_terminal_actual ts actual
-    and add_terminal_prod ts {producers} =
+    and add_terminal_prod ts producers =
       List.fold_left add_terminal_producer ts producers
-    and add_terminal_group ts {prods} =
+    and add_terminal_group ts prods =
       List.fold_left add_terminal_prod ts prods
     in
     List.fold_left add_terminal_group ts groups
@@ -59,16 +59,13 @@ module Make (H : HELPER) : PRINTER = struct
   let print_sep print sep =
     print_sep_encl print sep "" ""
 
-  let rec print_group symbols {prods} =
+  let rec print_group symbols prods =
     H.group_begin ();
     H.print_string H.bar;
-    begin match prods with
-      | [] -> H.print_string H.eps
-      | _ -> print_sep (print_production symbols) H.bar prods
-    end;
+    print_sep (print_production symbols) H.bar prods;
     H.group_end ()
 
-  and print_production symbols {producers} =
+  and print_production symbols producers =
     match producers with
       | [] -> H.print_string H.eps; print_space ()
       | _ -> print_sep (print_producer symbols) H.space producers
@@ -353,14 +350,14 @@ module LatexBacknaurH : HELPER = struct
   let bar = "\\\\hspace*{-2.5em}\\\\bnfor "
   let space = "\\\\bnfsp@ "
   let break = "@;"
-  let eps = "$\\\\epsilon$"
+  let eps = "\\\\bnfts{$\\\\epsilon$}"
 
   let print_rule_name is_not_fun name =
     print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" name)
   let rule_begin () =
     print_string "@[<v 2>\\\\bnfprod{"
   let rule_end () =
-    print_string "\\\\end{bnfsplit}}\\\\vspace*{10em}\\\\\\\\@]@;"
+    print_string "\\\\end{bnfsplit}}\\\\\\\\@]@;"
 
   let group_begin () =
     print_string "@[<hov 2>\\\\\\\\"

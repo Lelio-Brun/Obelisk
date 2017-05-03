@@ -36,11 +36,11 @@ optional_bar:
   | BAR { () }
 
 group:
-  prods=separated_nonempty_list(BAR, production) ACTION g_prec=ioption(precedence)
-  { { prods; g_prec } }
+  prods=separated_nonempty_list(BAR, production) ACTION ioption(precedence)
+  { prods }
 
 production:
-  producers=producer* p_prec=ioption(precedence) { { producers; p_prec } }
+  producers=producer* ioption(precedence) { producers }
 
 /* ------------------------------------------------------------------------- */
 /* A producer is an actual parameter, possibly preceded by a

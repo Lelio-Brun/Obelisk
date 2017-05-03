@@ -66,6 +66,7 @@ let () =
   let lexbuf, print, close = get () in
   try
     let s = Parser.specification Lexer.lexer lexbuf in
+    let s = Normalize.normalize s in
     print s;
     close ()
   with
