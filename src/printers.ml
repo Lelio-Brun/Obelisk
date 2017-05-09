@@ -197,7 +197,7 @@ module MiniLatex = struct
   include MiniHelper
 
   let documentclass () =
-    print_string "@[<v 0>\\\\documentclass[preview]{standalone}@;@;"
+    print_string "@[<v 0>\\\\documentclass[preview, 11pt]{standalone}@;@;"
 
   let commands ts =
     List.iter (fun nt ->
