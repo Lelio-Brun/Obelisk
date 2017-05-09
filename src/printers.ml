@@ -189,7 +189,7 @@ module MiniLatex = struct
   include MiniHelper
 
   let documentclass () =
-    print_string "@[<v 0>\\\\documentclass{article}@;@;"
+    print_string "@[<v 0>\\\\documentclass[preview]{standalone}@;@;"
 
   let commands ts =
     List.iter (fun nt ->
@@ -209,12 +209,13 @@ module LatexTabularH : HELPER = struct
   let print_header ts =
     documentclass ();
     print_string
-      "\\\\newenvironment{grammar}{@;<0 2>\
+      "\\\\usepackage{tabu}@;@;<0 2>\
+       \\\\newenvironment{grammar}{@;<0 2>\
        \\\\begin{trivlist}@;<0 4>\
        \\\\item[]@;<0 6>\
-       \\\\begin{tabular}{r%@{}c%@{}l%@{}}@;\
+       \\\\begin{tabu}{r%@{}c%@{}X%@{}}@;\
        }{@;<0 6>\
-       \\\\end{tabular}@;<0 2>\
+       \\\\end{tabu}@;<0 2>\
        \\\\end{trivlist}@;\
        }@;@;\
        \\\\newcommand{\\\\gramsp}{\\\\;\\\\;}@;\
