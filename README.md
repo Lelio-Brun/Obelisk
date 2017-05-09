@@ -1,15 +1,11 @@
 # MenhirBrav
-
 ## Overview
-
 **MenhirBrav** (from *pretty menhir* in Breton) is a simple tool which produces pretty-printed output from a [Menhir] parser file (*.mly*).
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of ocamlyacc.
 
 ## Installation
-
 ### Dependencies
-
 - OCaml 4.04.1
 - OCamlbuild 0.11.0
 - Menhir 20170418
@@ -20,7 +16,6 @@ opam install ocamlbuild menhir
 ```
 
 ### Manual build
-
 Just type :
 ```
 make
@@ -29,7 +24,6 @@ make
 This will provide you with a **menhirbrav** executable which you can feed *.mly* files with.
 
 ## Usage
-
 ```
 menhirbrav [latex] [options] <file>
 ```
@@ -37,7 +31,6 @@ menhirbrav [latex] [options] <file>
 By default **menhirbrav** defaults to standard output, use `-o <file>` to specify an output file.
 
 ### Multi-format output
-
 By default the output format is a simple text format close to the BNF syntax. You can use the subcommand `latex` to get a LaTeX file.
 
 Use the following options to tweak the LaTeX:
@@ -48,7 +41,6 @@ Use the following options to tweak the LaTeX:
 In either cases, the output is customizable *via* the use of LaTeX commands that you can redefine to fit your needs.
 
 ### Example
-
 Here are the different formats output obtained by **MenhirBrav** from its own [parser](src/parser.mly).
 
 #### Default
@@ -98,13 +90,15 @@ parameters(X) ::=
   | UID
   | LID
 ```
-#### Tabular
+
+#### LaTeX
+##### Tabular
 ![Tabular](doc/tabular.png)
 
-#### Syntax
+##### Syntax
 ![Syntax](doc/syntax.png)
 
-#### Backnaur
+##### Backnaur
 ![Backnaur](doc/backnaur.png)
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
