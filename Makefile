@@ -16,7 +16,7 @@ all:
 %.png: all
 	./$(EXE) latex -$* $(PARSER) -o $*.tex
 	pdflatex $*.tex
-	convert $*.pdf -format png $(DOC)/$*.png
+	convert -density 150 $*.pdf -format png $(DOC)/$*.png
 	rm -f $*.tex $*.pdf $*.aux $*.log
 
 latex: $(IMAGES:%=%.png)
