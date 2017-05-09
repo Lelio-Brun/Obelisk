@@ -53,11 +53,7 @@ Here are the different formats output obtained by **MenhirBrav** from its own [p
   | <rule>* EOF
 
 <rule> ::=
-  | [PUBLIC] [INLINE] LID parameters(<ident>) COLON <optional_bar> (<group> BAR)+
-
-<optional_bar> ::=
-  | epsilon
-  | BAR
+  | [PUBLIC] [INLINE] LID parameters(<ident>) COLON [BAR] (<group> BAR)+
 
 <group> ::=
   | (<production> BAR)+ ACTION [<precedence>]
