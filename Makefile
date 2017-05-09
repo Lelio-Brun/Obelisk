@@ -4,22 +4,29 @@ TARGET=native
 MAIN=main.$(TARGET)
 EXE=menhirbrav
 FLAGS=-use-menhir -use-ocamlfind -pkgs str
+PARSER=$(SRC)/parser.mly
 IMAGES=tabular syntax backnaur
 
-.PHONY: all doc clean
+.PHONY: all latex html doc clean
 
 all:
 	ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
 	mv $(MAIN) $(EXE)
 
 %.png: all
-	./$(EXE) latex -$* $(SRC)/parser.mly -o $*.tex
+	./$(EXE) latex -$* $(PARSER) -o $*.tex
 	pdflatex $*.tex
 	convert $*.pdf -format png $(DOC)/$*.png
 	rm -f $*.tex $*.pdf $*.aux $*.log
 
-doc: $(IMAGES:%=%.png)
-	echo $^
+latex: $(IMAGES:%=%.png)
+
+html: all
+	./$(EXE) html $(PARSER) -o test.html
+	wkhtmltoimage -f png --width 800 test.html $(DOC)/html.png
+	rm -f test.html
+
+doc: latex html
 
 clean:
 	ocamlbuild -clean

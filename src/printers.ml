@@ -417,11 +417,19 @@ module HtmlH : HELPER = struct
        <style>@;\
        .specification {@;\
        list-style: none;@;\
+       padding: 0;@;\
+       margin: 0;@;\
+       }@;\
+       .specification li {@;\
+       margin-bottom: .5em;@;\
        }@;\
        .groups {@;\
        display: inline;@;\
        list-style: none;@;\
-       padding-left: .5em;
+       padding-left: .5em;\
+       }@;\
+       .groups li {@;\
+       margin-bottom: 0;@;\
        }@;\
        .groups:before {@;\
        content: \"::=\";@;\
