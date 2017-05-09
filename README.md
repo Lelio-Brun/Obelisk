@@ -41,9 +41,9 @@ By default **menhirbrav** defaults to standard output, use `-o <file>` to specif
 By default the output format is a simple text format close to the BNF syntax. You can use the subcommand `latex` to get a LaTeX file.
 
 Use the following options to tweak the LaTeX:
-- `-tabular`: a *tabular*-based format (default)
+- `-tabular`: a *tabular*-based format from the [tabu] package (default)
 - `-syntax`: use the [syntax] package
-- `-backnaur`: use the [backnaur] package (not recommended)
+- `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
 In either cases, the output is customizable *via* the use of LaTeX commands that you can redefine to fit your needs.
 
@@ -103,5 +103,6 @@ parameters(X) ::=
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
 [OCaml]: http://ocaml.org/
 [OPAM]: http://opam.ocaml.org/
+[tabu]: https://www.ctan.org/pkg/tabu
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
