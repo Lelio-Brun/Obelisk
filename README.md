@@ -38,6 +38,8 @@ By default **MenhirBrav** defaults to standard output, use `-o <file>` to specif
 - lists
 - non-empty lists
 
+Once recognized, the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*).
+
 ### Multi-format output
 By default the output format is a simple text format close to the BNF syntax. You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
 
