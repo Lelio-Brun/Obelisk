@@ -30,7 +30,13 @@ This will provide you with a **menhirbrav** executable which you can feed *.mly*
 menhirbrav [latex|html] [options] <file>
 ```
 
-By default **menhirbrav** defaults to standard output, use `-o <file>` to specify an output file.
+By default **MenhirBrav** defaults to standard output, use `-o <file>` to specify an output file.
+
+### Pattern recognition
+**MenhirBrav** can infer some common patterns (possibly parametrized):
+- options
+- lists
+- non-empty lists
 
 ### Multi-format output
 By default the output format is a simple text format close to the BNF syntax. You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
