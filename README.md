@@ -98,6 +98,14 @@ parameters(X) ::=
   | UID
   | LID
 ```
+#### Tabular
+![Tabular](doc/tabular.png)
+
+#### Syntax
+![Syntax](doc/syntax.png)
+
+#### Backnaur
+![Backnaur](doc/backnaur.png)
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
