@@ -12,6 +12,7 @@ type latexmode =
 type mode =
   | Default
   | Latex of latexmode
+  | Html
 
 let mode = ref Default
 
@@ -30,6 +31,8 @@ let latex_opt = [
   "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package"
 ]
 
+let html_opt = []
+
 let msg = "menhir2latex [latex] [options] <source>"
 
 let parse_cmd =
@@ -38,6 +41,10 @@ let parse_cmd =
   | "latex" when !cpt < 1 ->
     mode := Latex Tabular;
     options := !options @ latex_opt
+  | "html" when !cpt < 1 ->
+    mode := Html;
+    options := !options @ html_opt
+
   | f ->
     set_file ifile f
 
@@ -50,9 +57,10 @@ let get () =
     let formatter = formatter_of_out_channel outf in
     let p = match !mode with
       | Default -> (module Printers.Default : Printers.PRINTER)
-      | Latex Tabular -> (module Printers.LatexTabular : Printers.PRINTER)
-      | Latex Syntax -> (module Printers.LatexSyntax : Printers.PRINTER)
-      | Latex Backnaur -> (module Printers.LatexBacknaur : Printers.PRINTER)
+      | Latex Tabular -> (module Printers.LatexTabular)
+      | Latex Syntax -> (module Printers.LatexSyntax)
+      | Latex Backnaur -> (module Printers.LatexBacknaur)
+      | Html -> (module Printers.Html)
     in
     let module P = (val p : Printers.PRINTER) in
     let print spec = P.print_spec formatter spec in

@@ -105,12 +105,8 @@ module Make (H : HELPER) : PRINTER = struct
       H.print_modifier true (print'' x) Plus
     | "separated_list", [sep; x] ->
       H.print_sep_list false (print'' sep) (print'' x)
-      (* H.print_modifier true (fun () -> *)
-      (*     print' x; print_space (); print' sep) Star *)
     | "separated_nonempty_list", [sep; x] ->
       H.print_sep_list true (print'' sep) (print'' x)
-      (* H.print_modifier true (fun () -> *)
-      (*     print' x; print_space (); print' sep) Plus *)
     | x, _ ->
       H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
       print_sep_encl (print_actual symbols e) ("," ^ H.space) "(" ")" ps
@@ -407,3 +403,92 @@ module LatexBacknaurH : HELPER = struct
 
 end
 module LatexBacknaur = Make (LatexBacknaurH)
+
+module HtmlH : HELPER = struct
+
+  include MiniHelper
+
+  let print_header _ =
+    print_string
+      "@[<v 0><!DOCTYPE html>@;\
+       <html>@;\
+       <head>@;\
+       <title>Grammar</title>@;\
+       <style>@;\
+       .specification {@;\
+       list-style: none;@;\
+       }@;\
+       .groups {@;\
+       display: inline;@;\
+       list-style: none;@;\
+       padding-left: .5em;
+       }@;\
+       .groups:before {@;\
+       content: \"::=\";@;\
+       }@;\
+       .groups li {@;\
+       padding-left: 2em;@;\
+       }@;\
+       .groups li:before {@;\
+       content: \"|\";@;\
+       }@;\
+       .nonterminal:before {@;\
+       content: \"<\";@;\
+       }@;\
+       .nonterminal:after {@;\
+       content: \">\";@;\
+       }@;\
+       </style>@;\
+       </head>@;\
+       <body>@;\
+       <ul class=\"specification\">@;@;"
+
+  let print_footer () =
+    print_string
+      "</ul>@;\
+       </body>@;\
+       </html>@]@."
+
+  let def = "@[<v 2><ul class=\"groups\">"
+  let bar = " "
+  let space = "@ "
+  let break = "@;"
+  let eps = "epsilon"
+
+  let print_rule_name is_not_fun =
+    print_fmt (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s@;")
+
+  let rule_begin () =
+    print_string "@[<v 2><li>"
+  let rule_end () =
+    print_string "@]@;</ul>@]@;</li>@;@;"
+
+  let group_begin () =
+    print_string "@[<hov 2><li>"
+  let group_end () =
+    print_string "</li>@]"
+
+  let print_terminal is_term is_non_term =
+    print_fmt (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
+
+  let enclose print op cl =
+    print_string op; print (); print_string cl
+
+  let par e print =
+    if e then enclose print "(" ")" else print ()
+
+  let print_modifier e print = function
+    | Opt ->
+      enclose print "[" "]"
+    | Plus ->
+      par e print; print_string "<sup>+</sup>"
+    | Star ->
+      par e print; print_string "<sup>*</sup>"
+
+  let print_sep_list nonempty print_sep print_x =
+    print_x ();
+    print_string (if nonempty then "<sup>+</sup>" else "<sup>*</sup>");
+    print_string "<sub>"; print_sep (); print_string "</sub>"
+
+end
+module Html = Make (HtmlH)
