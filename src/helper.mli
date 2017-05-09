@@ -15,8 +15,8 @@ val group_begin: unit -> unit
 val group_end: unit -> unit
 
 val print_terminal: bool -> bool -> string -> unit
-
 val print_modifier: bool -> (unit -> unit) -> modifier -> unit
+val print_sep_list: bool -> (unit -> unit) -> (unit -> unit) -> unit
 
 val def: string
 val bar: string

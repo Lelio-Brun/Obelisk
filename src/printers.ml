@@ -104,11 +104,13 @@ module Make (H : HELPER) : PRINTER = struct
     | "nonemptylist", [x] ->
       H.print_modifier true (print'' x) Plus
     | "separated_list", [sep; x] ->
-      H.print_modifier true (fun () ->
-          print' x; print_space (); print' sep) Star
+      H.print_sep_list false (print'' sep) (print'' x)
+      (* H.print_modifier true (fun () -> *)
+      (*     print' x; print_space (); print' sep) Star *)
     | "separated_nonempty_list", [sep; x] ->
-      H.print_modifier true (fun () ->
-          print' x; print_space (); print' sep) Plus
+      H.print_sep_list true (print'' sep) (print'' x)
+      (* H.print_modifier true (fun () -> *)
+      (*     print' x; print_space (); print' sep) Plus *)
     | x, _ ->
       H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
       print_sep_encl (print_actual symbols e) ("," ^ H.space) "(" ")" ps
@@ -181,6 +183,11 @@ module DefaultH : HELPER = struct
       par e print; print_string "+"
     | Star ->
       par e print; print_string "*"
+
+  let print_sep_list nonempty print_sep print_x =
+    print_modifier true (fun () ->
+        print_x (); print_string space; print_sep ())
+      (if nonempty then Plus else Star)
 
 end
 module Default = Make (DefaultH)
@@ -269,6 +276,10 @@ module LatexTabularH : HELPER = struct
     | Star ->
       par e print; print_string "$^*$"
 
+  let print_sep_list nonempty print_sep print_x =
+    print_x (); print_string "$_{"; print_sep ();
+    print_string (if nonempty then "}^+$" else "}^*$")
+
 end
 module LatexTabular = Make (LatexTabularH)
 
@@ -328,6 +339,10 @@ module LatexSyntaxH : HELPER = struct
     | Star ->
       par e print; print_string "$^*$"
 
+  let print_sep_list nonempty print_sep print_x =
+    print_x (); print_string "$_{"; print_sep ();
+    print_string (if nonempty then "}^+$" else "}^*$")
+
 end
 module LatexSyntax = Make (LatexSyntaxH)
 
@@ -384,6 +399,11 @@ module LatexBacknaurH : HELPER = struct
       par e print; print_string "^+"
     | Star ->
       par e print; print_string "^*"
+
+  let print_sep_list nonempty print_sep print_x =
+    print_modifier true (fun () ->
+        print_x (); print_string space; print_sep ())
+      (if nonempty then Plus else Star)
 
 end
 module LatexBacknaur = Make (LatexBacknaurH)
