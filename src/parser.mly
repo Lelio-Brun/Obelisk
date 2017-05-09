@@ -56,7 +56,7 @@ production:
 /* cf fancy-parser.mly of Menhir */
 
 producer:
-  bind=ioption(terminated(LID, EQ)) actual=actual { { bind; actual } }
+  ioption(terminated(LID, EQ)) actual=actual { actual }
 
 /* ------------------------------------------------------------------------- */
 /* The ideal syntax of actual parameters includes:

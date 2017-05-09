@@ -1,1 +1,1 @@
-val print_spec: Format.formatter -> Ast.spec -> unit
+val print_spec: Format.formatter -> ExtendedAst.spec -> unit

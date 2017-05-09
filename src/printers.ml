@@ -1,4 +1,4 @@
-open Ast
+open ExtendedAst
 open Format
 
 module type HELPER = module type of Helper
@@ -15,25 +15,31 @@ module Make (H : HELPER) : PRINTER = struct
   let add_non_terminal nts {name; params} =
     if params = [] then StringSet.add name nts else nts
 
-  let add_terminal nts ts {groups} =
+  let add_terminal nts ts {prods} =
     let rec add_terminal_actual ts = function
       | Symbol (s, ps) ->
         let ts = List.fold_left add_terminal_actual ts ps in
         if not (StringSet.mem s nts) && String.uppercase_ascii s = s
            && ps = []
         then StringSet.add s ts else ts
+      | Pattern p ->
+        add_terminal_pattern ts p
       | Modifier (a, _) ->
         add_terminal_actual ts a
-      | Anonymous gs ->
-        List.fold_left add_terminal_group ts gs
-    and add_terminal_producer ts {actual} =
-      add_terminal_actual ts actual
-    and add_terminal_prod ts producers =
-      List.fold_left add_terminal_producer ts producers
-    and add_terminal_group ts prods =
-      List.fold_left add_terminal_prod ts prods
+      | Anonymous ps ->
+        List.fold_left add_terminal_prod ts ps
+    and add_terminal_prod ts actuals =
+      List.fold_left add_terminal_actual ts actuals
+    and add_terminal_pattern ts = function
+      | Option x | List x | NEList x ->
+        add_terminal_actual ts x
+      | Pair (x, y) | Preceded (x, y) | Terminated (x, y)
+      | SepList (x, y) | SepNEList (x, y) ->
+        add_terminal_actual (add_terminal_actual ts x) y
+      | SepPair (x, y, z) | Delimited (x, y, z) ->
+        add_terminal_actual (add_terminal_actual (add_terminal_actual ts x) y) z
     in
-    List.fold_left add_terminal_group ts groups
+    List.fold_left add_terminal_prod ts prods
 
   let scan s =
     let nts = List.fold_left add_non_terminal StringSet.empty s in
@@ -59,65 +65,64 @@ module Make (H : HELPER) : PRINTER = struct
   let print_sep print sep =
     print_sep_encl print sep "" ""
 
-  let rec print_group symbols prods =
-    H.group_begin ();
+  let rec print_production symbols actuals =
+    H.production_begin ();
     H.print_string H.bar;
-    print_sep (print_production symbols) H.bar prods;
-    H.group_end ()
+    print_actuals symbols actuals;
+    H.production_end ()
 
-  and print_production symbols producers =
-    match producers with
-      | [] -> H.print_string H.eps; print_space ()
-      | _ -> print_sep (print_producer symbols) H.space producers
-
-  and print_producer symbols {actual} =
-    print_actual symbols false actual
+  and print_actuals symbols = function
+    | [] -> H.print_string H.eps; print_space ()
+    | xs -> print_sep (print_actual symbols false) H.space xs
 
   and print_actual symbols e = function
     | Symbol (x, ps) ->
       print_symbol symbols e x ps
+    | Pattern p ->
+      print_pattern symbols e p
     | Modifier (a, m) ->
       H.print_modifier e (fun () -> print_actual symbols e a) m
-    | Anonymous gs ->
-      print_sep (print_group symbols) H.bar gs
+    | Anonymous ps ->
+      print_sep (print_actuals symbols) H.bar ps
 
-  and print_symbol (ts, nts as symbols) e x ps =
+  and print_pattern symbols e =
     let print' = print_actual symbols e in
     let print'' x () = print' x in
-    match x, ps with
-    | ("option" | "ioption" | "boption" | "loption"), [x] ->
+    function
+    | Option x ->
       H.print_modifier false (print'' x) Opt
-    | "pair", [x; y] ->
+    | Pair (x, y) ->
       H.par e (fun () -> print' x; print_space (); print' y)
-    | "separated_pair", [x; sep; y] ->
+    | SepPair (x, sep, y) ->
       H.par e (fun () ->
           print' x; print_space (); print' sep; print_space (); print' y)
-    | "preceded", [o; x] ->
+    | Preceded (o, x) ->
       H.par e (fun () -> print' o; print_space (); print' x)
-    | "terminated", [x; c] ->
+    | Terminated (x, c) ->
       H.par e (fun () -> print' x; print_space (); print' c)
-    | "delimited", [o; x; c] ->
+    | Delimited (o, x, c) ->
       H.par e (fun () ->
           print' o; print_space (); print' x; print_space (); print' c)
-    | "list", [x] ->
-      H.print_modifier true (print'' x) Star
-    | "nonemptylist", [x] ->
-      H.print_modifier true (print'' x) Plus
-    | "separated_list", [sep; x] ->
+    | List x ->
+      H.print_modifier false (print'' x) Star
+    | NEList x ->
+      H.print_modifier false (print'' x) Plus
+    | SepList (sep, x) ->
       H.print_sep_list false (print'' sep) (print'' x)
-    | "separated_nonempty_list", [sep; x] ->
+    | SepNEList (sep, x) ->
       H.print_sep_list true (print'' sep) (print'' x)
-    | x, _ ->
-      H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
-      print_sep_encl (print_actual symbols e) ("," ^ H.space) "(" ")" ps
 
-  let print_rule symbols {name; params; groups} =
+  and print_symbol (ts, nts as symbols) e x ps =
+    H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
+    print_sep_encl (print_actual symbols e) ("," ^ H.space) "(" ")" ps
+
+  let print_rule symbols {name; params; prods} =
     H.rule_begin ();
     H.print_rule_name (params = []) name;
     print_sep_encl H.print_string ", " "(" ")" params;
     H.print_string H.def;
     print_break ();
-    print_sep (print_group symbols) H.break groups;
+    print_sep (print_production symbols) H.break prods;
     H.rule_end ()
 
   let print_spec o s =
@@ -158,9 +163,9 @@ module DefaultH : HELPER = struct
   let rule_end () =
     print_string "@]@;@;"
 
-  let group_begin () =
+  let production_begin () =
     print_string "@[<hov 2>"
-  let group_end () =
+  let production_end () =
     print_string "@]"
 
   let print_terminal is_term is_non_term =
@@ -247,9 +252,9 @@ module LatexTabularH : HELPER = struct
     print_string "@;& & \\\\\\\\";
     print_string "@]@;@;"
 
-  let group_begin () =
+  let production_begin () =
     print_string "@[<hov 2>"
-  let group_end () =
+  let production_end () =
     print_string " @] \\\\\\\\"
 
   let print_terminal is_term is_non_term s =
@@ -310,9 +315,9 @@ module LatexSyntaxH : HELPER = struct
   let rule_end () =
     print_string "@]@;@;"
 
-  let group_begin () =
+  let production_begin () =
     print_string "@[<hov 2>"
-  let group_end () =
+  let production_end () =
     print_string " @]"
 
   let print_terminal is_term is_non_term s =
@@ -371,9 +376,9 @@ module LatexBacknaurH : HELPER = struct
   let rule_end () =
     print_string "\\\\end{bnfsplit}}\\\\\\\\@]@;"
 
-  let group_begin () =
+  let production_begin () =
     print_string "@[<hov 2>\\\\\\\\"
-  let group_end () =
+  let production_end () =
     print_string "@]"
 
   let print_terminal is_term is_non_term s =
@@ -471,9 +476,9 @@ module HtmlH : HELPER = struct
   let rule_end () =
     print_string "@]@;</ul>@]@;</li>@;@;"
 
-  let group_begin () =
+  let production_begin () =
     print_string "@[<hov 2><li>"
-  let group_end () =
+  let production_end () =
     print_string "</li>@]"
 
   let print_terminal is_term is_non_term =

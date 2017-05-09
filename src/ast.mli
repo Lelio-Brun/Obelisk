@@ -8,12 +8,7 @@ and rule = {
 
 and group = production list
 
-and production = producer list
-
-and producer = {
-  bind: string option;
-  actual: actual
-}
+and production = actual list
 
 and actual =
   | Symbol of string * actual list

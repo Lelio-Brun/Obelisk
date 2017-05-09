@@ -73,9 +73,11 @@ let get () =
 let () =
   let lexbuf, print, close = get () in
   try
-    let s = Parser.specification Lexer.lexer lexbuf in
-    let s = Normalize.normalize s in
-    print s;
+    Parser.specification Lexer.lexer lexbuf
+    |> Normalize.normalize
+    |> Transform.transform
+    |> Reduce.reduce
+    |> print;
     close ()
   with
   | Sys_error s ->
