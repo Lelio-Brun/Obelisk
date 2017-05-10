@@ -27,7 +27,7 @@ specification:
   rules=rule* EOF { rules }
 
 rule:
-  PUBLIC? INLINE? name=LID params=parameters(ident) COLON
+  PUBLIC? INLINE? name=ident params=parameters(ident) COLON
   optional_bar groups=separated_nonempty_list(BAR, group)
   { { name; params; groups } }
 

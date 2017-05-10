@@ -100,7 +100,7 @@ Here are the different formats output obtained by **MenhirBrav** from its own [p
   | <rule>* EOF
 
 <rule> ::=
-  | [PUBLIC] [INLINE] LID parameters(<ident>) COLON [BAR] <group> (BAR <group>)*
+  | [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON [BAR] <group> (BAR <group>)*
 
 <group> ::=
   | <production> (BAR <production>)* ACTION [<precedence>]
@@ -136,7 +136,6 @@ parameters(X) ::=
 <ident> ::=
   | UID
   | LID
-
 ```
 
 #### LaTeX
