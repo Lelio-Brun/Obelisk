@@ -38,7 +38,7 @@ By default **MenhirBrav** defaults to standard output, use `-o <file>` to specif
 - lists and non-empty lists
 - separated lists and non-empty separated lists
 
-Once recognized, the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*).
+Once recognized, if the `-i` switch is specified the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*). Without the `-i` flag, only the productions of the recognized rules are replaced, the total amount of rules remaining the same.
 
 For example, on these simple rules (from this [file](doc/reco.mly)):
 ```
@@ -71,6 +71,30 @@ my_rule(E,F,S1,S2):
 ```
 **MenhirBrav** outputs:
 ```
+my_option(X, Y) ::=
+  | [Y X]
+
+my_list(A) ::=
+  | A*
+
+my_nonempty_list(C) ::=
+  | C+
+
+my_separated_nonempty_list(X, Y) ::=
+  | X (Y X)*
+
+my_separated_list(X, S) ::=
+  | [X (S X)*]
+
+my_rule(E, F, S1, S2) ::=
+  | my_option(E, F)
+  | my_list(E)
+  | my_nonempty_list(F)
+  | my_separated_nonempty_list(E, S1)
+  | my_separated_list(F, S2)
+```
+And with the `-i` switch:
+```
 my_rule(E, F, S1, S2) ::=
   | [F E]
   | E*
@@ -100,7 +124,10 @@ Here are the different formats output obtained by **MenhirBrav** from its own [p
   | <rule>* EOF
 
 <rule> ::=
-  | [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON [BAR] <group> (BAR <group>)*
+  | [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON <optional_bar> <group> (BAR <group>)*
+
+<optional_bar> ::=
+  | [BAR]
 
 <group> ::=
   | <production> (BAR <production>)* ACTION [<precedence>]

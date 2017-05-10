@@ -15,11 +15,13 @@ type mode =
   | Html
 
 let mode = ref Default
+let inline = ref false
 
 let set_file f s = f := s
 
 let options = ref [
-    "-o", Arg.Set_string ofile, " Set the output filename"
+    "-o", Arg.Set_string ofile, " Set the output filename";
+    "-i", Arg.Set inline, " Inline recognized patterns"
   ]
 
 let set_latexmode lm () =
@@ -76,7 +78,7 @@ let () =
     Parser.specification Lexer.lexer lexbuf
     |> Normalize.normalize
     |> Transform.transform
-    |> Reduce.reduce
+    |> Reduce.reduce !inline
     |> print;
     close ()
   with

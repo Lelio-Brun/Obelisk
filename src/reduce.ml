@@ -200,10 +200,16 @@ let recognize rules r =
   @@ is_sep_list rules r
   @@ is_option r
 
-let reduce_rule rules r (rs, rws) =
+let replace_prods r (_, p) =
+  { r with prods = [[Pattern p]] }
+
+let reduce_rule inline rules r (rs, rws) =
   match recognize rules r with
-  | Some rw -> rs, M.add r.name rw rws
-  | None -> r :: rs, rws
+  | Some rw ->
+    if inline then (rs, M.add r.name rw rws)
+    else replace_prods r rw :: rs, rws
+  | None ->
+    r :: rs, rws
 
 let rec rewrite_actual rws = function
   | Symbol (s, xs) ->
@@ -244,6 +250,6 @@ let rewrite_rule rws r =
 let rewrite rws =
   List.map (rewrite_rule rws)
 
-let reduce s =
-  let rules, rws = List.fold_right (reduce_rule s) s ([], M.empty) in
-  rewrite rws rules
+let reduce inline s =
+  let rules, rws = List.fold_right (reduce_rule inline s) s ([], M.empty) in
+  if inline then rewrite rws rules else rules

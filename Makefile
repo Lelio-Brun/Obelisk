@@ -34,6 +34,8 @@ default:
 reco:
 	@echo -e "\nDefault output on $(RECO):"
 	@./$(EXE) $(RECO)
+	@echo -e "\nDefault output on $(RECO) with '-i' switch:"
+	@./$(EXE) -i $(RECO)
 
 doc: latex html default reco
 
