@@ -19,10 +19,10 @@ let inline = ref false
 
 let set_file f s = f := s
 
-let options = ref [
+let options = ref (Arg.align [
     "-o", Arg.Set_string ofile, " Set the output filename";
     "-i", Arg.Set inline, " Inline recognized patterns"
-  ]
+  ])
 
 let set_latexmode lm () =
   mode := Latex lm
@@ -35,17 +35,17 @@ let latex_opt = [
 
 let html_opt = []
 
-let msg = "menhir2latex [latex] [options] <source>"
+let msg = "menhirbrav [latex|html] [options] <source>"
 
 let parse_cmd =
   let cpt = ref 0 in
   function
   | "latex" when !cpt < 1 ->
     mode := Latex Tabular;
-    options := !options @ latex_opt
+    options := Arg.align (!options @ latex_opt)
   | "html" when !cpt < 1 ->
     mode := Html;
-    options := !options @ html_opt
+    options := Arg.align (!options @ html_opt)
 
   | f ->
     set_file ifile f
