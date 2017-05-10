@@ -128,20 +128,82 @@ let is_nonempty_list r =
   | [x; y] -> f x y @@ f y x
   | _ -> None
 
+let take =
+  let rec aux pre n xs = match n, xs with
+    | 0, xs -> List.rev pre, xs
+    | _, [] -> List.rev pre, []
+    | n, x::xs -> aux (x :: pre) (n-1) xs
+  in
+  aux []
+
+let is_sep_nonempty_list r =
+  let g = generalize r.params in
+  let f base cons =
+    match cons with
+    | [] -> None
+    | Symbol (s, xs) :: acts
+      when s = r.name && equal_params r.params xs
+           && List.for_all (not_occurs s) acts ->
+      let base_r, sep_r = take (List.length base) (List.rev acts) in
+      if base = List.rev base_r
+      then g (SepNEList (Anonymous [List.rev sep_r], Anonymous [base]))
+      else None
+    | _ ->
+      begin match List.rev cons with
+        | Symbol (s, xs) :: acts
+          when s = r.name && equal_params r.params xs
+               && List.for_all (not_occurs s) acts ->
+          let base', sep = take (List.length base) (List.rev acts) in
+          if base = base'
+          then g (SepNEList (Anonymous [sep], Anonymous [base]))
+          else None
+        | _ -> None
+      end
+  in
+  match r.prods with
+  | [x; y] -> f x y @@ f y x
+  | _ -> None
+
+let find_rule r rules =
+  try
+    Some (List.find (fun {name} -> name = r) rules)
+  with Not_found -> None
+
+let is_sep_list rules r =
+  let g = generalize r.params in
+  match r.prods with
+  | [[]; [Symbol (s, xs)]] | [[Symbol (s, xs)]; []] ->
+    begin match find_rule s rules with
+      | Some r' ->
+        begin match is_sep_nonempty_list r' with
+          | Some rw ->
+            begin match subst rw xs with
+              | Pattern (SepNEList (sep, x)) -> g (SepList (sep, x))
+              | _ -> None
+            end
+          | _ -> None
+        end
+      | None -> None
+    end
+  | _ -> None
+
 let is_option r =
   match r.prods with
   | [[]; some] | [some; []] ->
     if some = [] then None else generalize r.params (Option (Anonymous [some]))
   | _ -> None
 
+let recognize rules r =
+  is_list r
+  @@ is_nonempty_list r
+  @@ is_sep_nonempty_list r
+  @@ is_sep_list rules r
+  @@ is_option r
 
-let recognize r =
-  is_list r @@ is_option r @@ is_nonempty_list r
-
-let reduce_rule r (rules, rws) =
-  match recognize r with
-  | Some rw -> rules, M.add r.name rw rws
-  | None -> r :: rules, rws
+let reduce_rule rules r (rs, rws) =
+  match recognize rules r with
+  | Some rw -> rs, M.add r.name rw rws
+  | None -> r :: rs, rws
 
 let rec rewrite_actual rws = function
   | Symbol (s, xs) ->
@@ -183,5 +245,5 @@ let rewrite rws =
   List.map (rewrite_rule rws)
 
 let reduce s =
-  let rules, rws = List.fold_right reduce_rule s ([], M.empty) in
+  let rules, rws = List.fold_right (reduce_rule s) s ([], M.empty) in
   rewrite rws rules

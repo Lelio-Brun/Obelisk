@@ -33,12 +33,51 @@ menhirbrav [latex|html] [options] <file>
 By default **MenhirBrav** defaults to standard output, use `-o <file>` to specify an output file.
 
 ### Pattern recognition
-**MenhirBrav** can infer some common patterns (possibly parametrized):
+**MenhirBrav** can infer some common patterns (possibly parameterized):
 - options
-- lists
-- non-empty lists
+- lists and non-empty lists
+- separated lists and non-empty separated lists
 
 Once recognized, the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*).
+
+For example, on these simple rules (from this [file](doc/reco.mly)):
+```
+my_option(X, Y):
+  |     {}
+  | Y X {}
+
+my_list(A):
+  |              {}
+  | A my_list(A) {}
+
+my_nonempty_list(C):
+  | C                     {}
+  | C my_nonempty_list(C) {}
+
+my_separated_nonempty_list(X,Y):
+  | X                                   {}
+  | X Y my_separated_nonempty_list(X,Y) {}
+
+my_separated_list(X,S):
+  |                                 {}
+  | my_separated_nonempty_list(X,S) {}
+
+my_rule(E,F,S1,S2):
+  | my_option(E, F)                    {}
+  | my_list(E)                         {}
+  | my_nonempty_list(F)                {}
+  | my_separated_nonempty_list(E,S1)   {}
+  | my_separated_list(F,S2)            {}
+```
+**MenhirBrav** outputs:
+```
+my_rule(E, F, S1, S2) ::=
+  | [F E]
+  | E*
+  | F+
+  | E (S1 E)*
+  | [F (S2 F)*]
+```
 
 ### Multi-format output
 By default the output format is a simple text format close to the BNF syntax. You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
@@ -48,7 +87,7 @@ Use the following options to tweak the LaTeX:
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
-In either cases, the output is customizable *via* the use of LaTeX commands that you can redefine to fit your needs.
+In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
 
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
 
@@ -61,10 +100,10 @@ Here are the different formats output obtained by **MenhirBrav** from its own [p
   | <rule>* EOF
 
 <rule> ::=
-  | [PUBLIC] [INLINE] LID parameters(<ident>) COLON [BAR] (<group> BAR)+
+  | [PUBLIC] [INLINE] LID parameters(<ident>) COLON [BAR] <group> (BAR <group>)*
 
 <group> ::=
-  | (<production> BAR)+ ACTION [<precedence>]
+  | <production> (BAR <production>)* ACTION [<precedence>]
 
 <production> ::=
   | <producer>* [<precedence>]
@@ -81,7 +120,7 @@ generic_actual(A, B) ::=
 
 <lax_actual> ::=
   | generic_actual(<lax_actual>, <actual>)
-  | (<group> BAR)+
+  | <group> (BAR <group>)*
 
 <modifier> ::=
   | OPT
@@ -92,11 +131,12 @@ generic_actual(A, B) ::=
   | PREC <ident>
 
 parameters(X) ::=
-  | [LPAR (X COMMA)* RPAR]
+  | [LPAR [X (COMMA X)*] RPAR]
 
 <ident> ::=
   | UID
   | LID
+
 ```
 
 #### LaTeX

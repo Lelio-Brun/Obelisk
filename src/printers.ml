@@ -186,9 +186,12 @@ module DefaultH : HELPER = struct
       par e print; print_string "*"
 
   let print_sep_list nonempty print_sep print_x =
-    print_modifier true (fun () ->
-        print_x (); print_string space; print_sep ())
-      (if nonempty then Plus else Star)
+    let print () =
+      print_x (); print_string space;
+      print_modifier true
+        (fun () -> print_sep (); print_string space; print_x ()) Star
+    in
+    if nonempty then print () else enclose print "[" "]"
 
 end
 module Default = Make (DefaultH)
@@ -402,9 +405,12 @@ module LatexBacknaurH : HELPER = struct
       par e print; print_string "^*"
 
   let print_sep_list nonempty print_sep print_x =
-    print_modifier true (fun () ->
-        print_x (); print_string space; print_sep ())
-      (if nonempty then Plus else Star)
+    let print () =
+      print_x (); print_string space;
+      print_modifier true
+        (fun () -> print_sep (); print_string space; print_x ()) Star
+    in
+    if nonempty then print () else enclose print "[" "]"
 
 end
 module LatexBacknaur = Make (LatexBacknaurH)
