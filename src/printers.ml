@@ -47,9 +47,8 @@ module Make (H : HELPER) : PRINTER = struct
     ts, nts
 
   let print_space () = H.print_string H.space
-  (* let print_break () = H.print_string H.break *)
 
-  let print_sep_encl_gen print sep op cl =
+  let print_sep_encl_gen ini_sep print sep op cl =
     let rec aux = function
       | [] -> ()
       | [x] -> print x
@@ -59,21 +58,22 @@ module Make (H : HELPER) : PRINTER = struct
     function
     | [] -> ()
     | xs ->
-      H.print_string op; aux xs; H.print_string cl
-  let print_sep_encl print =
-    print_sep_encl_gen print
-  let print_sep print sep =
-    print_sep_encl print sep "" ""
+      H.print_string op;
+      if ini_sep then H.print_string sep; aux xs;
+      H.print_string cl
+  let print_sep_encl not_sing print =
+    print_sep_encl_gen not_sing print
+  let print_sep not_sing print sep =
+    print_sep_encl not_sing print sep "" ""
 
-  let rec print_production symbols actuals =
-    H.production_begin ();
-    (* H.print_string H.bar; *)
+  let rec print_production not_sing symbols actuals =
+    H.production_begin not_sing;
     print_actuals symbols actuals;
-    H.production_end ()
+    H.production_end not_sing
 
   and print_actuals symbols = function
     | [] -> H.print_string H.eps; print_space ()
-    | xs -> print_sep (print_actual symbols false) H.space xs
+    | xs -> print_sep false (print_actual symbols false) H.space xs
 
   and print_actual symbols e = function
     | Symbol (x, ps) ->
@@ -83,7 +83,7 @@ module Make (H : HELPER) : PRINTER = struct
     | Modifier (a, m) ->
       H.print_modifier e (fun () -> print_actual symbols e a) m
     | Anonymous ps ->
-      print_sep (print_actuals symbols) H.bar ps
+      print_sep false (print_actuals symbols) H.bar ps
 
   and print_pattern symbols e =
     let print' = print_actual symbols e in
@@ -114,16 +114,15 @@ module Make (H : HELPER) : PRINTER = struct
 
   and print_symbol (ts, nts as symbols) e x ps =
     H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
-    print_sep_encl (print_actual symbols e) ("," ^ H.space) "(" ")" ps
+    print_sep_encl false (print_actual symbols e) ("," ^ H.space) "(" ")" ps
 
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
     H.print_rule_name (params = []) name;
-    print_sep_encl H.print_string ", " "(" ")" params;
+    print_sep_encl false H.print_string ", " "(" ")" params;
     H.print_string H.def;
-    (* print_break (); *)
-    if (List.length prods > 1) then H.print_string (H.break ^ H.bar);
-    print_sep (print_production symbols) (H.break ^ H.bar) prods;
+    let not_sing = (List.length prods > 1) in
+    print_sep not_sing (print_production not_sing symbols) (H.break ^ H.bar) prods;
     H.rule_end ()
 
   let print_spec o s =
@@ -164,9 +163,9 @@ module DefaultH : HELPER = struct
   let rule_end () =
     print_string "@]@;@;"
 
-  let production_begin () =
+  let production_begin _ =
     print_string "@[<hov 2>"
-  let production_end () =
+  let production_end _ =
     print_string "@]"
 
   let print_terminal is_term is_non_term =
@@ -256,9 +255,9 @@ module LatexTabularH : HELPER = struct
     print_string "@;\\\\\\\\& & \\\\\\\\";
     print_string "@]@;@;"
 
-  let production_begin () =
+  let production_begin _ =
     print_string "@[<hov 2>"
-  let production_end () =
+  let production_end _ =
     print_string " @]"
 
   let print_terminal is_term is_non_term s =
@@ -319,9 +318,9 @@ module LatexSyntaxH : HELPER = struct
   let rule_end () =
     print_string "@]@;@;"
 
-  let production_begin () =
+  let production_begin _ =
     print_string "@[<hov 2>"
-  let production_end () =
+  let production_end _ =
     print_string " @]"
 
   let print_terminal is_term is_non_term s =
@@ -383,9 +382,9 @@ module LatexBacknaurH : HELPER = struct
   let rule_end () =
     print_string "}\\\\\\\\@]@;"
 
-  let production_begin () =
+  let production_begin _ =
     print_string "@[<hov 2>"
-  let production_end () =
+  let production_end _ =
     print_string "@]"
 
   let print_terminal is_term is_non_term s =
@@ -447,13 +446,13 @@ module HtmlH : HELPER = struct
        margin-bottom: 0;@;\
        }@;\
        .groups:before {@;\
-       content: \"::=\";@;\
+       content: \"::= \";@;\
        }@;\
        .groups li {@;\
        padding-left: 2em;@;\
        }@;\
        .groups li:before {@;\
-       content: \"|\";@;\
+       content: \"| \";@;\
        }@;\
        .nonterminal:before {@;\
        content: \"<\";@;\
@@ -473,7 +472,7 @@ module HtmlH : HELPER = struct
        </html>@]@."
 
   let def = "@[<v 2><ul class=\"groups\">"
-  let bar = " "
+  let bar = "<li>"
   let space = "@ "
   let break = "@;"
   let eps = "epsilon"
@@ -486,10 +485,10 @@ module HtmlH : HELPER = struct
   let rule_end () =
     print_string "@]@;</ul>@]@;</li>@;@;"
 
-  let production_begin () =
-    print_string "@[<hov 2><li>"
-  let production_end () =
-    print_string "</li>@]"
+  let production_begin _ =
+    print_string "@[<hov 2>"
+  let production_end not_sing =
+    print_string ((if not_sing then "</li>" else "") ^ "@]")
 
   let print_terminal is_term is_non_term =
     print_fmt (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
