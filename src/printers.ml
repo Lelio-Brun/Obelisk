@@ -202,9 +202,24 @@ module MiniLatex = struct
   let documentclass () =
     print_string "@[<v 0>\\\\documentclass[preview]{standalone}@;@;"
 
+  let command x =
+    let roman =
+      Str.global_substitute (Str.regexp "[0-9]+")
+        (fun s ->
+           Str.matched_string s
+           |> int_of_string
+           |> Roman.as_roman
+           |> String.uppercase_ascii)
+    in
+    let clear_underscore =
+      Str.global_replace (Str.regexp "_") ""
+    in
+    roman x |> clear_underscore
+
   let commands ts =
+    let escape = Str.global_replace (Str.regexp "_") "\\_" in
     List.iter (fun nt ->
-        print_string ("\\\\newcommand{\\\\" ^ nt ^ "}{" ^ nt ^ "}@;")) ts;
+        print_fmt "\\newcommand{\\%s}{%s}@;" (command nt) (escape nt)) ts;
     print_string "@;"
 
   let begin_document env =
@@ -261,10 +276,10 @@ module LatexTabularH : HELPER = struct
     print_string " @]"
 
   let print_terminal is_term is_non_term s =
-    print_fmt
-      (if is_non_term then "\\nonterm{%s}"
-       else if is_term then "\\term{\\%s{}}" else "\\func{%s}")
-      (Str.global_replace (Str.regexp "_") "\\_" s)
+    let s' = Str.global_replace (Str.regexp "_") "\\_" s in
+    if is_non_term then print_fmt "\\nonterm{%s}" s'
+    else if is_term then print_fmt "\\term{\\%s{}}" (command s)
+    else print_fmt "\\func{%s}" s'
 
   let enclose print op cl =
     print_string op; print (); print_string cl
@@ -324,10 +339,10 @@ module LatexSyntaxH : HELPER = struct
     print_string " @]"
 
   let print_terminal is_term is_non_term s =
-    print_fmt
-      (if is_non_term then "<%s>" else
-       if is_term then "\\term{\\%s{}}" else "<%s> \\hspace{-\\spacewidth}")
-      (Str.global_replace (Str.regexp "_") "\\_" s)
+    let s' = Str.global_replace (Str.regexp "_") "\\_" s in
+    if is_non_term then print_fmt "<%s>" s'
+    else if is_term then print_fmt "\\term{\\%s{}}" (command s)
+    else print_fmt "<%s> \\hspace{-\\spacewidth}" s'
 
   let enclose print op cl =
     print_string op; print (); print_string cl
@@ -387,11 +402,11 @@ module LatexBacknaurH : HELPER = struct
   let production_end _ =
     print_string "@]"
 
-  let print_terminal is_term is_non_term s =
-    print_fmt
-      (if is_non_term then "\\bnfpn{%s}" else
-       if is_term then "\\bnfts{%s}" else "\\bnfpn{%s}")
-      (Str.global_replace (Str.regexp "_") "\\_" s)
+ let print_terminal is_term is_non_term s =
+    let s' = Str.global_replace (Str.regexp "_") "\\_" s in
+    if is_non_term then print_fmt "\\bnfpn{%s}" s'
+    else if is_term then print_fmt "\\bnfts{\\%s{}}" (command s)
+    else print_fmt "\\bnfpn{%s}" s'
 
   let enclose print op cl =
     print_string op; print (); print_string cl

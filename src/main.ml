@@ -53,6 +53,7 @@ let parse_cmd =
 let get () =
   Arg.parse_dynamic options parse_cmd msg;
   try
+    if !ifile = "" then (Arg.usage !options msg; exit 1);
     let inf = open_in !ifile in
     let outf = if !ofile = "" then stdout else open_out !ofile in
     let lexbuf = Lexing.from_channel inf in
@@ -69,7 +70,7 @@ let get () =
     let close () = close_in inf; close_out outf in
     lexbuf, print, close
   with Sys_error s ->
-    eprintf "System Error: %s@." s;
+    eprintf "System Error%s@." s;
     exit 1
 
 let () =
@@ -83,7 +84,7 @@ let () =
     close ()
   with
   | Sys_error s ->
-    eprintf "System Error: %s@." s;
+    eprintf "System Error%s@." s;
     exit 1
   | Lexer.LexingError s ->
     err_loc_lexbuf ifile lexbuf;

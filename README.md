@@ -18,7 +18,9 @@ opam install ocamlbuild menhir
 ```
 
 ### Manual build
-Just type :
+Since [Roman] is a git submodule, you should `git clone --recursive` to clone the **MenhirBrav** repository or `git submodule update --init` after a simple clone.
+
+Then just type :
 ```
 make
 ```
@@ -106,7 +108,7 @@ Use the following options to tweak the LaTeX:
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
-In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
+In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs. The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form (thanks to the [Roman] module).
 
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
 
@@ -173,3 +175,4 @@ parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 [tabu]: https://www.ctan.org/pkg/tabu
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
+[Roman]: https://github.com/lindig/roman
