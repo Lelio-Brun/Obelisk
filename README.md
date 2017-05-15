@@ -71,20 +71,15 @@ my_rule(E,F,S1,S2):
 ```
 **MenhirBrav** outputs:
 ```
-my_option(X, Y) ::=
-  | [Y X]
+my_option(X, Y) ::= [Y X]
 
-my_list(A) ::=
-  | A*
+my_list(A) ::= A*
 
-my_nonempty_list(C) ::=
-  | C+
+my_nonempty_list(C) ::= C+
 
-my_separated_nonempty_list(X, Y) ::=
-  | X (Y X)*
+my_separated_nonempty_list(X, Y) ::= X (Y X)*
 
-my_separated_list(X, S) ::=
-  | [X (S X)*]
+my_separated_list(X, S) ::= [X (S X)*]
 
 my_rule(E, F, S1, S2) ::=
   | my_option(E, F)
@@ -120,30 +115,23 @@ Here are the different formats output obtained by **MenhirBrav** from its own [p
 
 #### Default
 ```
-<specification> ::=
-  | <rule>* EOF
+<specification> ::= <rule>* EOF
 
-<rule> ::=
-  | [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON <optional_bar> <group> (BAR <group>)*
+<rule> ::= [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON <optional_bar> <group> (BAR <group>)*
 
-<optional_bar> ::=
-  | [BAR]
+<optional_bar> ::= [BAR]
 
-<group> ::=
-  | <production> (BAR <production>)* ACTION [<precedence>]
+<group> ::= <production> (BAR <production>)* ACTION [<precedence>]
 
-<production> ::=
-  | <producer>* [<precedence>]
+<production> ::= <producer>* [<precedence>]
 
-<producer> ::=
-  | [LID EQ] <actual>
+<producer> ::= [LID EQ] <actual>
 
 generic_actual(A, B) ::=
   | <ident> parameters(A)
   | B <modifier>
 
-<actual> ::=
-  | generic_actual(<lax_actual>, <actual>)
+<actual> ::= generic_actual(<lax_actual>, <actual>)
 
 <lax_actual> ::=
   | generic_actual(<lax_actual>, <actual>)
@@ -154,11 +142,9 @@ generic_actual(A, B) ::=
   | PLUS
   | STAR
 
-<precedence> ::=
-  | PREC <ident>
+<precedence> ::= PREC <ident>
 
-parameters(X) ::=
-  | [LPAR [X (COMMA X)*] RPAR]
+parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 
 <ident> ::=
   | UID

@@ -47,7 +47,7 @@ module Make (H : HELPER) : PRINTER = struct
     ts, nts
 
   let print_space () = H.print_string H.space
-  let print_break () = H.print_string H.break
+  (* let print_break () = H.print_string H.break *)
 
   let print_sep_encl_gen print sep op cl =
     let rec aux = function
@@ -67,7 +67,7 @@ module Make (H : HELPER) : PRINTER = struct
 
   let rec print_production symbols actuals =
     H.production_begin ();
-    H.print_string H.bar;
+    (* H.print_string H.bar; *)
     print_actuals symbols actuals;
     H.production_end ()
 
@@ -121,8 +121,9 @@ module Make (H : HELPER) : PRINTER = struct
     H.print_rule_name (params = []) name;
     print_sep_encl H.print_string ", " "(" ")" params;
     H.print_string H.def;
-    print_break ();
-    print_sep (print_production symbols) H.break prods;
+    (* print_break (); *)
+    if (List.length prods > 1) then H.print_string (H.break ^ H.bar);
+    print_sep (print_production symbols) (H.break ^ H.bar) prods;
     H.rule_end ()
 
   let print_spec o s =
@@ -149,7 +150,7 @@ module DefaultH : HELPER = struct
   let print_header _ = ()
   let print_footer () = print_string "@."
 
-  let def = " ::="
+  let def = " ::= "
   let bar = "| "
   let space = "@ "
   let break = "@;"
@@ -229,8 +230,8 @@ module LatexTabularH : HELPER = struct
        \\\\end{tabu}@;<0 2>\
        \\\\end{trivlist}@;\
        }@;@;\
-       \\\\newcommand{\\\\gramsp}{\\\\;\\\\;}@;\
-       \\\\newcommand{\\\\gramdef}{$\\\\gramsp::=$}@;\
+       \\\\newcommand{\\\\gramsp}{\\\\quad}@;\
+       \\\\newcommand{\\\\gramdef}{$\\\\gramsp::=\\\\gramsp$}@;\
        \\\\newcommand{\\\\grambar}{$\\\\gramsp|\\\\gramsp$}@;\
        \\\\newcommand{\\\\nonterm}[1]{$\\\\langle$#1$\\\\rangle$}@;\
        \\\\newcommand{\\\\func}[1]{#1}@;\
@@ -240,10 +241,10 @@ module LatexTabularH : HELPER = struct
 
   let print_footer () = end_document "grammar"
 
-  let def = "& \\\\gramdef & \\\\\\\\"
+  let def = "& \\\\gramdef & "
   let bar = "& \\\\grambar &"
   let space = "@ "
-  let break = "@;"
+  let break = "\\\\\\\\@;"
   let eps = "$\\\\epsilon$"
 
   let print_rule_name is_not_fun name =
@@ -252,13 +253,13 @@ module LatexTabularH : HELPER = struct
   let rule_begin () =
     print_string "@[<v 2>"
   let rule_end () =
-    print_string "@;& & \\\\\\\\";
+    print_string "@;\\\\\\\\& & \\\\\\\\";
     print_string "@]@;@;"
 
   let production_begin () =
     print_string "@[<hov 2>"
   let production_end () =
-    print_string " @] \\\\\\\\"
+    print_string " @]"
 
   let print_terminal is_term is_non_term s =
     print_fmt
@@ -358,18 +359,21 @@ module LatexBacknaurH : HELPER = struct
     documentclass ();
     print_string
       "\\\\usepackage{backnaur}@;@;\
-       \\\\newenvironment{bnfsplit}[1][\\\\textwidth]@;<0 2>\
-       {\\\\minipage[t]{#1}$}@;<0 2>\
-       {$\\\\endminipage}@;@;";
+       \\\\let\\\\oldbnfprod\\\\bnfprod@;\
+       \\\\renewcommand{\\\\bnfprod}[3][\\\\textwidth]{\\\\oldbnfprod{#2}{%%@;<0 2>\
+       \\\\begin{minipage}[t]{#1}@;<0 4>\
+       $#3$\
+       \\\\end{minipage}}}@;@;\
+      \\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;";
     commands ts;
     begin_document "bnf*"
 
   let print_footer () = end_document "bnf*"
 
-  let def = "}{\\\\begin{bnfsplit}"
-  let bar = "\\\\hspace*{-2.5em}\\\\bnfor "
+  let def = "}{"
+  let bar = "\\\\bnfbar@ "
   let space = "\\\\bnfsp@ "
-  let break = "@;"
+  let break = "@;\\\\\\\\"
   let eps = "\\\\bnfts{$\\\\epsilon$}"
 
   let print_rule_name is_not_fun name =
@@ -377,10 +381,10 @@ module LatexBacknaurH : HELPER = struct
   let rule_begin () =
     print_string "@[<v 2>\\\\bnfprod{"
   let rule_end () =
-    print_string "\\\\end{bnfsplit}}\\\\\\\\@]@;"
+    print_string "}\\\\\\\\@]@;"
 
   let production_begin () =
-    print_string "@[<hov 2>\\\\\\\\"
+    print_string "@[<hov 2>"
   let production_end () =
     print_string "@]"
 
