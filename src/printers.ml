@@ -81,16 +81,24 @@ module Make (H : HELPER) : PRINTER = struct
     | Pattern p ->
       print_pattern symbols e p
     | Modifier (a, m) ->
-      H.print_modifier e (fun () -> print_actual symbols e a) m
+      print_modifier m e (fun () -> print_actual symbols e a)
     | Anonymous ps ->
       print_sep false (print_actuals symbols) H.bar ps
+
+  and print_modifier = function
+    | Opt ->
+      H.opt
+    | Plus ->
+      H.plus
+    | Star ->
+      H.star
 
   and print_pattern symbols e =
     let print' = print_actual symbols e in
     let print'' x () = print' x in
     function
     | Option x ->
-      H.print_modifier false (print'' x) Opt
+      H.opt false (print'' x)
     | Pair (x, y) ->
       H.par e (fun () -> print' x; print_space (); print' y)
     | SepPair (x, sep, y) ->
@@ -104,9 +112,9 @@ module Make (H : HELPER) : PRINTER = struct
       H.par e (fun () ->
           print' o; print_space (); print' x; print_space (); print' c)
     | List x ->
-      H.print_modifier false (print'' x) Star
+      H.star false (print'' x)
     | NEList x ->
-      H.print_modifier false (print'' x) Plus
+      H.plus false (print'' x)
     | SepList (sep, x) ->
       H.print_sep_list false (print'' sep) (print'' x)
     | SepNEList (sep, x) ->
@@ -177,19 +185,14 @@ module DefaultH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_modifier e print = function
-    | Opt ->
-      enclose print "[" "]"
-    | Plus ->
-      par e print; print_string "+"
-    | Star ->
-      par e print; print_string "*"
+  let opt e print = enclose print "[" "]"
+  let plus e print = par e print; print_string "+"
+  let star e print = par e print; print_string "*"
 
   let print_sep_list nonempty print_sep print_x =
     let print () =
       print_x (); print_string space;
-      print_modifier true
-        (fun () -> print_sep (); print_string space; print_x ()) Star
+      star true (fun () -> print_sep (); print_string space; print_x ())
     in
     if nonempty then print () else enclose print "[" "]"
 
@@ -200,7 +203,9 @@ module MiniLatex = struct
   include MiniHelper
 
   let documentclass () =
-    print_string "@[<v 0>\\\\documentclass[preview]{standalone}@;@;"
+    print_string
+      "@[<v 0>\\\\documentclass[preview]{standalone}@;@;\
+      \\\\usepackage{suffix}@;@;"
 
   let command x =
     let roman =
@@ -219,13 +224,26 @@ module MiniLatex = struct
   let commands ts =
     let escape = Str.global_replace (Str.regexp "_") "\\_" in
     List.iter (fun nt ->
-        print_fmt "\\newcommand{\\%s}{%s}@;" (command nt) (escape nt)) ts;
+        print_fmt "\\newcommand\\%s{%s}@;" (command nt) (escape nt)) ts;
     print_string "@;"
 
   let begin_document env =
-    print_fmt "\\begin{document}@;@;\\begin{%s}@;" env
+    print_fmt
+      "\\newcommand\\paren[1]{(#1)}@;\
+       \\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\
+       \\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\
+       \\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;@;\
+       \\begin{document}@;@;\\begin{%s}@;" env
   let end_document env =
     print_fmt "\\end{%s}@;@;\\end{document}@]@." env
+
+  let opt, plus, star =
+    let cmd s e print =
+      print_string ("\\\\" ^ s ^ (if e then "*" else "") ^ "{");
+      print ();
+      print_string "}"
+    in
+    cmd "bnfopt", cmd "bnfplus", cmd "bnfstar"
 end
 
 module LatexTabularH : HELPER = struct
@@ -244,13 +262,17 @@ module LatexTabularH : HELPER = struct
        \\\\end{tabu}@;<0 2>\
        \\\\end{trivlist}@;\
        }@;@;\
-       \\\\newcommand{\\\\gramsp}{\\\\quad}@;\
-       \\\\newcommand{\\\\gramdef}{$\\\\gramsp::=\\\\gramsp$}@;\
-       \\\\newcommand{\\\\grambar}{$\\\\gramsp|\\\\gramsp$}@;\
-       \\\\newcommand{\\\\nonterm}[1]{$\\\\langle$#1$\\\\rangle$}@;\
-       \\\\newcommand{\\\\func}[1]{#1}@;\
-       \\\\newcommand{\\\\term}[1]{#1}@;";
+       \\\\newcommand\\\\gramsp{\\\\quad}@;\
+       \\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\
+       \\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\
+       \\\\newcommand\\\\nonterm[1]{$\\\\langle$#1$\\\\rangle$}@;\
+       \\\\newcommand\\\\func[1]{#1}@;\
+       \\\\newcommand\\\\term[1]{#1}@;";
     commands ts;
+    print_string
+      "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\
+       \\\\newcommand\\\\bnfplus[1]{#1$^+$}@;\
+       \\\\newcommand\\\\bnfstar[1]{#1$^*$}@;";
     begin_document "grammar"
 
   let print_footer () = end_document "grammar"
@@ -287,14 +309,6 @@ module LatexTabularH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_modifier e print = function
-    | Opt ->
-      enclose print "[" "]"
-    | Plus ->
-      par e print; print_string "$^+$"
-    | Star ->
-      par e print; print_string "$^*$"
-
   let print_sep_list nonempty print_sep print_x =
     print_x (); print_string "$_{"; print_sep ();
     print_string (if nonempty then "}^+$" else "}^*$")
@@ -315,6 +329,10 @@ module LatexSyntaxH : HELPER = struct
        \\\\newcommand{\\\\term}[1]{#1}@;\
        \\\\newcommand{\\\\gramdef}{::=}@;";
     commands ts;
+    (* print_string *)
+    (*   "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\ *)
+    (*    \\\\newcommand\\\\bnfplus[1]{#1$^+$}@;\ *)
+    (*    \\\\newcommand\\\\bnfstar[1]{#1$^*$}@;"; *)
     begin_document "grammar"
 
   let print_footer () = end_document "grammar"
@@ -350,17 +368,13 @@ module LatexSyntaxH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_modifier e print = function
-    | Opt ->
-      enclose print "[" "]"
-    | Plus ->
-      par e print; print_string "$^+$"
-    | Star ->
-      par e print; print_string "$^*$"
-
   let print_sep_list nonempty print_sep print_x =
     print_x (); print_string "$_{"; print_sep ();
     print_string (if nonempty then "}^+$" else "}^*$")
+
+  let opt e print = enclose print "[" "]"
+  let plus e print = par e print; print_string "$^+$"
+  let star e print = par e print; print_string "$^*$"
 
 end
 module LatexSyntax = Make (LatexSyntaxH)
@@ -380,6 +394,10 @@ module LatexBacknaurH : HELPER = struct
        \\\\end{minipage}}}@;@;\
       \\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;";
     commands ts;
+    print_string
+      "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\
+       \\\\newcommand\\\\bnfplus[1]{#1^+}@;\
+       \\\\newcommand\\\\bnfstar[1]{#1^*}@;";
     begin_document "bnf*"
 
   let print_footer () = end_document "bnf*"
@@ -414,19 +432,10 @@ module LatexBacknaurH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_modifier e print = function
-    | Opt ->
-      enclose print "[" "]"
-    | Plus ->
-      par e print; print_string "^+"
-    | Star ->
-      par e print; print_string "^*"
-
   let print_sep_list nonempty print_sep print_x =
     let print () =
       print_x (); print_string space;
-      print_modifier true
-        (fun () -> print_sep (); print_string space; print_x ()) Star
+      star true (fun () -> print_sep (); print_string space; print_x ())
     in
     if nonempty then print () else enclose print "[" "]"
 
@@ -514,13 +523,9 @@ module HtmlH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_modifier e print = function
-    | Opt ->
-      enclose print "[" "]"
-    | Plus ->
-      par e print; print_string "<sup>+</sup>"
-    | Star ->
-      par e print; print_string "<sup>*</sup>"
+  let opt e print = enclose print "[" "]"
+  let plus e print = par e print; print_string "<sup>+</sup>"
+  let star e print = par e print; print_string "<sup>*</sup>"
 
   let print_sep_list nonempty print_sep print_x =
     print_x ();
