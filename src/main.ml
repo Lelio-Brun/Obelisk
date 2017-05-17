@@ -59,13 +59,13 @@ let get () =
     let lexbuf = Lexing.from_channel inf in
     let formatter = formatter_of_out_channel outf in
     let p = match !mode with
-      | Default -> (module Printers.Default : Printers.PRINTER)
+      | Default -> (module Printers.Default : GenericPrinter.PRINTER)
       | Latex Tabular -> (module Printers.LatexTabular)
       | Latex Syntax -> (module Printers.LatexSyntax)
       | Latex Backnaur -> (module Printers.LatexBacknaur)
       | Html -> (module Printers.Html)
     in
-    let module P = (val p : Printers.PRINTER) in
+    let module P = (val p: GenericPrinter.PRINTER) in
     let print spec = P.print_spec formatter spec in
     let close () = close_in inf; close_out outf in
     lexbuf, print, close

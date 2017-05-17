@@ -1,4 +1,6 @@
 S src
+S src/helpers
 S roman
 B _build/src
+B _build/src/helpers
 B _build/roman
