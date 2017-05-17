@@ -3,7 +3,7 @@ DOC=doc
 TARGET=native
 MAIN=main.$(TARGET)
 EXE=menhirbrav
-FLAGS=-r -use-menhir -use-ocamlfind -pkgs str -I roman -I src/helpers -I src
+FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers,roman
 PARSER=$(SRC)/parser.mly
 RECO=$(DOC)/reco.mly
 IMAGES=tabular syntax backnaur
@@ -40,4 +40,4 @@ reco:
 doc: latex html default reco
 
 clean:
-	ocamlbuild -clean
+	@ocamlbuild -clean
