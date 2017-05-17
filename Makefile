@@ -14,13 +14,17 @@ all:
 	@ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
 	@mv $(MAIN) $(EXE)
 
-%.png: all
-	@./$(EXE) latex -$* $(PARSER) -o $*.tex
-	@pdflatex $*.tex
-	@convert -density 150 $*.pdf -format png $(DOC)/$*.png
-	@rm -f $*.tex $*.pdf $*.aux $*.log
+%.tex:
+	@./$(EXE) latex -$* $(PARSER) -o $@
 
-latex: $(IMAGES:%=%.png)
+%.pdf: %.tex
+	@pdflatex -interaction batchmode $<
+
+%.png: %.pdf
+	@convert -density 150 $< -format png $(DOC)/$@
+	@rm -f $*.tex $< $*.aux $*.log
+
+latex: all $(IMAGES:%=%.png)
 
 html: all
 	@./$(EXE) html $(PARSER) -o test.html
