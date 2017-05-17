@@ -6,7 +6,8 @@ let print_header _ = ()
 let print_footer () = print_string "@."
 
 let def = " ::= "
-let bar = "| "
+let prod_bar = "| "
+let bar = "@ |@ "
 let space = "@ "
 let break = "@;"
 let eps = "epsilon"

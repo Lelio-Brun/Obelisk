@@ -12,7 +12,8 @@ let print_header ts =
 let print_footer () = end_document "grammar"
 
 let def = " \\\\gramdef{} $\\\\;$"
-let bar = "\\\\alt "
+let prod_bar = "\\\\alt "
+let bar = "@ \\\\alt@ "
 let space = "@ "
 let break = "@;"
 let eps = "$\\\\epsilon$"

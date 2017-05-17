@@ -120,7 +120,8 @@ module Make (H : HELPER) : PRINTER = struct
   and print_symbol (ts, nts as symbols) e x ps =
     H.par (e && ps <> []) (fun () ->
         H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
-        print_sep_encl false (print_actual symbols e) ("," ^ H.space) "(" ")" ps)
+        print_sep_encl false (print_actual symbols e)
+          ("," ^ H.space) "(" ")" ps)
 
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
@@ -128,7 +129,8 @@ module Make (H : HELPER) : PRINTER = struct
     print_sep_encl false H.print_string ", " "(" ")" params;
     H.print_string H.def;
     let not_sing = (List.length prods > 1) in
-    print_sep not_sing (print_production not_sing symbols) (H.break ^ H.bar) prods;
+    print_sep not_sing (print_production not_sing symbols)
+      (H.break ^ H.prod_bar) prods;
     H.rule_end ()
 
   let print_spec o s =

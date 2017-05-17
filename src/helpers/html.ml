@@ -3,54 +3,55 @@ include MiniHelper
 let print_header _ =
   print_string
     "@[<v 0><!DOCTYPE html>@;\
-     <html>@;\
-     <head>@;\
+     @[<v 2><html>@;\
+     @[<v 2><head>@;\
      <title>Grammar</title>@;\
-     <style>@;\
-     .specification {@;\
+     @[<v 2><style>@;\
+     @[<v 2>.specification {@;\
      list-style: none;@;\
      padding: 0;@;\
-     margin: 0;@;\
-     }@;\
-     .specification li {@;\
-     margin-bottom: .5em;@;\
-     }@;\
-     .groups {@;\
+     margin: 0;\
+     @]@;}@;\
+     @[<v 2>.specification li {@;\
+     margin-bottom: .5em;\
+     @]@;}@;\
+     @[<v 2>.prods {@;\
      display: inline;@;\
      list-style: none;@;\
      padding-left: .5em;\
-     }@;\
-     .groups li {@;\
-     margin-bottom: 0;@;\
-     }@;\
-     .groups:before {@;\
-     content: \"::= \";@;\
-     }@;\
-     .groups li {@;\
-     padding-left: 2em;@;\
-     }@;\
-     .groups li:before {@;\
-     content: \"| \";@;\
-     }@;\
-     .nonterminal:before {@;\
-     content: \"<\";@;\
-     }@;\
-     .nonterminal:after {@;\
-     content: \">\";@;\
-     }@;\
-     </style>@;\
-     </head>@;\
-     <body>@;\
-     <ul class=\"specification\">@;@;"
+     @]@;}@;\
+     @[<v 2>.prods li {@;\
+     margin-bottom: 0;\
+     @]@;}@;\
+     @[<v 2>.prods:before {@;\
+     content: \"::= \";\
+     @]@;}@;\
+     @[<v 2>.prods li {@;\
+     padding-left: 2em;\
+     @]@;}@;\
+     @[<v 2>.prods li:before {@;\
+     content: \"| \";\
+     @]@;}@;\
+     @[<v 2>.nonterminal:before {@;\
+     content: \"<\";\
+     @]@;}@;\
+     @[<v 2>.nonterminal:after {@;\
+     content: \">\";\
+     @]@;}@;\
+     @]</style>@;\
+     @]</head>@;@;\
+     @[<v 2><body>@;@;\
+     @[<v 2><ul class=\"specification\">@;@;"
 
 let print_footer () =
   print_string
-    "</ul>@;\
-     </body>@;\
-     </html>@]@."
+    "@]@;</ul>@;\
+     @]@;</body>@;\
+     @]@;</html>@]@."
 
-let def = "@[<v 2><ul class=\"groups\">"
-let bar = "<li>"
+let def = "@[<v 2><ul class=\"prods\">"
+let prod_bar = "<li>"
+let bar = " | "
 let space = "@ "
 let break = "@;"
 let eps = "epsilon"

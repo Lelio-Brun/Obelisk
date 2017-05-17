@@ -22,6 +22,7 @@ val plus: bool -> (unit -> unit) -> unit
 val star: bool -> (unit -> unit) -> unit
 
 val def: string
+val prod_bar: string
 val bar: string
 val par: bool -> (unit -> unit) -> unit
 val space: string

@@ -6,7 +6,7 @@ let print_header ts =
      \\\\let\\\\oldbnfprod\\\\bnfprod@;\
      \\\\renewcommand{\\\\bnfprod}[3][\\\\textwidth]{\\\\oldbnfprod{#2}{%%@;<0 2>\
      \\\\begin{minipage}[t]{#1}@;<0 4>\
-     $#3$\
+     $#3$@;<0 2>\
      \\\\end{minipage}}}@;@;\
      \\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;";
   begin_document "bnf*" ts
@@ -14,7 +14,8 @@ let print_header ts =
 let print_footer () = end_document "bnf*"
 
 let def = "}{"
-let bar = "\\\\bnfbar@ "
+let prod_bar = "\\\\bnfbar "
+let bar = "@ \\\\bnfbar@ "
 let space = "\\\\bnfsp@ "
 let break = "@;\\\\\\\\"
 let eps = "\\\\bnfts{$\\\\epsilon$}"
