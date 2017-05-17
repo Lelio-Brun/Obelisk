@@ -15,7 +15,7 @@ val production_begin: bool -> unit
 val production_end: bool -> unit
 
 val print_terminal: bool -> bool -> string -> unit
-val print_sep_list: bool -> (unit -> unit) -> (unit -> unit) -> unit
+val print_sep_list: bool -> bool -> (unit -> unit) -> (unit -> unit) -> unit
 
 val opt: bool -> (unit -> unit) -> unit
 val plus: bool -> (unit -> unit) -> unit

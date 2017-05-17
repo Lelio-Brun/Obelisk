@@ -81,24 +81,21 @@ module Make (H : HELPER) : PRINTER = struct
     | Pattern p ->
       print_pattern symbols e p
     | Modifier (a, m) ->
-      print_modifier m e (fun () -> print_actual symbols e a)
+      print_modifier m e (fun () -> print_actual symbols true a)
     | Anonymous ps ->
       print_sep false (print_actuals symbols) H.bar ps
 
   and print_modifier = function
-    | Opt ->
-      H.opt
-    | Plus ->
-      H.plus
-    | Star ->
-      H.star
+    | Opt -> H.opt
+    | Plus -> H.plus
+    | Star -> H.star
 
   and print_pattern symbols e =
     let print' = print_actual symbols e in
     let print'' x () = print' x in
     function
     | Option x ->
-      H.opt false (print'' x)
+      H.opt e (print'' x)
     | Pair (x, y) ->
       H.par e (fun () -> print' x; print_space (); print' y)
     | SepPair (x, sep, y) ->
@@ -112,17 +109,18 @@ module Make (H : HELPER) : PRINTER = struct
       H.par e (fun () ->
           print' o; print_space (); print' x; print_space (); print' c)
     | List x ->
-      H.star false (print'' x)
+      H.star e (print'' x)
     | NEList x ->
-      H.plus false (print'' x)
+      H.plus e (print'' x)
     | SepList (sep, x) ->
-      H.print_sep_list false (print'' sep) (print'' x)
+      H.print_sep_list e false (print'' sep) (print'' x)
     | SepNEList (sep, x) ->
-      H.print_sep_list true (print'' sep) (print'' x)
+      H.print_sep_list e true (print'' sep) (print'' x)
 
   and print_symbol (ts, nts as symbols) e x ps =
-    H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
-    print_sep_encl false (print_actual symbols e) ("," ^ H.space) "(" ")" ps
+    H.par (e && ps <> []) (fun () ->
+        H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
+        print_sep_encl false (print_actual symbols e) ("," ^ H.space) "(" ")" ps)
 
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
@@ -189,12 +187,12 @@ module DefaultH : HELPER = struct
   let plus e print = par e print; print_string "+"
   let star e print = par e print; print_string "*"
 
-  let print_sep_list nonempty print_sep print_x =
+  let print_sep_list e nonempty print_sep print_x =
     let print () =
       print_x (); print_string space;
       star true (fun () -> print_sep (); print_string space; print_x ())
     in
-    if nonempty then print () else enclose print "[" "]"
+    par e (fun () -> if nonempty then print () else enclose print "[" "]")
 
 end
 module Default = Make (DefaultH)
@@ -202,10 +200,10 @@ module Default = Make (DefaultH)
 module MiniLatex = struct
   include MiniHelper
 
-  let documentclass () =
+  let documentclass header =
     print_string
-      "@[<v 0>\\\\documentclass[preview]{standalone}@;@;\
-      \\\\usepackage{suffix}@;@;"
+      ("@[<v 0>\\\\documentclass[preview]{standalone}@;@;\
+        \\\\usepackage{suffix}@;@;" ^ header)
 
   let command x =
     let roman =
@@ -221,29 +219,48 @@ module MiniLatex = struct
     in
     roman x |> clear_underscore
 
-  let commands ts =
-    let escape = Str.global_replace (Str.regexp "_") "\\_" in
-    List.iter (fun nt ->
-        print_fmt "\\newcommand\\%s{%s}@;" (command nt) (escape nt)) ts;
-    print_string "@;"
-
-  let begin_document env =
+  let begin_document env ts =
+    let commands ts =
+      let escape = Str.global_replace (Str.regexp "_") "\\_" in
+      List.iter (fun nt ->
+          print_fmt "\\newcommand\\%s{%s}@;" (command nt) (escape nt)) ts;
+      print_string "@;"
+    in
+    commands ts;
     print_fmt
-      "\\newcommand\\paren[1]{(#1)}@;\
+      "\\newcommand\\bnfopt[1]{[#1]}@;\
+       \\newcommand\\bnfplus[1]{#1\\ensuremath{^+}}@;\
+       \\newcommand\\bnfstar[1]{#1\\ensuremath{^*}}@;\
+       \\newcommand\\bnfseplist[2]{#2\\ensuremath{_{#1}^*}}@;\
+       \\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{#1}^+}}@;\
+       \\newcommand\\paren[1]{(#1)}@;\
        \\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\
        \\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\
-       \\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;@;\
+       \\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;\
+       \\WithSuffix\\newcommand\\bnfseplist*[2]{\\paren{\\bnfseplist{#1}{#2}}}@;\
+       \\WithSuffix\\newcommand\\bnfsepnelist*[2]{\\paren{\\bnfsepnelist{#1}{#2}}}@;@;\
        \\begin{document}@;@;\\begin{%s}@;" env
+
   let end_document env =
     print_fmt "\\end{%s}@;@;\\end{document}@]@." env
 
   let opt, plus, star =
     let cmd s e print =
-      print_string ("\\\\" ^ s ^ (if e then "*" else "") ^ "{");
+      print_fmt "\\%s%s{" s (if e then "*" else "");
       print ();
       print_string "}"
     in
     cmd "bnfopt", cmd "bnfplus", cmd "bnfstar"
+
+  let print_sep_list e nonempty print_sep print_x =
+    print_fmt "\\bnfsep%slist%s{"
+      (if nonempty then "ne" else "")
+      (if e then "*" else "");
+    print_sep ();
+    print_string "}{";
+    print_x ();
+    print_string "}"
+
 end
 
 module LatexTabularH : HELPER = struct
@@ -251,8 +268,7 @@ module LatexTabularH : HELPER = struct
   include MiniLatex
 
   let print_header ts =
-    documentclass ();
-    print_string
+    documentclass
       "\\\\usepackage{tabu}@;@;<0 2>\
        \\\\newenvironment{grammar}{@;<0 2>\
        \\\\begin{trivlist}@;<0 4>\
@@ -268,12 +284,7 @@ module LatexTabularH : HELPER = struct
        \\\\newcommand\\\\nonterm[1]{$\\\\langle$#1$\\\\rangle$}@;\
        \\\\newcommand\\\\func[1]{#1}@;\
        \\\\newcommand\\\\term[1]{#1}@;";
-    commands ts;
-    print_string
-      "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\
-       \\\\newcommand\\\\bnfplus[1]{#1$^+$}@;\
-       \\\\newcommand\\\\bnfstar[1]{#1$^*$}@;";
-    begin_document "grammar"
+    begin_document "grammar" ts
 
   let print_footer () = end_document "grammar"
 
@@ -309,10 +320,6 @@ module LatexTabularH : HELPER = struct
   let par e print =
     if e then enclose print "(" ")" else print ()
 
-  let print_sep_list nonempty print_sep print_x =
-    print_x (); print_string "$_{"; print_sep ();
-    print_string (if nonempty then "}^+$" else "}^*$")
-
 end
 module LatexTabular = Make (LatexTabularH)
 
@@ -321,19 +328,13 @@ module LatexSyntaxH : HELPER = struct
   include MiniLatex
 
   let print_header ts =
-    documentclass ();
-    print_string
+    documentclass
       "\\\\usepackage{syntax}@;@;\
        \\\\newlength{\\\\spacewidth}@;\
        \\\\settowidth{\\\\spacewidth}{\\\\space}@;@;\
        \\\\newcommand{\\\\term}[1]{#1}@;\
        \\\\newcommand{\\\\gramdef}{::=}@;";
-    commands ts;
-    (* print_string *)
-    (*   "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\ *)
-    (*    \\\\newcommand\\\\bnfplus[1]{#1$^+$}@;\ *)
-    (*    \\\\newcommand\\\\bnfstar[1]{#1$^*$}@;"; *)
-    begin_document "grammar"
+    begin_document "grammar" ts
 
   let print_footer () = end_document "grammar"
 
@@ -343,9 +344,8 @@ module LatexSyntaxH : HELPER = struct
   let break = "@;"
   let eps = "$\\\\epsilon$"
 
-  let print_rule_name is_not_fun name =
+  let print_rule_name is_not_fun =
     print_fmt (if is_not_fun then "<%s>" else "<%s> \\hspace{-\\spacewidth}")
-      (Str.global_replace (Str.regexp "_") "\\_" name)
   let rule_begin () =
     print_string "@[<v 2>"
   let rule_end () =
@@ -356,25 +356,15 @@ module LatexSyntaxH : HELPER = struct
   let production_end _ =
     print_string " @]"
 
-  let print_terminal is_term is_non_term s =
-    let s' = Str.global_replace (Str.regexp "_") "\\_" s in
-    if is_non_term then print_fmt "<%s>" s'
-    else if is_term then print_fmt "\\term{\\%s{}}" (command s)
-    else print_fmt "<%s> \\hspace{-\\spacewidth}" s'
+  let print_terminal is_term _ s =
+    if is_term then print_fmt "\\term{\\%s{}}" (command s)
+    else print_fmt "\\synt{%s}" s
 
   let enclose print op cl =
     print_string op; print (); print_string cl
 
   let par e print =
     if e then enclose print "(" ")" else print ()
-
-  let print_sep_list nonempty print_sep print_x =
-    print_x (); print_string "$_{"; print_sep ();
-    print_string (if nonempty then "}^+$" else "}^*$")
-
-  let opt e print = enclose print "[" "]"
-  let plus e print = par e print; print_string "$^+$"
-  let star e print = par e print; print_string "$^*$"
 
 end
 module LatexSyntax = Make (LatexSyntaxH)
@@ -384,8 +374,7 @@ module LatexBacknaurH : HELPER = struct
   include MiniLatex
 
   let print_header ts =
-    documentclass ();
-    print_string
+    documentclass
       "\\\\usepackage{backnaur}@;@;\
        \\\\let\\\\oldbnfprod\\\\bnfprod@;\
        \\\\renewcommand{\\\\bnfprod}[3][\\\\textwidth]{\\\\oldbnfprod{#2}{%%@;<0 2>\
@@ -393,12 +382,7 @@ module LatexBacknaurH : HELPER = struct
        $#3$\
        \\\\end{minipage}}}@;@;\
       \\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;";
-    commands ts;
-    print_string
-      "\\\\newcommand\\\\bnfopt[1]{[#1]}@;\
-       \\\\newcommand\\\\bnfplus[1]{#1^+}@;\
-       \\\\newcommand\\\\bnfstar[1]{#1^*}@;";
-    begin_document "bnf*"
+    begin_document "bnf*" ts
 
   let print_footer () = end_document "bnf*"
 
@@ -420,10 +404,9 @@ module LatexBacknaurH : HELPER = struct
   let production_end _ =
     print_string "@]"
 
- let print_terminal is_term is_non_term s =
+ let print_terminal is_term _ s =
     let s' = Str.global_replace (Str.regexp "_") "\\_" s in
-    if is_non_term then print_fmt "\\bnfpn{%s}" s'
-    else if is_term then print_fmt "\\bnfts{\\%s{}}" (command s)
+    if is_term then print_fmt "\\bnfts{\\%s{}}" (command s)
     else print_fmt "\\bnfpn{%s}" s'
 
   let enclose print op cl =
@@ -431,13 +414,6 @@ module LatexBacknaurH : HELPER = struct
 
   let par e print =
     if e then enclose print "(" ")" else print ()
-
-  let print_sep_list nonempty print_sep print_x =
-    let print () =
-      print_x (); print_string space;
-      star true (fun () -> print_sep (); print_string space; print_x ())
-    in
-    if nonempty then print () else enclose print "[" "]"
 
 end
 module LatexBacknaur = Make (LatexBacknaurH)
@@ -502,8 +478,8 @@ module HtmlH : HELPER = struct
   let eps = "epsilon"
 
   let print_rule_name is_not_fun =
-    print_fmt (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s@;")
-
+    print_fmt
+      (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s@;")
   let rule_begin () =
     print_string "@[<v 2><li>"
   let rule_end () =
@@ -514,8 +490,9 @@ module HtmlH : HELPER = struct
   let production_end not_sing =
     print_string ((if not_sing then "</li>" else "") ^ "@]")
 
-  let print_terminal is_term is_non_term =
-    print_fmt (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
+  let print_terminal _ is_non_term =
+    print_fmt
+      (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
 
   let enclose print op cl =
     print_string op; print (); print_string cl
@@ -527,10 +504,11 @@ module HtmlH : HELPER = struct
   let plus e print = par e print; print_string "<sup>+</sup>"
   let star e print = par e print; print_string "<sup>*</sup>"
 
-  let print_sep_list nonempty print_sep print_x =
-    print_x ();
-    print_string (if nonempty then "<sup>+</sup>" else "<sup>*</sup>");
-    print_string "<sub>"; print_sep (); print_string "</sub>"
+  let print_sep_list e nonempty print_sep print_x =
+    par e (fun () ->
+        print_x ();
+        print_string (if nonempty then "<sup>+</sup>" else "<sup>*</sup>");
+        print_string "<sub>"; print_sep (); print_string "</sub>")
 
 end
 module Html = Make (HtmlH)
