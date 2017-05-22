@@ -1,10 +1,6 @@
 open ExtendedAst
 
-module OrdString = struct
-  type t = string
-  let compare = Pervasives.compare
-end
-module M = Map.Make(OrdString)
+module M = Map.Make(String)
 
 let compose x y =
   match x with
@@ -83,43 +79,61 @@ and not_occurs_pattern s =
   | SepList (x, y) | SepNEList (x, y) -> n x && n y
   | SepPair (x, y, z) | Delimited (x, y, z) -> n x && n y && n z
 
-let is_list r =
+let find_rule r rules =
+  try
+    Some (List.find (fun {name} -> name = r) rules)
+  with Not_found -> None
+
+let alias rules r =
+  let rec eq r' =
+    r = r' ||
+    match find_rule r' rules with
+    | Some { prods = [[Symbol (s, _)]] } -> eq s
+    | _ -> false
+  in
+  eq
+
+let is_list rules r =
   let g = generalize r.params in
   match r.prods with
   | [[]; cons] | [cons; []] ->
     begin match cons with
       | [] -> None
       | Symbol (s, xs) :: acts
-        when s = r.name && equal_params r.params xs
-             && List.for_all (not_occurs s) acts ->
+        when alias rules r.name s
+          && equal_params r.params xs
+          && List.for_all (not_occurs s) acts ->
         g (List (Anonymous [acts]))
       | _ ->
         begin match List.rev cons with
           | Symbol (s, xs) :: acts
-            when s = r.name && equal_params r.params xs
-                 && List.for_all (not_occurs s) acts ->
+            when alias rules r.name s
+              && equal_params r.params xs
+              && List.for_all (not_occurs s) acts ->
             g (List (Anonymous [List.rev acts]))
           | _ -> None
         end
     end
   | _ -> None
 
-let is_nonempty_list r =
+let is_nonempty_list rules r =
   let g = generalize r.params in
   let f base cons =
     match cons with
     | [] -> None
     | Symbol (s, xs) :: acts
-      when s = r.name && equal_params r.params xs
-           && List.for_all (not_occurs s) acts
-           && base = acts ->
+      when alias rules r.name s
+        && equal_params r.params xs
+        && List.for_all (not_occurs s) acts
+        && base = acts ->
       g (NEList (Anonymous [acts]))
     | _ ->
       begin match List.rev cons with
         | Symbol (s, xs) :: acts
-          when s = r.name && equal_params r.params xs
-               && List.for_all (not_occurs s) acts
-               && base = acts ->
+          when alias rules r.name s
+            && equal_params r.params xs
+            && List.for_all (not_occurs s) acts
+            && base = acts ->
           g (NEList (Anonymous [List.rev acts]))
         | _ -> None
       end
@@ -136,14 +150,15 @@ let take =
   in
   aux []
 
-let is_sep_nonempty_list r =
+let is_sep_nonempty_list rules r =
   let g = generalize r.params in
   let f base cons =
     match cons with
     | [] -> None
     | Symbol (s, xs) :: acts
-      when s = r.name && equal_params r.params xs
-           && List.for_all (not_occurs s) acts ->
+      when alias rules r.name s
+        && equal_params r.params xs
+        && List.for_all (not_occurs s) acts ->
       let base_r, sep_r = take (List.length base) (List.rev acts) in
       if base = List.rev base_r
       then g (SepNEList (Anonymous [List.rev sep_r], Anonymous [base]))
@@ -151,8 +166,9 @@ let is_sep_nonempty_list r =
     | _ ->
       begin match List.rev cons with
         | Symbol (s, xs) :: acts
-          when s = r.name && equal_params r.params xs
-               && List.for_all (not_occurs s) acts ->
+          when alias rules r.name s
+            && equal_params r.params xs
+            && List.for_all (not_occurs s) acts ->
           let base', sep = take (List.length base) (List.rev acts) in
           if base = base'
           then g (SepNEList (Anonymous [sep], Anonymous [base]))
@@ -164,10 +180,6 @@ let is_sep_nonempty_list r =
   | [x; y] -> f x y @@ f y x
   | _ -> None
 
-let find_rule r rules =
-  try
-    Some (List.find (fun {name} -> name = r) rules)
-  with Not_found -> None
 
 let is_sep_list rules r =
   let g = generalize r.params in
@@ -175,7 +187,7 @@ let is_sep_list rules r =
   | [[]; [Symbol (s, xs)]] | [[Symbol (s, xs)]; []] ->
     begin match find_rule s rules with
       | Some r' ->
-        begin match is_sep_nonempty_list r' with
+        begin match is_sep_nonempty_list rules r' with
           | Some rw ->
             begin match subst rw xs with
               | Pattern (SepNEList (sep, x)) -> g (SepList (sep, x))
@@ -194,9 +206,9 @@ let is_option r =
   | _ -> None
 
 let recognize rules r =
-  is_list r
-  @@ is_nonempty_list r
-  @@ is_sep_nonempty_list r
+  is_list rules r
+  @@ is_nonempty_list rules r
+  @@ is_sep_nonempty_list rules r
   @@ is_sep_list rules r
   @@ is_option r
 

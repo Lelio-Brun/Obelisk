@@ -66,7 +66,7 @@ let get () =
       | Html -> (module Printers.Html)
     in
     let module P = (val p: GenericPrinter.PRINTER) in
-    let print spec = P.print_spec formatter spec in
+    let print = P.print_spec formatter in
     let close () = close_in inf; close_out outf in
     lexbuf, print, close
   with Sys_error s ->
@@ -76,11 +76,13 @@ let get () =
 let () =
   let lexbuf, print, close = get () in
   try
-    Parser.specification Lexer.lexer lexbuf
+    let s = Parser.specification Lexer.lexer lexbuf in
+    let symbols = Scan.scan s in
+    s
     |> Normalize.normalize
-    |> Transform.transform
+    |> Transform.transform symbols
     |> Reduce.reduce !inline
-    |> print;
+    |> print symbols;
     close ()
   with
   | Sys_error s ->

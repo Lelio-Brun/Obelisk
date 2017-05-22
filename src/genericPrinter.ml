@@ -1,50 +1,11 @@
 open ExtendedAst
+open Common
 open Format
 
 module type HELPER = module type of Helper
 module type PRINTER = module type of Printer
 
 module Make (H : HELPER) : PRINTER = struct
-
-  module OrdString = struct
-    type t = string
-    let compare = Pervasives.compare
-  end
-  module StringSet = Set.Make(OrdString)
-
-  let add_non_terminal nts {name; params} =
-    if params = [] then StringSet.add name nts else nts
-
-  let add_terminal nts ts {prods} =
-    let rec add_terminal_actual ts = function
-      | Symbol (s, ps) ->
-        let ts = List.fold_left add_terminal_actual ts ps in
-        if not (StringSet.mem s nts) && String.uppercase_ascii s = s
-           && ps = []
-        then StringSet.add s ts else ts
-      | Pattern p ->
-        add_terminal_pattern ts p
-      | Modifier (a, _) ->
-        add_terminal_actual ts a
-      | Anonymous ps ->
-        List.fold_left add_terminal_prod ts ps
-    and add_terminal_prod ts actuals =
-      List.fold_left add_terminal_actual ts actuals
-    and add_terminal_pattern ts = function
-      | Option x | List x | NEList x ->
-        add_terminal_actual ts x
-      | Pair (x, y) | Preceded (x, y) | Terminated (x, y)
-      | SepList (x, y) | SepNEList (x, y) ->
-        add_terminal_actual (add_terminal_actual ts x) y
-      | SepPair (x, y, z) | Delimited (x, y, z) ->
-        add_terminal_actual (add_terminal_actual (add_terminal_actual ts x) y) z
-    in
-    List.fold_left add_terminal_prod ts prods
-
-  let scan s =
-    let nts = List.fold_left add_non_terminal StringSet.empty s in
-    let ts = List.fold_left (add_terminal nts) StringSet.empty s in
-    ts, nts
 
   let print_space () = H.print_string H.space
 
@@ -117,9 +78,10 @@ module Make (H : HELPER) : PRINTER = struct
     | SepNEList (sep, x) ->
       H.print_sep_list e true (print'' sep) (print'' x)
 
-  and print_symbol (ts, nts as symbols) e x ps =
+  and print_symbol symbols e x ps =
     H.par (e && ps <> []) (fun () ->
-        H.print_terminal (StringSet.mem x ts) (StringSet.mem x nts) x;
+        H.print_terminal (Symbols.is_term x symbols)
+          (Symbols.is_non_term x symbols) x;
         print_sep_encl false (print_actual symbols e)
           ("," ^ H.space) "(" ")" ps)
 
@@ -133,12 +95,11 @@ module Make (H : HELPER) : PRINTER = struct
       (H.break ^ H.prod_bar) prods;
     H.rule_end ()
 
-  let print_spec o s =
-    let ts, nts = scan s in
+  let print_spec o symbols s =
     H.p := o;
-    H.print_header (StringSet.elements ts);
+    H.print_header (Symbols.terminals symbols);
     H.print_string "@[<v 0>";
-    List.iter (print_rule (ts, nts)) s;
+    List.iter (print_rule symbols) s;
     H.print_string "@]";
     H.print_footer ()
 
