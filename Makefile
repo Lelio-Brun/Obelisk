@@ -8,7 +8,7 @@ PARSER=$(SRC)/parser.mly
 RECO=$(DOC)/reco.mly
 IMAGES=tabular syntax backnaur
 
-.PHONY: all latex html doc clean
+.PHONY: all latex html default reco doc clean
 
 all:
 	@ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
