@@ -2,7 +2,7 @@ include MiniLatex
 
 let print_header ts =
   documentclass
-    "\\\\usepackage{tabu}@;@;<0 2>\
+    "\\\\usepackage{tabu}@;@;\
      \\\\newenvironment{grammar}{@;<0 2>\
      \\\\begin{trivlist}@;<0 4>\
      \\\\item[]@;<0 6>\
@@ -14,7 +14,7 @@ let print_header ts =
      \\\\newcommand\\\\gramsp{\\\\quad}@;\
      \\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\
      \\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\
-     \\\\newcommand\\\\nonterm[1]{$\\\\langle$#1$\\\\rangle$}@;\
+     \\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\text{#1}\\\\rangle}}@;\
      \\\\newcommand\\\\func[1]{#1}@;\
      \\\\newcommand\\\\term[1]{#1}@;";
   begin_document "grammar" ts
