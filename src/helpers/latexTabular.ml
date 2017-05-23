@@ -14,7 +14,7 @@ let print_header ts =
      \\\\newcommand\\\\gramsp{\\\\quad}@;\
      \\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\
      \\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\
-     \\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\text{#1}\\\\rangle}}@;\
+     \\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}}@;\
      \\\\newcommand\\\\func[1]{#1}@;\
      \\\\newcommand\\\\term[1]{#1}@;";
   begin_document "grammar" ts

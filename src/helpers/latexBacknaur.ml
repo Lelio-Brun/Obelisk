@@ -2,7 +2,11 @@ include MiniLatex
 
 let print_header ts =
   documentclass
-    "\\\\usepackage{backnaur}@;@;\
+    "\\\\usepackage[epsilon]{backnaur}@;@;\
+     \\\\let\\\\oldbnfsp\\\\bnfsp@;\
+     \\\\renewcommand{\\\\bnfsp}{\\\\ensuremath{\\\\oldbnfsp}}@;\
+     \\\\let\\\\oldbnfpn\\\\bnfpn@;\
+     \\\\renewcommand{\\\\bnfpn}[1]{\\\\ensuremath{\\\\oldbnfpn{#1}}}@;\
      \\\\let\\\\oldbnfprod\\\\bnfprod@;\
      \\\\renewcommand{\\\\bnfprod}[3][\\\\textwidth]{\\\\oldbnfprod{#2}{%%@;<0 2>\
      \\\\begin{minipage}[t]{#1}@;<0 4>\
@@ -18,7 +22,7 @@ let prod_bar = "\\\\bnfbar "
 let bar = "@ \\\\bnfbar@ "
 let space = "\\\\bnfsp@ "
 let break = "@;\\\\\\\\"
-let eps = "\\\\bnfts{$\\\\epsilon$}"
+let eps = "\\\\bnfes"
 
 let print_rule_name is_not_fun name =
   print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" name)

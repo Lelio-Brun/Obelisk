@@ -3,8 +3,7 @@ include MiniHelper
 let documentclass header =
   print_string
     ("@[<v 0>\\\\documentclass[preview]{standalone}@;@;\
-      \\\\usepackage{suffix}@;\
-      \\\\usepackage{amsmath}@;" ^ header)
+      \\\\usepackage{suffix}@;" ^ header)
 
 let command x =
   let roman =
@@ -32,8 +31,8 @@ let begin_document env ts =
     "\\newcommand\\bnfopt[1]{[#1]}@;\
      \\newcommand\\bnfplus[1]{#1\\ensuremath{^+}}@;\
      \\newcommand\\bnfstar[1]{#1\\ensuremath{^*}}@;\
-     \\newcommand\\bnfseplist[2]{#2\\ensuremath{_{\\text{#1}}^*}}@;\
-     \\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{\\text{#1}}^+}}@;\
+     \\newcommand\\bnfseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
+     \\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
      \\newcommand\\paren[1]{(#1)}@;\
      \\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\
      \\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\
