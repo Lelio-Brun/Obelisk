@@ -20,19 +20,8 @@ let rule_begin () =
 let rule_end () =
   print_string "@]@;@;"
 
-let production_begin _ =
-  print_string "@[<hov 0>"
-let production_end _ =
-  print_string "@]"
-
 let print_terminal is_term is_non_term =
   print_fmt (if is_non_term then "<%s>" else "%s")
-
-let enclose print op cl =
-  print_string op; print (); print_string cl
-
-let par e print =
-  if e then enclose print "(" ")" else print ()
 
 let opt e print = enclose print "[" "]"
 let plus e print = par e print; print_string "+"

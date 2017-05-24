@@ -64,20 +64,12 @@ let rule_begin () =
 let rule_end () =
   print_string "@]@;</ul>@]@;</li>@;@;"
 
-let production_begin _ =
-  print_string "@[<hov 0>"
 let production_end not_sing =
   print_string ((if not_sing then "</li>" else "") ^ "@]")
 
 let print_terminal _ is_non_term =
   print_fmt
     (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
-
-let enclose print op cl =
-  print_string op; print (); print_string cl
-
-let par e print =
-  if e then enclose print "(" ")" else print ()
 
 let opt e print = enclose print "[" "]"
 let plus e print = par e print; print_string "<sup>+</sup>"

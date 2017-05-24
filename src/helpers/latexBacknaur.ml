@@ -31,18 +31,7 @@ let rule_begin () =
 let rule_end () =
   print_string "}\\\\\\\\@]@;"
 
-let production_begin _ =
-  print_string "@[<hov 0>"
-let production_end _ =
-  print_string "@]"
-
 let print_terminal is_term _ s =
   let s' = Str.global_replace (Str.regexp "_") "\\_" s in
   if is_term then print_fmt "\\bnfts{\\%s{}}" (command s)
   else print_fmt "\\bnfpn{%s}" s'
-
-let enclose print op cl =
-  print_string op; print (); print_string cl
-
-let par e print =
-  if e then enclose print "(" ")" else print ()

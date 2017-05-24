@@ -37,19 +37,8 @@ let rule_end () =
   print_string "@;\\\\\\\\& & \\\\\\\\";
   print_string "@]@;@;"
 
-let production_begin _ =
-  print_string "@[<hov 0>"
-let production_end _ =
-  print_string " @]"
-
 let print_terminal is_term is_non_term s =
   let s' = Str.global_replace (Str.regexp "_") "\\_" s in
   if is_non_term then print_fmt "\\nonterm{%s}" s'
   else if is_term then print_fmt "\\term{\\%s{}}" (command s)
   else print_fmt "\\func{%s}" s'
-
-let enclose print op cl =
-  print_string op; print (); print_string cl
-
-let par e print =
-  if e then enclose print "(" ")" else print ()

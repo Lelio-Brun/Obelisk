@@ -25,17 +25,6 @@ let rule_begin () =
 let rule_end () =
   print_string "@]@;@;"
 
-let production_begin _ =
-  print_string "@[<hov 0>"
-let production_end _ =
-  print_string " @]"
-
 let print_terminal is_term _ s =
   if is_term then print_fmt "\\term{\\%s{}}" (command s)
   else print_fmt "\\synt{%s}" s
-
-let enclose print op cl =
-  print_string op; print (); print_string cl
-
-let par e print =
-  if e then enclose print "(" ")" else print ()
