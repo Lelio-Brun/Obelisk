@@ -16,26 +16,25 @@ let print_header _ =
      margin-bottom: .5em;\
      @]@;}@;\
      @[<v 2>.prods {@;\
-     display: inline;@;\
+     display: inline-block;@;\
+     vertical-align: top;@;\
      list-style: none;@;\
-     padding-left: .5em;\
+     padding-left: 0em;\
+     @]@;}@;\
+    @[<v 2>.prods::before {@;\
+     content: \"\\\\a0::=\\\\a0\";\
      @]@;}@;\
      @[<v 2>.prods li {@;\
      margin-bottom: 0;\
      @]@;}@;\
-     @[<v 2>.prods:before {@;\
-     content: \"::= \";\
+     @[<v 2>.prods li::before {@;\
+     content: \"\\\\a0:=\";@;\
+     visibility: hidden;\
      @]@;}@;\
-     @[<v 2>.prods li {@;\
-     padding-left: 2em;\
-     @]@;}@;\
-     @[<v 2>.prods li:before {@;\
-     content: \"| \";\
-     @]@;}@;\
-     @[<v 2>.nonterminal:before {@;\
+     @[<v 2>.nonterminal::before {@;\
      content: \"<\";\
      @]@;}@;\
-     @[<v 2>.nonterminal:after {@;\
+     @[<v 2>.nonterminal::after {@;\
      content: \">\";\
      @]@;}@;\
      @]</style>@;\
@@ -50,7 +49,7 @@ let print_footer () =
      @]@;</html>@]@."
 
 let def = "@[<v 2><ul class=\"prods\">"
-let prod_bar = "<li>"
+let prod_bar = "<li>| "
 let bar = " | "
 let space = "@ "
 let break = "@;"
@@ -58,7 +57,7 @@ let eps = "epsilon"
 
 let print_rule_name is_not_fun =
   print_fmt
-    (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s@;")
+    (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s")
 let rule_begin () =
   print_string "@[<v 2><li>"
 let rule_end () =

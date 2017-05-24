@@ -9,7 +9,7 @@ module Make (H : HELPER) : PRINTER = struct
 
   let print_space () = H.print_string H.space
 
-  let print_sep_encl_gen ini_sep print sep op cl =
+  let print_sep_encl_gen print sep op cl =
     let rec aux = function
       | [] -> ()
       | [x] -> print x
@@ -20,12 +20,12 @@ module Make (H : HELPER) : PRINTER = struct
     | [] -> ()
     | xs ->
       H.print_string op;
-      if ini_sep then H.print_string sep; aux xs;
+      aux xs;
       H.print_string cl
-  let print_sep_encl not_sing print =
-    print_sep_encl_gen not_sing print
-  let print_sep not_sing print sep =
-    print_sep_encl not_sing print sep "" ""
+  let print_sep_encl print =
+    print_sep_encl_gen print
+  let print_sep print sep =
+    print_sep_encl print sep "" ""
 
   let rec print_production not_sing symbols actuals =
     H.production_begin not_sing;
@@ -34,7 +34,7 @@ module Make (H : HELPER) : PRINTER = struct
 
   and print_actuals symbols = function
     | [] -> H.print_string H.eps; print_space ()
-    | xs -> print_sep false (print_actual symbols false) H.space xs
+    | xs -> print_sep (print_actual symbols false) H.space xs
 
   and print_actual symbols e = function
     | Symbol (x, ps) ->
@@ -44,7 +44,7 @@ module Make (H : HELPER) : PRINTER = struct
     | Modifier (a, m) ->
       print_modifier m e (fun () -> print_actual symbols true a)
     | Anonymous ps ->
-      print_sep false (print_actuals symbols) H.bar ps
+      print_sep (print_actuals symbols) H.bar ps
 
   and print_modifier = function
     | Opt -> H.opt
@@ -84,16 +84,16 @@ module Make (H : HELPER) : PRINTER = struct
           (Symbols.is_term x symbols)
           (Symbols.is_non_term x symbols) x
           (fun () ->
-             print_sep_encl false (print_actual symbols e)
+             print_sep_encl (print_actual symbols e)
                ("," ^ H.space) "(" ")" ps))
 
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
     H.print_rule_name (params = []) name;
-    print_sep_encl false H.print_string ", " "(" ")" params;
+    print_sep_encl H.print_string ", " "(" ")" params;
     H.print_string H.def;
-    let not_sing = (List.length prods > 1) && false in
-    print_sep not_sing (print_production not_sing symbols)
+    let not_sing = (List.length prods > 1) in
+    print_sep (print_production not_sing symbols)
       (H.break ^ H.prod_bar) prods;
     H.rule_end ()
 
