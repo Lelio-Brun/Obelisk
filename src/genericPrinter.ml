@@ -80,24 +80,26 @@ module Make (H : HELPER) : PRINTER = struct
 
   and print_symbol symbols e x ps =
     H.par (e && ps <> []) (fun () ->
-        H.print_terminal (Symbols.is_term x symbols)
-          (Symbols.is_non_term x symbols) x;
-        print_sep_encl false (print_actual symbols e)
-          ("," ^ H.space) "(" ")" ps)
+        H.print_symbol
+          (Symbols.is_term x symbols)
+          (Symbols.is_non_term x symbols) x
+          (fun () ->
+             print_sep_encl false (print_actual symbols e)
+               ("," ^ H.space) "(" ")" ps))
 
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
     H.print_rule_name (params = []) name;
     print_sep_encl false H.print_string ", " "(" ")" params;
     H.print_string H.def;
-    let not_sing = (List.length prods > 1) in
+    let not_sing = (List.length prods > 1) && false in
     print_sep not_sing (print_production not_sing symbols)
       (H.break ^ H.prod_bar) prods;
     H.rule_end ()
 
   let print_spec o symbols s =
     H.p := o;
-    H.print_header (Symbols.terminals symbols);
+    H.print_header symbols;
     H.print_string "@[<v 0>";
     List.iter (print_rule symbols) s;
     H.print_string "@]";

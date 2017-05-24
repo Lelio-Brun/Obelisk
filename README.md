@@ -83,21 +83,19 @@ my_separated_nonempty_list(X, Y) ::= X (Y X)*
 
 my_separated_list(X, S) ::= [X (S X)*]
 
-my_rule(E, F, S1, S2) ::=
-  | my_option(E, F)
-  | my_list(E)
-  | my_nonempty_list(F)
-  | my_separated_nonempty_list(E, S1)
-  | my_separated_list(F, S2)
+my_rule(E, F, S1, S2) ::= my_option(E, F)
+                        | my_list(E)
+                        | my_nonempty_list(F)
+                        | my_separated_nonempty_list(E, S1)
+                        | my_separated_list(F, S2)
 ```
 And with the `-i` switch:
 ```
-my_rule(E, F, S1, S2) ::=
-  | [F E]
-  | E*
-  | F+
-  | E (S1 E)*
-  | [F (S2 F)*]
+my_rule(E, F, S1, S2) ::= [F E]
+                        | E*
+                        | F+
+                        | E (S1 E)*
+                        | [F (S2 F)*]
 ```
 
 ### Multi-format output
@@ -129,28 +127,24 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <producer> ::= [LID EQ] <actual>
 
-generic_actual(A, B) ::=
-  | <ident> parameters(A)
-  | B <modifier>
+generic_actual(A, B) ::= <ident> parameters(A)
+                       | B <modifier>
 
 <actual> ::= generic_actual(<lax_actual>, <actual>)
 
-<lax_actual> ::=
-  | generic_actual(<lax_actual>, <actual>)
-  | <group> (BAR <group>)*
+<lax_actual> ::= generic_actual(<lax_actual>, <actual>)
+               | <group> (BAR <group>)*
 
-<modifier> ::=
-  | OPT
-  | PLUS
-  | STAR
+<modifier> ::= OPT
+             | PLUS
+             | STAR
 
 <precedence> ::= PREC <ident>
 
 parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 
-<ident> ::=
-  | UID
-  | LID
+<ident> ::= UID
+          | LID
 ```
 
 #### LaTeX

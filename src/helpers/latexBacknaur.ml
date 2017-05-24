@@ -1,6 +1,6 @@
 include MiniLatex
 
-let print_header ts =
+let print_header symbols =
   documentclass
     "\\\\usepackage[epsilon]{backnaur}@;@;\
      \\\\let\\\\oldbnfsp\\\\bnfsp@;\
@@ -13,7 +13,7 @@ let print_header ts =
      $#3$@;<0 2>\
      \\\\end{minipage}}}@;@;\
      \\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;";
-  begin_document "bnf*" ts
+  begin_document "bnf*" (Common.Symbols.terminals symbols)
 
 let print_footer () = end_document "bnf*"
 
@@ -31,7 +31,8 @@ let rule_begin () =
 let rule_end () =
   print_string "}\\\\\\\\@]@;"
 
-let print_terminal is_term _ s =
+let print_symbol is_term _ s print_params =
   let s' = Str.global_replace (Str.regexp "_") "\\_" s in
   if is_term then print_fmt "\\bnfts{\\%s{}}" (command s)
-  else print_fmt "\\bnfpn{%s}" s'
+  else print_fmt "\\bnfpn{%s}" s';
+  print_params ()

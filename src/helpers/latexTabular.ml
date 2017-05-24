@@ -1,6 +1,6 @@
 include MiniLatex
 
-let print_header ts =
+let print_header symbols =
   documentclass
     "\\\\usepackage{tabu}@;@;\
      \\\\newenvironment{grammar}{@;<0 2>\
@@ -17,7 +17,7 @@ let print_header ts =
      \\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}}@;\
      \\\\newcommand\\\\func[1]{#1}@;\
      \\\\newcommand\\\\term[1]{#1}@;";
-  begin_document "grammar" ts
+  begin_document "grammar" (Common.Symbols.terminals symbols)
 
 let print_footer () = end_document "grammar"
 
@@ -37,8 +37,9 @@ let rule_end () =
   print_string "@;\\\\\\\\& & \\\\\\\\";
   print_string "@]@;@;"
 
-let print_terminal is_term is_non_term s =
+let print_symbol is_term is_non_term s print_params =
   let s' = Str.global_replace (Str.regexp "_") "\\_" s in
   if is_non_term then print_fmt "\\nonterm{%s}" s'
   else if is_term then print_fmt "\\term{\\%s{}}" (command s)
-  else print_fmt "\\func{%s}" s'
+  else print_fmt "\\func{%s}" s';
+  print_params ()

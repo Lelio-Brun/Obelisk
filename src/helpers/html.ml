@@ -67,9 +67,11 @@ let rule_end () =
 let production_end not_sing =
   print_string ((if not_sing then "</li>" else "") ^ "@]")
 
-let print_terminal _ is_non_term =
+let print_symbol _ is_non_term s print_params =
   print_fmt
-    (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s")
+    (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s") s;
+  print_params ()
+
 
 let opt e print = enclose print "[" "]"
 let plus e print = par e print; print_string "<sup>+</sup>"

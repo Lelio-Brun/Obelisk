@@ -5,13 +5,15 @@ module type SYMBOLS = sig
 
   val def_term: string -> t -> t
   val def_non_term: string -> t -> t
-  val def_fun: string -> t -> t
+  val def_fun: string -> string list -> t -> t
 
   val terminals: t -> string list
+  val non_terminals: t -> string list
+  val defined: t -> string list
 
   val is_term: string -> t -> bool
   val is_non_term: string -> t -> bool
-  val is_defined: string -> t -> bool
+  val is_defined: string -> t -> string list option
 
 end
 
@@ -22,16 +24,23 @@ module Symbols : SYMBOLS = struct
   and symbols =
     | Terminal
     | NonTerminal
-    | Fun
+    | Fun of string list
 
   let empty = M.empty
 
-  let def_term, def_non_term, def_fun =
+  let def_term, def_non_term =
     let add a x = M.add x a in
-    add Terminal, add NonTerminal, add Fun
+    add Terminal, add NonTerminal
+  let def_fun x xs = M.add x (Fun xs)
 
   let terminals m =
     fst List.(split (filter (function _, Terminal -> true | _ -> false)
+        (M.bindings m)))
+ let non_terminals m =
+    fst List.(split (filter (function _, NonTerminal -> true | _ -> false)
+        (M.bindings m)))
+ let defined m =
+    fst List.(split (filter (function _, Terminal -> false | _ -> true)
         (M.bindings m)))
 
   let is_term x m =
@@ -50,9 +59,10 @@ module Symbols : SYMBOLS = struct
 
   let is_defined x m =
     try begin match M.find x m with
-      | Terminal -> false
-      | _ -> true
+      | NonTerminal -> Some []
+      | Fun xs -> Some xs
+      | _ -> None
     end
-    with Not_found -> false
+    with Not_found -> None
 
 end

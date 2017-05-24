@@ -1,8 +1,9 @@
 open ExtendedAst
+open Common
 
 val p: Format.formatter ref
 
-val print_header: string list -> unit
+val print_header: Symbols.t -> unit
 val print_footer: unit -> unit
 
 val print_string: string -> unit
@@ -14,7 +15,7 @@ val rule_end: unit -> unit
 val production_begin: bool -> unit
 val production_end: bool -> unit
 
-val print_terminal: bool -> bool -> string -> unit
+val print_symbol: bool -> bool -> string -> (unit -> unit) -> unit
 val print_sep_list: bool -> bool -> (unit -> unit) -> (unit -> unit) -> unit
 
 val opt: bool -> (unit -> unit) -> unit

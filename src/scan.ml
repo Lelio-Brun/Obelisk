@@ -3,16 +3,15 @@ open Common
 open List
 
 let add_non_terminal symbols {name; params} =
-  (match params with
-   | [] -> Symbols.def_non_term
-   | _ -> Symbols.def_fun)
-    name symbols
+  match params with
+   | [] -> Symbols.def_non_term name symbols
+   | _ -> Symbols.def_fun name params symbols
 
 let add_terminal symbols {groups} =
   let rec add_terminal_actual symbols = function
     | Symbol (s, ps) ->
       let symbols = fold_left add_terminal_actual symbols ps in
-      if not (Symbols.is_defined s symbols)
+      if Symbols.is_defined s symbols = None
       && String.uppercase_ascii s = s
       && ps = []
       then Symbols.def_term s symbols else symbols

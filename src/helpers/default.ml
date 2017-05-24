@@ -5,7 +5,7 @@ include MiniHelper
 let print_header _ = ()
 let print_footer () = print_string "@."
 
-let def = " ::= "
+let def = " ::= @[<v -2>"
 let prod_bar = "| "
 let bar = "@ |@ "
 let space = "@ "
@@ -15,13 +15,13 @@ let eps = "epsilon"
 let print_rule_name is_not_fun =
   print_fmt (if is_not_fun then "<%s>" else "%s")
 
-let rule_begin () =
-  print_string "@[<v 2>"
+let rule_begin () = ()
 let rule_end () =
   print_string "@]@;@;"
 
-let print_terminal is_term is_non_term =
-  print_fmt (if is_non_term then "<%s>" else "%s")
+let print_symbol is_term is_non_term s print_params =
+  print_fmt (if is_non_term then "<%s>" else "%s") s;
+  print_params ()
 
 let opt e print = enclose print "[" "]"
 let plus e print = par e print; print_string "+"
