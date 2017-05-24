@@ -11,7 +11,7 @@ let newline lb p = new_line lb; p lb
 let prologue = ref true
 }
 
-let blank = [' ' '\t' ';']+
+let blank = [' ' '\t' ';' '\012']+
 let newline = '\r' | '\n' | "\r\n"
 let digit = ['0'-'9']
 let lalpha = ['a'-'z']
