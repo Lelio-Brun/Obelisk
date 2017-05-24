@@ -26,7 +26,7 @@ let rule_end () =
   print_string "@]@;@;"
 
 let production_begin _ =
-  print_string "@[<hov 2>"
+  print_string "@[<hov 0>"
 let production_end _ =
   print_string " @]"
 

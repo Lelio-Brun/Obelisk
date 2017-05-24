@@ -65,7 +65,7 @@ let rule_end () =
   print_string "@]@;</ul>@]@;</li>@;@;"
 
 let production_begin _ =
-  print_string "@[<hov 2>"
+  print_string "@[<hov 0>"
 let production_end not_sing =
   print_string ((if not_sing then "</li>" else "") ^ "@]")
 
