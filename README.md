@@ -1,6 +1,6 @@
-# MenhirBrav
+# Obelisk
 ## Overview
-**MenhirBrav** (from *pretty menhir* in Breton) is a simple tool which produces pretty-printed output from a [Menhir] parser file (*.mly*).
+**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (*.mly*).
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of ocamlyacc.
 
@@ -18,24 +18,24 @@ opam install ocamlbuild menhir
 ```
 
 ### Manual build
-Since [Roman] is a git submodule, you should `git clone --recursive` to clone the **MenhirBrav** repository or `git submodule update --init` after a simple clone.
+Since [Roman] is a git submodule, you should `git clone --recursive` to clone the **Obelisk** repository or `git submodule update --init` after a simple clone.
 
 Then just type :
 ```
 make
 ```
 
-This will provide you with a **menhirbrav** executable which you can feed *.mly* files with.
+This will provide you with a **obelisk** executable which you can feed *.mly* files with.
 
 ## Usage
 ```
-menhirbrav [latex|html] [options] <file>
+obelisk [latex|html] [options] <file>
 ```
 
-By default **MenhirBrav** defaults to standard output, use `-o <file>` to specify an output file.
+By default **Obelisk** defaults to standard output, use `-o <file>` to specify an output file.
 
 ### Pattern recognition
-**MenhirBrav** can infer some common patterns (possibly parameterized):
+**Obelisk** can infer some common patterns (possibly parameterized):
 - options
 - lists and non-empty lists
 - separated lists and non-empty separated lists
@@ -71,7 +71,7 @@ my_rule(E,F,S1,S2):
   | my_separated_nonempty_list(E,S1)   {}
   | my_separated_list(F,S2)            {}
 ```
-**MenhirBrav** outputs:
+**Obelisk** outputs:
 ```
 my_option(X, Y) ::= [Y X]
 
@@ -113,7 +113,7 @@ In either cases, the output may be customized *via* the use of LaTeX commands th
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
 
 ### Example
-Here are the different formats output obtained by **MenhirBrav** from its own [parser](src/parser.mly).
+Here are the different formats output obtained by **Obelisk** from its own [parser](src/parser.mly).
 
 #### Default
 ```

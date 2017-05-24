@@ -10,7 +10,7 @@
 
 # ocamlbuild working directory
 _build/
-menhirbrav
+obelisk
 
 # ocamlbuild targets
 *.byte

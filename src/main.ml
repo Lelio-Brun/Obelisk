@@ -35,7 +35,7 @@ let latex_opt = [
 
 let html_opt = []
 
-let msg = "menhirbrav [latex|html] [options] <source>"
+let msg = "obelisk [latex|html] [options] <source>"
 
 let parse_cmd =
   let cpt = ref 0 in
