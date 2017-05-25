@@ -28,7 +28,7 @@ latex: all $(IMAGES:%=%.png)
 
 html: all
 	@./$(EXE) html $(PARSER) -o test.html
-	@wkhtmltoimage -f png --width 800 test.html $(DOC)/html.png
+	@wkhtmltoimage -f png --width 850 test.html $(DOC)/html.png
 	@rm -f test.html
 
 default:
