@@ -31,12 +31,28 @@ let print_header _ =
      @]@;}@;\
      @[<v 4>.rule th, td {@;\
      padding-top: .5em;\
-     @]@;}\
+     @]@;}@;\
      @[<v 4>.nonterminal::before {@;\
      content: \"<\";\
      @]@;}@;\
      @[<v 4>.nonterminal::after {@;\
      content: \">\";\
+     @]@;}@;\
+     @[<v 4>.list::after {@;\
+     content: \"*\";@;\
+     vertical-align: super;@;\
+     font-size: smaller;\
+     @]@;}@;\
+     @[<v 4>.ne_list::after {@;\
+     content: \"+\";@;\
+     vertical-align: super;@;\
+     font-size: smaller;\
+     @]@;}@;\
+     @[<v 4>.option::before {@;\
+     content: \"[\";\
+     @]@;}@;\
+     @[<v 4>.option::after {@;\
+     content: \"]\";\
      @]@;}\
      @]@;</style>\
      @]@;</head>@;@;\
@@ -74,9 +90,19 @@ let print_symbol _ is_non_term s print_params =
   print_params ()
 
 
-let opt e print = enclose print "[" "]"
-let plus e print = par e print; print_string "<sup>+</sup>"
-let star e print = par e print; print_string "<sup>*</sup>"
+let opt e print =
+  print_string "<span class=\"option\">";
+  par e print;
+  print_string "</span>"
+
+let plus e print =
+  print_string "<span class=\"ne_list\">";
+  par e print;
+  print_string "</span>"
+let star e print =
+  print_string "<span class=\"list\">";
+  par e print;
+  print_string "</span>"
 
 let print_sep_list e nonempty print_sep print_x =
   par e (fun () ->
