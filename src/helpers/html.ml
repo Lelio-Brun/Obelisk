@@ -29,6 +29,9 @@ let print_header _ =
      @[<v 4>.specification th.bar::after {@;\
      content: \"|\\\\a0\";\
      @]@;}@;\
+     @[<v 4>.rule th, td {@;\
+     padding-top: .5em;\
+     @]@;}\
      @[<v 4>.nonterminal::before {@;\
      content: \"<\";\
      @]@;}@;\
