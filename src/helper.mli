@@ -12,8 +12,8 @@ val print_rule_name: bool -> string -> unit
 val rule_begin: unit -> unit
 val rule_end: unit -> unit
 
-val production_begin: bool -> unit
-val production_end: bool -> unit
+val production_begin: unit -> unit
+val production_end: unit -> unit
 
 val print_symbol: bool -> bool -> string -> (unit -> unit) -> unit
 val print_sep_list: bool -> bool -> (unit -> unit) -> (unit -> unit) -> unit

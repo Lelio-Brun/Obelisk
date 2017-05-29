@@ -27,10 +27,10 @@ module Make (H : HELPER) : PRINTER = struct
   let print_sep print sep =
     print_sep_encl print sep "" ""
 
-  let rec print_production not_sing symbols actuals =
-    H.production_begin not_sing;
+  let rec print_production symbols actuals =
+    H.production_begin ();
     print_actuals symbols actuals;
-    H.production_end not_sing
+    H.production_end ()
 
   and print_actuals symbols = function
     | [] -> H.print_string H.eps; print_space ()
@@ -92,9 +92,7 @@ module Make (H : HELPER) : PRINTER = struct
     H.print_rule_name (params = []) name;
     print_sep_encl H.print_string ", " "(" ")" params;
     H.print_string H.def;
-    let not_sing = (List.length prods > 1) in
-    print_sep (print_production not_sing symbols)
-      (H.break ^ H.prod_bar) prods;
+    print_sep (print_production symbols) (H.break ^ H.prod_bar) prods;
     H.rule_end ()
 
   let print_spec o symbols s =

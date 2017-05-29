@@ -7,49 +7,47 @@ let print_header _ =
      @[<v 2><head>@;\
      <title>Grammar</title>@;\
      @[<v 2><style>@;\
-     @[<v 2>.specification {@;\
-     list-style: none;@;\
+     @[<v 4>.specification td, th{@;\
+     vertical-align: baseline;@;\
      padding: 0;@;\
-     margin: 0;\
+     margin: 0;@;\
+     font-weight: normal;\
      @]@;}@;\
-     @[<v 2>.specification li {@;\
-     margin-bottom: .5em;\
+     @[<v 4>.specification td {@;\
+     text-align: left;\
      @]@;}@;\
-     @[<v 2>.prods {@;\
-     display: inline-block;@;\
-     vertical-align: top;@;\
-     list-style: none;@;\
-     padding-left: 0em;\
+     @[<v 4>.specification th {@;\
+     text-align: right;@;\
+     white-space: nowrap;\
      @]@;}@;\
-    @[<v 2>.prods::before {@;\
+     @[<v 4>.specification th::after {@;\
      content: \"\\\\a0::=\\\\a0\";\
      @]@;}@;\
-     @[<v 2>.prods li {@;\
-     margin-bottom: 0;\
+     @[<v 4>.specification th.bar {@;\
+     text-align: right;\
      @]@;}@;\
-     @[<v 2>.prods li::before {@;\
-     content: \"\\\\a0:=\";@;\
-     visibility: hidden;\
+     @[<v 4>.specification th.bar::after {@;\
+     content: \"|\\\\a0\";\
      @]@;}@;\
-     @[<v 2>.nonterminal::before {@;\
+     @[<v 4>.nonterminal::before {@;\
      content: \"<\";\
      @]@;}@;\
-     @[<v 2>.nonterminal::after {@;\
+     @[<v 4>.nonterminal::after {@;\
      content: \">\";\
-     @]@;}@;\
-     @]</style>@;\
-     @]</head>@;@;\
+     @]@;}\
+     @]@;</style>\
+     @]@;</head>@;@;\
      @[<v 2><body>@;@;\
-     @[<v 2><ul class=\"specification\">@;@;"
+     @[<v 2><table class=\"specification\">@;@;"
 
 let print_footer () =
   print_string
-    "@]@;</ul>@;\
+    "@]@;</table>@;\
      @]@;</body>@;\
      @]@;</html>@]@."
 
-let def = "@[<v 2><ul class=\"prods\">"
-let prod_bar = "<li>| "
+let def = "</th>@;<td>"
+let prod_bar = "@[<v 2><tr>@;<th class=\"bar\"></th>@;<td>"
 let bar = " | "
 let space = "@ "
 let break = "@;"
@@ -57,14 +55,15 @@ let eps = "epsilon"
 
 let print_rule_name is_not_fun =
   print_fmt
-    (if is_not_fun then "<span class=\"nonterminal\">%s</span>@;" else "%s")
+    (if is_not_fun then "<th><span class=\"nonterminal\">%s</span>" else "<th>%s")
 let rule_begin () =
-  print_string "@[<v 2><li>"
+  print_string "@[<v 2><tr class=\"rule\">@;"
 let rule_end () =
-  print_string "@]@;</ul>@]@;</li>@;@;"
+  print_string "@;@;"
 
-let production_end not_sing =
-  print_string ((if not_sing then "</li>" else "") ^ "@]")
+let production_begin () = ()
+let production_end () =
+  print_string "</td>@]@;</tr>"
 
 let print_symbol _ is_non_term s print_params =
   print_fmt
