@@ -11,6 +11,6 @@ let () =
          "-short-functors";
          "-keep-code";
          "-t"; "Obelisk code documentation";
-         "-css-style"; "doc.css"]
+         "-css-style"; "style.css"]
     | _ -> ()
   end
