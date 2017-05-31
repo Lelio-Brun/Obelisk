@@ -1,0 +1,151 @@
+<html><head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Main</title>
+</head>
+<body>
+<code class="code"></code><table><tr><td></td><td><span class="comment">(** The main driver of the application.
+<p>
+
+    Once parsed, the grammar is scanned (<code class="code"><span class="constructor">Scan</span></code>) to get back the symbols then
+    normalized (<code class="code"><span class="constructor">Normalize</span></code>) and transformed (<code class="code"><span class="constructor">Transform</span></code>) to a simpler form.
+    Finally, after an optional pass of pattern-recognition (<code class="code"><span class="constructor">Reduce</span></code>) it is
+    printed (<code class="code"><span class="constructor">Printers</span></code>).  *)</span></td></tr></table><code class="code"><br>
+<br>
+<span class="keyword">open</span>&nbsp;<span class="constructor">Position</span><br>
+<span class="keyword">open</span>&nbsp;<span class="constructor">Format</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** The input file.*)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;ifile&nbsp;=&nbsp;ref&nbsp;<span class="string">""</span><br>
+</code><table><tr><td></td><td><span class="comment">(** The output file. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;ofile&nbsp;=&nbsp;ref&nbsp;<span class="string">""</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** The different output modes. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;mode&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Default</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** Standard plain text format. Default. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Latex</span>&nbsp;<span class="keyword">of</span>&nbsp;latexmode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** LaTeX output. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Html</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** HTML output. *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** The different LaTeX sub-modes *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">and</span>&nbsp;latexmode&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Tabular</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** Table-based layout. Default. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Syntax</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** Use the <a href="https://www.ctan.org/pkg/syntax-mdw"> syntax</a> package. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Backnaur</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** Use the <a href="https://www.ctan.org/pkg/backnaur"> backnaur</a> package. *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** The chosen mode, default to <code class="code">mode.<span class="constructor">Default</span></code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;mode&nbsp;=&nbsp;ref&nbsp;<span class="constructor">Default</span><br>
+</code><table><tr><td></td><td><span class="comment">(** Do we inline inferred patterns ? <code class="code"><span class="keyword">false</span></code> by default. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;inline&nbsp;=&nbsp;ref&nbsp;<span class="keyword">false</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Specify the filenames of <code class="code">ifile</code> and <code class="code">ofile</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;set_file&nbsp;f&nbsp;s&nbsp;=&nbsp;f&nbsp;:=&nbsp;s<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Default common command-line options. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;options&nbsp;=&nbsp;ref&nbsp;(<span class="constructor">Arg</span>.align&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"-o"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Set_string</span>&nbsp;ofile,&nbsp;<span class="string">"&nbsp;Set&nbsp;the&nbsp;output&nbsp;filename"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"-i"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Set</span>&nbsp;inline,&nbsp;<span class="string">"&nbsp;Inline&nbsp;recognized&nbsp;patterns"</span><br>
+&nbsp;&nbsp;])<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Specify the LaTeX sub-mode to use. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;set_latexmode&nbsp;lm&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;mode&nbsp;:=&nbsp;<span class="constructor">Latex</span>&nbsp;lm<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** LaTeX mode specific options. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;latex_opt&nbsp;=&nbsp;[<br>
+&nbsp;&nbsp;<span class="string">"-tabular"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Tabular</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;tabular&nbsp;environment&nbsp;(default)"</span>;<br>
+&nbsp;&nbsp;<span class="string">"-syntax"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Syntax</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;`syntax`&nbsp;package"</span>;<br>
+&nbsp;&nbsp;<span class="string">"-backnaur"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Backnaur</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;`backnaur`&nbsp;package"</span><br>
+]<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Usage message.  *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;msg&nbsp;=&nbsp;<span class="string">"obelisk&nbsp;[latex|html]&nbsp;[options]&nbsp;&lt;source&gt;"</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Function called on anonymous arguments.
+    It is used to trigger the LaTeX and HTML modes and to get the input file. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;parse_cmd&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cpt&nbsp;=&nbsp;ref&nbsp;0&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="string">"latex"</span>&nbsp;<span class="keyword">when</span>&nbsp;!cpt&nbsp;&lt;&nbsp;1&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;:=&nbsp;<span class="constructor">Latex</span>&nbsp;<span class="constructor">Tabular</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;options&nbsp;:=&nbsp;<span class="constructor">Arg</span>.align&nbsp;(!options&nbsp;@&nbsp;latex_opt)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="string">"html"</span>&nbsp;<span class="keyword">when</span>&nbsp;!cpt&nbsp;&lt;&nbsp;1&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;:=&nbsp;<span class="constructor">Html</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;options&nbsp;:=&nbsp;<span class="constructor">Arg</span>.align&nbsp;!options<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;f&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;set_file&nbsp;ifile&nbsp;f<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** @return the lexer buffer, a printer chosen from the according passed options
+    and a function to finally close the input channel.*)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;get&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;<span class="constructor">Arg</span>.parse_dynamic&nbsp;options&nbsp;parse_cmd&nbsp;msg;<br>
+&nbsp;&nbsp;<span class="keyword">try</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;!ifile&nbsp;=&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">then</span>&nbsp;(<span class="constructor">Arg</span>.usage&nbsp;!options&nbsp;msg;&nbsp;exit&nbsp;1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;inf&nbsp;=&nbsp;open_in&nbsp;!ifile&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;outf&nbsp;=&nbsp;<span class="keyword">if</span>&nbsp;!ofile&nbsp;=&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">then</span>&nbsp;stdout&nbsp;<span class="keyword">else</span>&nbsp;open_out&nbsp;!ofile&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;lexbuf&nbsp;=&nbsp;<span class="constructor">Lexing</span>.from_channel&nbsp;inf&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;formatter&nbsp;=&nbsp;formatter_of_out_channel&nbsp;outf&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;p&nbsp;=&nbsp;<span class="keyword">match</span>&nbsp;!mode&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Default</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">Default</span>&nbsp;:&nbsp;<span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Latex</span>&nbsp;<span class="constructor">Tabular</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">LatexTabular</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Latex</span>&nbsp;<span class="constructor">Syntax</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">LatexSyntax</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Latex</span>&nbsp;<span class="constructor">Backnaur</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">LatexBacknaur</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Html</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">Html</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">P</span>&nbsp;=&nbsp;(<span class="keyword">val</span>&nbsp;p:&nbsp;<span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print&nbsp;=&nbsp;<span class="constructor">P</span>.print_spec&nbsp;formatter&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;close&nbsp;()&nbsp;=&nbsp;close_in&nbsp;inf;&nbsp;close_out&nbsp;outf&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;lexbuf,&nbsp;print,&nbsp;close<br>
+&nbsp;&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Sys_error</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error%s@."</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
+<br>
+<span class="keyword">let</span>&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;lexbuf,&nbsp;print,&nbsp;close&nbsp;=&nbsp;get&nbsp;()&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">try</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Parser</span>.specification&nbsp;<span class="constructor">Lexer</span>.lexer&nbsp;lexbuf&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;symbols&nbsp;=&nbsp;<span class="constructor">Scan</span>.scan&nbsp;s&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Normalize</span>.normalize<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Transform</span>.transform&nbsp;symbols<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Reduce</span>.reduce&nbsp;!inline<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;print&nbsp;symbols;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;close&nbsp;()<br>
+&nbsp;&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sys_error</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error%s@."</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Lexer</span>.<span class="constructor">LexingError</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;err_loc_lexbuf&nbsp;ifile&nbsp;lexbuf;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"Lexing&nbsp;Error:&nbsp;%s@."</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Parser</span>.<span class="constructor">Error</span>&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;err_loc_lexbuf&nbsp;ifile&nbsp;lexbuf;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"Parsing&nbsp;Error@."</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
+</code></body></html>

@@ -1,0 +1,824 @@
+<html>
+<head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><br></td></tr>
+<tr><td><a href="Reduce.html#VAL(@@)">(@@)</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+An infix notation for <a href="Reduce.html#VALcompose"><code class="code"><span class="constructor">Reduce</span>.compose</code></a>.
+</div>
+</td></tr>
+<tr><td align="left"><br>A</td></tr>
+<tr><td><a href="Common.Symbols.html#VALadd">add</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+An internal helper to add a symbol.
+</div>
+</td></tr>
+<tr><td><a href="Scan.html#VALadd_defined">add_defined</a> [<a href="Scan.html">Scan</a>]</td>
+<td><div class="info">
+<code class="code">add_defined&nbsp;symbols&nbsp;r</code> adds to the <code class="code">symbols</code> set the name of <code class="code">r</code>
+    (left-hand side) as a non terminal (see <a href="Common.Symbols.html#VALdef_non_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.def_non_term</code></a>)
+    if the rule has no parameter or as a functional non terminal along with
+    its parameters (see <a href="Common.Symbols.html#VALdef_fun"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.def_fun</code></a>) otherwise.
+</div>
+</td></tr>
+<tr><td><a href="Scan.html#VALadd_terminal">add_terminal</a> [<a href="Scan.html">Scan</a>]</td>
+<td><div class="info">
+<code class="code">add_terminal&nbsp;symbols&nbsp;r</code> recursively scans the right-hand side of <code class="code">r</code> to add
+    the symbols which are not already "defined" in <code class="code">symbols</code>
+    (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>) as terminals
+    (see <a href="Common.Symbols.html#VALdef_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.def_term</code></a>).
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALalias">alias</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Define a recursive equivalence between rules by
+    transitivity.
+</div>
+</td></tr>
+<tr><td align="left"><br>B</td></tr>
+<tr><td><a href="Html.html#VALbar">bar</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALbar">bar</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALbar">bar</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALbar">bar</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALbar">bar</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALbar">bar</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The bar for the anonymous rules.
+</div>
+</td></tr>
+<tr><td><a href="MiniLatex.html#VALbegin_document">begin_document</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Html.html#VALbreak">break</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALbreak">break</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALbreak">break</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALbreak">break</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALbreak">break</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALbreak">break</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The line break.
+</div>
+</td></tr>
+<tr><td align="left"><br>C</td></tr>
+<tr><td><a href="MiniLatex.html#VALcommand">command</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Reduce.html#VALcompose">compose</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+A "monadic" composition operator for the <code class="code">option</code> monad.
+</div>
+</td></tr>
+<tr><td align="left"><br>D</td></tr>
+<tr><td><a href="Html.html#VALdef">def</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALdef">def</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALdef">def</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALdef">def</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALdef">def</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALdef">def</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The rule definition symbol.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALdef_fun">def_fun</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Add a functional non terminal along with
+      its parameters to the symbols.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALdef_fun">def_fun</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALdef_fun"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_fun</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALdef_non_term">def_non_term</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Add a non terminal to the symbols
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALdef_non_term">def_non_term</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALdef_non_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_non_term</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALdef_term">def_term</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Add a terminal to the symbols.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALdef_term">def_term</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALdef_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_term</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALdefined">defined</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Get the list of "defined" symbols, that is both non terminals and
+      functional non terminals
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALdefined">defined</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALdefined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.defined</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="MiniLatex.html#VALdocumentclass">documentclass</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Position.html#VALdummy">dummy</a> [<a href="Position.html">Position</a>]</td>
+<td><div class="info">
+A "dummy" error location.
+</div>
+</td></tr>
+<tr><td align="left"><br>E</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALempty">empty</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+The empty set.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALempty">empty</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALempty"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.empty</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="MiniHelper.html#VALenclose">enclose</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniLatex.html#VALend_document">end_document</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Html.html#VALeps">eps</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALeps">eps</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALeps">eps</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALeps">eps</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALeps">eps</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALeps">eps</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The empty word epsilon.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALequal_params">equal_params</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Define an equivalence between formal and actual parameters.
+</div>
+</td></tr>
+<tr><td><a href="Position.html#VALerr_loc">err_loc</a> [<a href="Position.html">Position</a>]</td>
+<td><div class="info">
+Print a located error message on the standard error output.
+</div>
+</td></tr>
+<tr><td><a href="Position.html#VALerr_loc_lexbuf">err_loc_lexbuf</a> [<a href="Position.html">Position</a>]</td>
+<td><div class="info">
+Print an error message located with the lexer buffer.
+</div>
+</td></tr>
+<tr><td align="left"><br>F</td></tr>
+<tr><td><a href="Reduce.html#VALfind_rule">find_rule</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Find a rule by its left-hand side (name) in the grammar.
+</div>
+</td></tr>
+<tr><td><a href="Position.html#VALfrom">from</a> [<a href="Position.html">Position</a>]</td>
+<td><div class="info">
+Build an error location from the start and end positions.
+</div>
+</td></tr>
+<tr><td align="left"><br>G</td></tr>
+<tr><td><a href="Reduce.html#VALgeneralize">generalize</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Merely wrap the arguments under a <code class="code"><span class="constructor">Some</span></code>.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALget">get</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+</div>
+</td></tr>
+<tr><td><a href="Position.html#VALget_pos">get_pos</a> [<a href="Position.html">Position</a>]</td>
+<td><div class="info">
+Build an error location from the lexer buffer.
+</div>
+</td></tr>
+<tr><td align="left"><br>I</td></tr>
+<tr><td><a href="Main.html#VALifile">ifile</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+The input file.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALinline">inline</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Do we inline inferred patterns ? <code class="code"><span class="keyword">false</span></code> by default.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALis_defined">is_defined</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Test if the given symbol is "defined" and returns its parameters.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALis_defined">is_defined</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_defined</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALis_list">is_list</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is a list, that is if it has the following shape:
+    <pre class="verbatim">l(xs) ::=           or    l(xs) ::=
+        | eps                     | `cons`
+        | `cons`                  | eps</pre>
+    where <code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code>, <code class="code">s</code> and <code class="code">l</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a>, <code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a>, <code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code>
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALis_non_term">is_non_term</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Test if the given symbol is a non terminal.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALis_non_term">is_non_term</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALis_non_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_non_term</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALis_nonempty_list">is_nonempty_list</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is a separated non empty list,
+    that is if it has the following shape:
+    <pre class="verbatim">nel(xs) ::=           or    nel(xs) ::=
+          | `base`                    | `cons`
+          | `cons`                    | `base`</pre>
+    where <code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code>, <code class="code">s</code> and <code class="code">nel</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a>, <code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a>, <code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code>, <code class="code">acts&nbsp;=&nbsp;<span class="keywordsign">`</span>base<span class="keywordsign">`</span></code>
+    This condition is explained for a left-recursive list but the function
+    also copes with right-recursion.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALis_option">is_option</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is an optional, that is if it has the following shape:
+    <pre class="verbatim">r ::=       or    r ::=
+   | eps              | `some`
+   | `some`           | eps</pre>
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALis_sep_list">is_sep_list</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is a separated list,
+    that is if it has the following shape:
+    <pre class="verbatim">sl ::=              or    sl ::=
+     | eps                     | snel(...)
+     | snel(...)               | eps</pre>
+    where <code class="code">snel</code> is recognized as a <code class="code">separated_nonempty_list</code> by
+    <a href="Reduce.html#VALis_sep_nonempty_list"><code class="code"><span class="constructor">Reduce</span>.is_sep_nonempty_list</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALis_sep_nonempty_list">is_sep_nonempty_list</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is a separated non empty list,
+    that is if it has the following shape:
+    <pre class="verbatim">snel(xs) ::=           or    snel(xs) ::=
+           | `base`                     | `cons`
+           | `cons`                     | `base`</pre>
+    where <code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code>, <code class="code">s</code> and <code class="code">snel</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a>, <code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a>, <code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code>, <code class="code">acts&nbsp;=&nbsp;sep&nbsp;@&nbsp;<span class="keywordsign">`</span>base<span class="keywordsign">`</span></code>
+    This condition is explained for a left-recursive list but the function
+    also copes with right-recursion.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALis_term">is_term</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Test if the given symbol is a terminal.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALis_term">is_term</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALis_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_term</code></a>.
+</div>
+</td></tr>
+<tr><td align="left"><br>L</td></tr>
+<tr><td><a href="Main.html#VALlatex_opt">latex_opt</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+LaTeX mode specific options.
+</div>
+</td></tr>
+<tr><td align="left"><br>M</td></tr>
+<tr><td><a href="Reduce.html#VALmake_subst">make_subst</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+<code class="code">make_subst&nbsp;xs&nbsp;ys</code> builds a substitution that is a map linking each element
+    of <code class="code">xs</code> to the corresponding (by index) element of <code class="code">ys</code>.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALmode">mode</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+The chosen mode, default to <a href="Main.html#TYPEELTmode.Default"><code class="code"><span class="constructor">Main</span>.mode.<span class="constructor">Default</span></code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALmsg">msg</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Usage message.
+</div>
+</td></tr>
+<tr><td align="left"><br>N</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALnon_terminals">non_terminals</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Get the list of non terminals.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALnon_terminals">non_terminals</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALnon_terminals"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.non_terminals</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Normalize.html#VALnormalize">normalize</a> [<a href="Normalize.html">Normalize</a>]</td>
+<td><div class="info">
+Normalize the grammar by normalizing its rules.
+</div>
+</td></tr>
+<tr><td><a href="Normalize.html#VALnormalize_actual">normalize_actual</a> [<a href="Normalize.html">Normalize</a>]</td>
+<td><div class="info">
+Normalize an actual.
+</div>
+</td></tr>
+<tr><td><a href="Normalize.html#VALnormalize_group">normalize_group</a> [<a href="Normalize.html">Normalize</a>]</td>
+<td><div class="info">
+Normalize a group.
+</div>
+</td></tr>
+<tr><td><a href="Normalize.html#VALnormalize_production">normalize_production</a> [<a href="Normalize.html">Normalize</a>]</td>
+<td><div class="info">
+Normalize a production by normalizing its actuals.
+</div>
+</td></tr>
+<tr><td><a href="Normalize.html#VALnormalize_rule">normalize_rule</a> [<a href="Normalize.html">Normalize</a>]</td>
+<td><div class="info">
+Normalize a rule by normalizing its groups.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALnot_occurs">not_occurs</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+<code class="code">not_occurs&nbsp;s&nbsp;a</code> is <code class="code"><span class="keyword">true</span></code> when the symbol <code class="code">s</code> does not occur in
+    the actual <code class="code">a</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>O</td></tr>
+<tr><td><a href="Main.html#VALofile">ofile</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+The output file.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALopt">opt</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALopt">opt</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALopt">opt</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+To print a possibly parenthesized optional.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALoptions">options</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Default common command-line options.
+</div>
+</td></tr>
+<tr><td align="left"><br>P</td></tr>
+<tr><td><a href="MiniHelper.html#VALp">p</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALp">p</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+A reference to the used formatter.
+</div>
+</td></tr>
+<tr><td><a href="MiniHelper.html#VALpar">par</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALpar">par</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The optionally parenthesizing function.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALparse_cmd">parse_cmd</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Function called on anonymous arguments.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALplus">plus</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALplus">plus</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALplus">plus</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+To print a possibly parenthesized non empty list.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_actual">print_actual</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a possibly parenthesized actual.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_actuals">print_actuals</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a list of actuals.
+</div>
+</td></tr>
+<tr><td><a href="MiniHelper.html#VALprint_fmt">print_fmt</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Html.html#VALprint_footer">print_footer</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALprint_footer">print_footer</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALprint_footer">print_footer</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALprint_footer">print_footer</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprint_footer">print_footer</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_footer">print_footer</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the end of the output.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALprint_header">print_header</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALprint_header">print_header</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALprint_header">print_header</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALprint_header">print_header</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprint_header">print_header</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_header">print_header</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the beginning of the output.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_modifier">print_modifier</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a possibly parenthesized "modified" actual.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_pattern">print_pattern</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a possibly parenthesized pattern.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_production">print_production</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a production by first calling <a href="Helper.html#VALproduction_begin"><code class="code"><span class="constructor">Helper</span>.production_begin</code></a>
+      then printing the actuals and
+      finally calling <a href="Helper.html#VALproduction_end"><code class="code"><span class="constructor">Helper</span>.production_end</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_rule">print_rule</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a rule: calls <a href="Helper.html#VALrule_begin"><code class="code"><span class="constructor">Helper</span>.rule_begin</code></a>, calls <a href="Helper.html#VALprint_rule_name"><code class="code"><span class="constructor">Helper</span>.print_rule_name</code></a> to print the left-hand side, prints the parameters, prints the definition symbol <a href="Helper.html#VALdef"><code class="code"><span class="constructor">Helper</span>.def</code></a>, prints the productions, separated by a line break <a href="Helper.html#VALbreak"><code class="code"><span class="constructor">Helper</span>.break</code></a>
+        and a bar <a href="Helper.html#VALprod_bar"><code class="code"><span class="constructor">Helper</span>.prod_bar</code></a>, calls <a href="Helper.html#VALrule_end"><code class="code"><span class="constructor">Helper</span>.rule_end</code></a>
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALprint_rule_name">print_rule_name</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALprint_rule_name">print_rule_name</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALprint_rule_name">print_rule_name</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALprint_rule_name">print_rule_name</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprint_rule_name">print_rule_name</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_rule_name">print_rule_name</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+<code class="code">print_rule_name&nbsp;is_not_fun&nbsp;x</code> prints the left-hand side of a rule where
+    <code class="code">is_not_fun</code> is <code class="code"><span class="keyword">true</span></code> if the rule has no parameter and <code class="code">x</code> is the name of
+    the defined non terminal.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_sep">print_sep</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+<code class="code">print_sep&nbsp;print&nbsp;sep&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code>.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_sep_encl">print_sep_encl</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+<code class="code">print_sep_encl&nbsp;print&nbsp;sep&nbsp;op&nbsp;cl&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code> end enclosed by <code class="code">op</code> and <code class="code">cl</code>
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALprint_sep_list">print_sep_list</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_sep_list">print_sep_list</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprint_sep_list">print_sep_list</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_sep_list">print_sep_list</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+<code class="code">print_sep_list&nbsp;e&nbsp;nonempty&nbsp;print_sep&nbsp;print_x</code> prints the possibly non empty
+    separated list <code class="code">separated[_nonempty]_list(sep,&nbsp;x)</code> where <code class="code">sep</code> and <code class="code">x</code> are
+    respectively printed by <code class="code">print_sep</code> and <code class="code">print_x</code>.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_space">print_space</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print a <a href="Helper.html#VALspace"><code class="code"><span class="constructor">Helper</span>.space</code></a> space.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_spec">print_spec</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+Print the grammar by first calling <a href="Helper.html#VALprint_header"><code class="code"><span class="constructor">Helper</span>.print_header</code></a>,
+      then printing the rules and finally calling <a href="Helper.html#VALprint_footer"><code class="code"><span class="constructor">Helper</span>.print_footer</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Printer.html#VALprint_spec">print_spec</a> [<a href="Printer.html">Printer</a>]</td>
+<td><div class="info">
+<code class="code">print_spec&nbsp;fmt&nbsp;symbs&nbsp;s</code> print the grammar <code class="code">s</code> with symbols <code class="code">symbs</code> on
+    the specified formatter <code class="code">fmt</code>.
+</div>
+</td></tr>
+<tr><td><a href="MiniHelper.html#VALprint_string">print_string</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_string">print_string</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Print an escaped string.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALprint_symbol">print_symbol</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALprint_symbol">print_symbol</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALprint_symbol">print_symbol</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALprint_symbol">print_symbol</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprint_symbol">print_symbol</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprint_symbol">print_symbol</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+<code class="code">print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params</code> prints the symbol <code class="code">s</code> and
+    its parameters thanks to <code class="code">print_params</code>.
+</div>
+</td></tr>
+<tr><td><a href="GenericPrinter.Make.html#VALprint_symbol">print_symbol</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
+<td><div class="info">
+<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
+      its parameters <code class="code">xs</code>.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALprod_bar">prod_bar</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALprod_bar">prod_bar</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALprod_bar">prod_bar</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALprod_bar">prod_bar</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALprod_bar">prod_bar</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALprod_bar">prod_bar</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The bar at the start of each alternative production.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALproduction_begin">production_begin</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniHelper.html#VALproduction_begin">production_begin</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALproduction_begin">production_begin</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the beginning of each production.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALproduction_end">production_end</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniHelper.html#VALproduction_end">production_end</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALproduction_end">production_end</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the end of each production.
+</div>
+</td></tr>
+<tr><td align="left"><br>R</td></tr>
+<tr><td><a href="Reduce.html#VALrecognize">recognize</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Decide if the rule is a standard pattern.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALreduce">reduce</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+<code class="code">reduce&nbsp;inline&nbsp;s</code> returns the grammar <code class="code">s</code> in which the right-hand sides
+    recognized as standard patterns are replaced by an instance of this pattern
+    (list, optional, ...).
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALreduce_rule">reduce_rule</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+<code class="code">reduce_rule&nbsp;inline&nbsp;rules&nbsp;r&nbsp;(rs,&nbsp;rws)</code> returns a pair of a list of "reduced"
+    rules and a map from identifiers to a pair of a list of parameters and
+    a pattern, that is a map of recognized patterns.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALreplace_prods">replace_prods</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Replace the right-hand side of a rule with the given pattern.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALrewrite">rewrite</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Inline the recognized patterns in the grammar.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALrewrite_actual">rewrite_actual</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Inline the recognized patterns in an actual.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALrewrite_pattern">rewrite_pattern</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Inline the recognized patterns in a pattern.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALrewrite_production">rewrite_production</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Inline the recognized patterns in a production.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALrewrite_rule">rewrite_rule</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Inline the recognized patterns in a rule.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALrule_begin">rule_begin</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALrule_begin">rule_begin</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALrule_begin">rule_begin</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALrule_begin">rule_begin</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALrule_begin">rule_begin</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALrule_begin">rule_begin</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the beginning of each rule.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALrule_end">rule_end</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALrule_end">rule_end</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALrule_end">rule_end</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALrule_end">rule_end</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALrule_end">rule_end</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALrule_end">rule_end</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+Printed at the end of each rule.
+</div>
+</td></tr>
+<tr><td align="left"><br>S</td></tr>
+<tr><td><a href="Scan.html#VALscan">scan</a> [<a href="Scan.html">Scan</a>]</td>
+<td><div class="info">
+<code class="code">scan&nbsp;s</code> first gets the defined symbols of <code class="code">s</code> then its terminals and
+    returns the whole set.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALset_file">set_file</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Specify the filenames of <a href="Main.html#VALifile"><code class="code"><span class="constructor">Main</span>.ifile</code></a> and <a href="Main.html#VALofile"><code class="code"><span class="constructor">Main</span>.ofile</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALset_latexmode">set_latexmode</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+Specify the LaTeX sub-mode to use.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALspace">space</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexBacknaur.html#VALspace">space</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexSyntax.html#VALspace">space</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
+<td></td></tr>
+<tr><td><a href="LatexTabular.html#VALspace">space</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALspace">space</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALspace">space</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+The space.
+</div>
+</td></tr>
+<tr><td><a href="Html.html#VALstar">star</a> [<a href="Html.html">Html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Default.html#VALstar">star</a> [<a href="Default.html">Default</a>]</td>
+<td></td></tr>
+<tr><td><a href="Helper.html#VALstar">star</a> [<a href="Helper.html">Helper</a>]</td>
+<td><div class="info">
+To print a possibly parenthesized list.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALsubst">subst</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+<code class="code">subst&nbsp;(xs,&nbsp;p)&nbsp;ys</code> substitutes the formal parameters <code class="code">xs</code> with the actual
+    parameters <code class="code">ys</code> in the pattern <code class="code">p</code>.
+</div>
+</td></tr>
+<tr><td><a href="Reduce.html#VALsubst_actual">subst_actual</a> [<a href="Reduce.html">Reduce</a>]</td>
+<td><div class="info">
+Performs a substitution over an actual.
+</div>
+</td></tr>
+<tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALterminals">terminals</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Get the list of terminals.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALterminals">terminals</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALterminals"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.terminals</code></a>.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform">transform</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform a grammar by transforming its rules.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_actual">transform_actual</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform an actual.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_group">transform_group</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform a supposed singleton group by returning the transformation of
+    its unique production.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_modifier">transform_modifier</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform a "modified" actual.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_production">transform_production</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform a production by transforming its actuals.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_rule">transform_rule</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform a rule by transforming its groups into productions.
+</div>
+</td></tr>
+<tr><td><a href="Transform.html#VALtransform_symbol">transform_symbol</a> [<a href="Transform.html">Transform</a>]</td>
+<td><div class="info">
+Transform all non defined symbols (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>)
+    corresponding to Menhir standard library symbols (<code class="code">list</code>, <code class="code">pair</code>, <code class="code">option</code>,
+    etc.) into patterns, and all other symbols into symbols.
+</div>
+</td></tr>
+</table>
+</body>
+</html>

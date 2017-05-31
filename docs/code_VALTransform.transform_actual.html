@@ -1,0 +1,91 @@
+<html><head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Transform.transform_actual</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> transform_actual symbols = <span class="keyword">function</span>
+  <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Symbol</span> (s, xs) <span class="keywordsign">-&gt;</span>
+    transform_symbol symbols s xs
+  <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Modifier</span> (x, m) <span class="keywordsign">-&gt;</span>
+    transform_modifier symbols x m
+  <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Anonymous</span> gs <span class="keywordsign">-&gt;</span>
+    <span class="keyword">let</span> gs = map (transform_group symbols) gs <span class="keyword">in</span>
+    <span class="constructor">Anonymous</span> gs
+
+</code><table><tr><td></td><td><span class="comment">(** Transform all non defined symbols (see <code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code>)
+    corresponding to Menhir standard library symbols (<code class="code">list</code>, <code class="code">pair</code>, <code class="code">option</code>,
+    etc.) into patterns, and all other symbols into symbols. *)</span></td></tr></table><code class="code">
+<span class="keyword">and</span> transform_symbol symbols s xs =
+  <span class="keyword">let</span> xs = map (transform_actual symbols) xs <span class="keyword">in</span>
+  <span class="keyword">match</span> <span class="constructor">Symbols</span>.is_defined s symbols <span class="keyword">with</span>
+  <span class="keywordsign">|</span> <span class="constructor">Some</span> _ <span class="keywordsign">-&gt;</span> <span class="constructor">Symbol</span> (s, xs)
+  <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span>
+    <span class="keyword">begin</span> <span class="keyword">match</span> s, xs <span class="keyword">with</span>
+      <span class="keywordsign">|</span> (<span class="string">"option"</span> <span class="keywordsign">|</span> <span class="string">"ioption"</span> <span class="keywordsign">|</span> <span class="string">"boption"</span> <span class="keywordsign">|</span> <span class="string">"loption"</span>), [x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">Option</span> x)
+      <span class="keywordsign">|</span> <span class="string">"pair"</span>, [x; y] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">Pair</span> (x, y))
+      <span class="keywordsign">|</span> <span class="string">"separated_pair"</span>, [x; sep; y] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">SepPair</span> (x, sep, y))
+      <span class="keywordsign">|</span> <span class="string">"preceded"</span>, [o; x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">Preceded</span> (o, x))
+      <span class="keywordsign">|</span> <span class="string">"terminated"</span>, [x; c] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">Terminated</span> (x, c))
+      <span class="keywordsign">|</span> <span class="string">"delimited"</span>, [o; x; c] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">Delimited</span> (o, x, c))
+      <span class="keywordsign">|</span> <span class="string">"list"</span>, [x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">List</span> x)
+      <span class="keywordsign">|</span> <span class="string">"nonemptylist"</span>, [x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">NEList</span> x)
+      <span class="keywordsign">|</span> <span class="string">"separated_list"</span>, [sep; x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">SepList</span> (sep, x))
+      <span class="keywordsign">|</span> <span class="string">"separated_nonempty_list"</span>, [sep; x] <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Pattern</span> (<span class="constructor">SepNEList</span> (sep, x))
+      <span class="keywordsign">|</span> _, _ <span class="keywordsign">-&gt;</span>
+        <span class="constructor">Symbol</span> (s, xs)
+    <span class="keyword">end</span>
+
+</code><table><tr><td></td><td><span class="comment">(** Transform a "modified" actual. *)</span></td></tr></table><code class="code">
+<span class="keyword">and</span> transform_modifier symbols x m =
+  <span class="keyword">let</span> x = transform_actual symbols x <span class="keyword">in</span>
+  <span class="keyword">let</span> m = <span class="keyword">match</span> m <span class="keyword">with</span>
+    <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Opt</span> <span class="keywordsign">-&gt;</span> <span class="constructor">Opt</span>
+    <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Plus</span> <span class="keywordsign">-&gt;</span> <span class="constructor">Plus</span>
+    <span class="keywordsign">|</span> <span class="constructor">Ast</span>.<span class="constructor">Star</span> <span class="keywordsign">-&gt;</span> <span class="constructor">Star</span>
+  <span class="keyword">in</span>
+  <span class="constructor">Modifier</span> (x, m)
+
+</code><table><tr><td></td><td><span class="comment">(** Transform a production by transforming its actuals. *)</span></td></tr></table><code class="code">
+<span class="keyword">and</span> transform_production symbols = map (transform_actual symbols)
+
+</code><table><tr><td></td><td><span class="comment">(** Transform a supposed singleton group by returning the transformation of
+    its unique production. *)</span></td></tr></table><code class="code">
+<span class="keyword">and</span> transform_group symbols = <span class="keyword">function</span>
+  <span class="keywordsign">|</span> [p] <span class="keywordsign">-&gt;</span> transform_production symbols p
+  <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">assert</span> <span class="keyword">false</span></code></body></html>

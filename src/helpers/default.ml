@@ -32,4 +32,4 @@ let print_sep_list e nonempty print_sep print_x =
     print_x (); print_string space;
     star true (fun () -> print_sep (); print_string space; print_x ())
   in
-  par e (fun () -> if nonempty then print () else enclose print "[" "]")
+  if nonempty then par e print else enclose print "[" "]"

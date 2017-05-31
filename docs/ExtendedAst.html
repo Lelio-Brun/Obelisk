@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Ast.html">
+<link rel="next" href="Common.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : ExtendedAst</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Ast.html" title="Ast">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Common.html" title="Common">Next</a>
+</div>
+<h1>Module <a href="type_ExtendedAst.html">ExtendedAst</a></h1>
+
+<pre><span class="keyword">module</span> ExtendedAst: <code class="code"><span class="keyword">sig</span></code> <a href="ExtendedAst.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+The simplified Abstract Syntax Tree for grammars.
+<p>
+
+    Compared to <a href="Ast.html"><code class="code"><span class="constructor">Ast</span></code></a>, two differences:<OL>
+<li>groups are sort of "flattened", leaving only productions.</li>
+<li>Patterns of the standard library of Menhir are explicit.</li>
+</OL>
+<br>
+</div>
+<hr width="100%">
+
+<pre><span id="TYPEspec"><span class="keyword">type</span> <code class="type"></code>spec</span> = <code class="type"><a href="ExtendedAst.html#TYPErule">rule</a> list</code> </pre>
+<div class="info ">
+The grammar.<br>
+</div>
+
+
+<pre><code><span id="TYPErule"><span class="keyword">type</span> <code class="type"></code>rule</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTrule.name">name</span>&nbsp;: <code class="type">string</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The left-hand side of the rule.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTrule.params">params</span>&nbsp;: <code class="type">string list</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The possible list of parameters.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTrule.prods">prods</span>&nbsp;: <code class="type"><a href="ExtendedAst.html#TYPEproduction">production</a> list</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The right-hand side of the rule.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+}
+
+<div class="info ">
+The rules.<br>
+</div>
+
+
+<pre><span id="TYPEproduction"><span class="keyword">type</span> <code class="type"></code>production</span> = <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> list</code> </pre>
+<div class="info ">
+The productions.<br>
+</div>
+
+
+<pre><code><span id="TYPEactual"><span class="keyword">type</span> <code class="type"></code>actual</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTactual.Symbol"><span class="constructor">Symbol</span></span> <span class="keyword">of</span> <code class="type">string * <a href="ExtendedAst.html#TYPEactual">actual</a> list</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+A possibly applied symbol.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTactual.Pattern"><span class="constructor">Pattern</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEpattern">pattern</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+A pattern from the standard library.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTactual.Modifier"><span class="constructor">Modifier</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEmodifier">modifier</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+A "modified" actual.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTactual.Anonymous"><span class="constructor">Anonymous</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEproduction">production</a> list</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+An anonymous rule.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+<div class="info ">
+The actuals.<br>
+</div>
+
+
+<pre><code><span id="TYPEmodifier"><span class="keyword">type</span> <code class="type"></code>modifier</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodifier.Opt"><span class="constructor">Opt</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+optionnal<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodifier.Plus"><span class="constructor">Plus</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+non-empty list<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTmodifier.Star"><span class="constructor">Star</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+list<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+<div class="info ">
+The modifiers.<br>
+</div>
+
+
+<pre><code><span id="TYPEpattern"><span class="keyword">type</span> <code class="type"></code>pattern</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.Option"><span class="constructor">Option</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">option(x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.Pair"><span class="constructor">Pair</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">pair(x,&nbsp;y)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.SepPair"><span class="constructor">SepPair</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">separated_pair(x,&nbsp;sep,&nbsp;y)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.Preceded"><span class="constructor">Preceded</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">preceded(opening,&nbsp;x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.Terminated"><span class="constructor">Terminated</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">terminated(x,&nbsp;closing)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.Delimited"><span class="constructor">Delimited</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">delimited(opening,&nbsp;x,&nbsp;closing)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.List"><span class="constructor">List</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">list(x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.NEList"><span class="constructor">NEList</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">nonempty_list(x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.SepList"><span class="constructor">SepList</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">separated_list(x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTpattern.SepNEList"><span class="constructor">SepNEList</span></span> <span class="keyword">of</span> <code class="type"><a href="ExtendedAst.html#TYPEactual">actual</a> * <a href="ExtendedAst.html#TYPEactual">actual</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<code class="code">separated_nonempty_list(sep,&nbsp;x)</code><br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+<div class="info ">
+The patterns from the standard library.<br>
+</div>
+
+</body></html>

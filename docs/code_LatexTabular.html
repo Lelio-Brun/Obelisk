@@ -1,0 +1,63 @@
+<html><head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : LatexTabular</title>
+</head>
+<body>
+<code class="code"><span class="keyword">include</span>&nbsp;<span class="constructor">MiniLatex</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;documentclass<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\\\usepackage{tabu}@;@;\\\\newenvironment{grammar}{@;&lt;0&nbsp;2&gt;\\\\begin{trivlist}@;&lt;0&nbsp;4&gt;\\\\item[]@;&lt;0&nbsp;6&gt;\\\\begin{tabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0&nbsp;6&gt;\\\\end{tabu}@;&lt;0&nbsp;2&gt;\\\\end{trivlist}@;}@;@;\\\\newcommand\\\\gramsp{\\\\quad}@;\\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}}@;\\\\newcommand\\\\func[1]{#1}@;\\\\newcommand\\\\term[1]{#1}@;"</span>;<br>
+&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
+<br>
+<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\gramdef&nbsp;&amp;&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\grambar&nbsp;&amp;"</span><br>
+<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"\\\\\\\\@;"</span><br>
+<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"$\\\\epsilon$"</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;name&nbsp;=<br>
+&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\\func{%s}"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;name)<br>
+<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;"</span><br>
+<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"@;\\\\\\\\&amp;&nbsp;&amp;&nbsp;\\\\\\\\"</span>;<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s'&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;s&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_non_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;s'<br>
+&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\term{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
+&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_fmt&nbsp;<span class="string">"\\func{%s}"</span>&nbsp;s';<br>
+&nbsp;&nbsp;print_params&nbsp;()<br>
+</code></body></html>

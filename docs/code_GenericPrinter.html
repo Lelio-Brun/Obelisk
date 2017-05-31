@@ -1,0 +1,193 @@
+<html><head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : GenericPrinter</title>
+</head>
+<body>
+<code class="code"></code><table><tr><td></td><td><span class="comment">(** Provide a generic functor to build a specific printer. *)</span></td></tr></table><code class="code"><br>
+<br>
+<span class="keyword">open</span>&nbsp;<span class="constructor">ExtendedAst</span><br>
+<span class="keyword">open</span>&nbsp;<span class="constructor">Common</span><br>
+<span class="keyword">open</span>&nbsp;<span class="constructor">Format</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Alias for the <code class="code"><span class="constructor">Helper</span></code> signature. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">HELPER</span>&nbsp;=&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Helper</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Alias for the <code class="code"><span class="constructor">Printer</span></code> signature. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="constructor">PRINTER</span>&nbsp;=&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Printer</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** The functor to build a printer of signature <code class="code"><span class="constructor">Printer</span></code>.
+<p>
+
+    The printing schema is fixed by the implementation of the functor,
+    but is defined modularly with the functions of the <code class="code"><span class="constructor">H</span></code> parameter. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">Make</span>&nbsp;(<span class="constructor">H</span>&nbsp;:&nbsp;<span class="constructor">HELPER</span>)&nbsp;:&nbsp;<span class="constructor">PRINTER</span>&nbsp;=&nbsp;<span class="keyword">struct</span><br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a <a href="Helper.html#VALspace"><code class="code"><span class="constructor">Helper</span>.space</code></a> space. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_space&nbsp;()&nbsp;=&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="constructor">H</span>.space<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_sep_encl&nbsp;print&nbsp;sep&nbsp;op&nbsp;cl&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code> end enclosed by <code class="code">op</code> and <code class="code">cl</code> *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_sep_encl&nbsp;print&nbsp;sep&nbsp;op&nbsp;cl&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;aux&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[x]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;x&nbsp;::&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;x;&nbsp;<span class="constructor">H</span>.print_string&nbsp;sep;&nbsp;aux&nbsp;xs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;op;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aux&nbsp;xs;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;cl<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_sep&nbsp;print&nbsp;sep&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code>.
+  *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_sep&nbsp;print&nbsp;sep&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_sep_encl&nbsp;print&nbsp;sep&nbsp;<span class="string">""</span>&nbsp;<span class="string">""</span><br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a production by first calling <a href="Helper.html#VALproduction_begin"><code class="code"><span class="constructor">Helper</span>.production_begin</code></a>
+      then printing the actuals and
+      finally calling <a href="Helper.html#VALproduction_end"><code class="code"><span class="constructor">Helper</span>.production_end</code></a>. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_production&nbsp;symbols&nbsp;actuals&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.production_begin&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_actuals&nbsp;symbols&nbsp;actuals;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.production_end&nbsp;()<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a list of actuals.
+      If the list is <code class="code">nil</code>, then the empty word <a href="Helper.html#VALeps"><code class="code"><span class="constructor">Helper</span>.eps</code></a> is printed. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_actuals&nbsp;symbols&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="constructor">H</span>.eps;&nbsp;print_space&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_sep&nbsp;(print_actual&nbsp;symbols&nbsp;<span class="keyword">false</span>)&nbsp;<span class="constructor">H</span>.space&nbsp;xs<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a possibly parenthesized actual. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_actual&nbsp;symbols&nbsp;e&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Symbol</span>&nbsp;(x,&nbsp;ps)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_symbol&nbsp;symbols&nbsp;e&nbsp;x&nbsp;ps<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pattern</span>&nbsp;p&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_pattern&nbsp;symbols&nbsp;e&nbsp;p<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Modifier</span>&nbsp;(a,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_modifier&nbsp;m&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_actual&nbsp;symbols&nbsp;<span class="keyword">true</span>&nbsp;a)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Anonymous</span>&nbsp;ps&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_sep&nbsp;(print_actuals&nbsp;symbols)&nbsp;<span class="constructor">H</span>.bar&nbsp;ps<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a possibly parenthesized "modified" actual.
+      Modular: see <a href="Helper.html#VALopt"><code class="code"><span class="constructor">Helper</span>.opt</code></a>, <a href="Helper.html#VALplus"><code class="code"><span class="constructor">Helper</span>.plus</code></a>
+      and <a href="Helper.html#VALstar"><code class="code"><span class="constructor">Helper</span>.star</code></a>. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_modifier&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Opt</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">H</span>.opt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Plus</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">H</span>.plus<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Star</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">H</span>.star<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a possibly parenthesized pattern.<ul>
+<li><code class="code">option(x)</code> is printed as <code class="code">x</code> with the optional modifier (<code class="code">[x]</code>)</li>
+<li><code class="code">pair(x,&nbsp;y)</code> is printed as <code class="code">x&nbsp;y</code></li>
+<li><code class="code">separated_pair(x,&nbsp;sep,&nbsp;y)</code> is printed as <code class="code">x&nbsp;sep&nbsp;y</code></li>
+<li><code class="code">preceded(opening,&nbsp;x)</code> is printed as <code class="code">opening&nbsp;x</code></li>
+<li><code class="code">terminated(x,&nbsp;closing)</code> is printed as <code class="code">x&nbsp;closing</code></li>
+<li><code class="code">delimited(opening,&nbsp;x,&nbsp;closing)</code> is printed as <code class="code">opening&nbsp;x&nbsp;closing</code></li>
+<li><code class="code">list(x)</code> is printed as <code class="code">x</code> with the list modifier (<code class="code">x*</code>)</li>
+<li><code class="code">nonempty_list(x)</code> is printed as <code class="code">x</code> with the non empty list modifier
+        (<code class="code">x+</code>)</li>
+<li><code class="code">separated_list(sep,&nbsp;x)</code> and <code class="code">separated_nonempty_list(sep,&nbsp;x)</code> are
+        modularly printed, see <a href="Helper.html#VALprint_sep_list"><code class="code"><span class="constructor">Helper</span>.print_sep_list</code></a> </li>
+</ul>
+*)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_pattern&nbsp;symbols&nbsp;e&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print'&nbsp;=&nbsp;print_actual&nbsp;symbols&nbsp;<span class="keyword">false</span>&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print''&nbsp;x&nbsp;()&nbsp;=&nbsp;print'&nbsp;x&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Option</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.opt&nbsp;e&nbsp;(print''&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pair</span>&nbsp;(x,&nbsp;y)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print'&nbsp;x;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;y)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SepPair</span>&nbsp;(x,&nbsp;sep,&nbsp;y)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print'&nbsp;x;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;sep;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;y)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Preceded</span>&nbsp;(o,&nbsp;x)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print'&nbsp;o;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Terminated</span>&nbsp;(x,&nbsp;c)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print'&nbsp;x;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Delimited</span>&nbsp;(o,&nbsp;x,&nbsp;c)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;e&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print'&nbsp;o;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;x;&nbsp;print_space&nbsp;();&nbsp;print'&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">List</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.star&nbsp;e&nbsp;(print''&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NEList</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.plus&nbsp;e&nbsp;(print''&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SepList</span>&nbsp;(sep,&nbsp;x)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_sep_list&nbsp;e&nbsp;<span class="keyword">false</span>&nbsp;(print''&nbsp;sep)&nbsp;(print''&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SepNEList</span>&nbsp;(sep,&nbsp;x)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_sep_list&nbsp;e&nbsp;<span class="keyword">true</span>&nbsp;(print''&nbsp;sep)&nbsp;(print''&nbsp;x)<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
+      its parameters <code class="code">xs</code>. The output is parenthesized is <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
+      the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
+      See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_symbol&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;(e&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;ps&nbsp;&lt;&gt;&nbsp;[])&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_symbol<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Symbols</span>.is_term&nbsp;s&nbsp;symbols)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Symbols</span>.is_non_term&nbsp;s&nbsp;symbols)&nbsp;s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_sep_encl&nbsp;(print_actual&nbsp;symbols&nbsp;e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="string">","</span>&nbsp;^&nbsp;<span class="constructor">H</span>.space)&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;ps))<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a rule:<OL>
+<li>calls <a href="Helper.html#VALrule_begin"><code class="code"><span class="constructor">Helper</span>.rule_begin</code></a></li>
+<li>calls <a href="Helper.html#VALprint_rule_name"><code class="code"><span class="constructor">Helper</span>.print_rule_name</code></a> to print the left-hand side</li>
+<li>prints the parameters</li>
+<li>prints the definition symbol <a href="Helper.html#VALdef"><code class="code"><span class="constructor">Helper</span>.def</code></a></li>
+<li>prints the productions, separated by a line break <a href="Helper.html#VALbreak"><code class="code"><span class="constructor">Helper</span>.break</code></a>
+        and a bar <a href="Helper.html#VALprod_bar"><code class="code"><span class="constructor">Helper</span>.prod_bar</code></a></li>
+<li>calls <a href="Helper.html#VALrule_end"><code class="code"><span class="constructor">Helper</span>.rule_end</code></a>
+  </li>
+</OL>
+*)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule&nbsp;symbols&nbsp;{name;&nbsp;params;&nbsp;prods}&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.rule_begin&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_rule_name&nbsp;(params&nbsp;=&nbsp;[])&nbsp;name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_sep_encl&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="string">",&nbsp;"</span>&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;params;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="constructor">H</span>.def;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_sep&nbsp;(print_production&nbsp;symbols)&nbsp;(<span class="constructor">H</span>.break&nbsp;^&nbsp;<span class="constructor">H</span>.prod_bar)&nbsp;prods;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.rule_end&nbsp;()<br>
+<br>
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print the grammar by first calling <a href="Helper.html#VALprint_header"><code class="code"><span class="constructor">Helper</span>.print_header</code></a>,
+      then printing the rules and finally calling <a href="Helper.html#VALprint_footer"><code class="code"><span class="constructor">Helper</span>.print_footer</code></a>. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_spec&nbsp;o&nbsp;symbols&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.p&nbsp;:=&nbsp;o;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_header&nbsp;symbols;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="string">"@[&lt;v&nbsp;0&gt;"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(print_rule&nbsp;symbols)&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="string">"@]"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_footer&nbsp;()<br>
+<br>
+<span class="keyword">end</span><br>
+</code></body></html>

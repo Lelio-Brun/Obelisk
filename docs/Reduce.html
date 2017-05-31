@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Transform.html">
+<link rel="next" href="Printer.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><link title="Inlining" rel="Section" href="#2_Inlining">
+<link title="Reducing" rel="Section" href="#2_Reducing">
+<link title="All together" rel="Section" href="#2_Alltogether">
+<link title="Instantiating" rel="Subsection" href="#3_Instantiating">
+<link title="Rewriting" rel="Subsection" href="#3_Rewriting">
+<link title="Pattern recognition" rel="Subsection" href="#3_Patternrecognition">
+<link title="Rule reducing" rel="Subsection" href="#3_Rulereducing">
+<title>Obelisk code documentation : Reduce</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Transform.html" title="Transform">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Printer.html" title="Printer">Next</a>
+</div>
+<h1>Module <a href="type_Reduce.html">Reduce</a> (<a href="code_Reduce.html">.ml</a>)</h1>
+
+<pre><span class="keyword">module</span> Reduce: <code class="code"><span class="keyword">sig</span></code> <a href="Reduce.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Pattern-recognition and inlining.<br>
+</div>
+<hr width="100%">
+
+<pre><span class="keyword">module</span> <a href="Reduce.M.html">M</a>: <code class="type">Map.Make</code><code class="code">(</code><code class="type">String</code><code class="code">)</code></pre><div class="info">
+A map with identifiers keys.
+</div>
+<br>
+<h2 id="2_Inlining">Inlining</h2><br>
+<br>
+<h3 id="3_Instantiating">Instantiating</h3><br>
+
+<pre><span id="VALsubst_actual"><span class="keyword">val</span> <a href="code_VALReduce.subst_actual.html">subst_actual</a></span> : <code class="type"><a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> M.t -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
+Performs a substitution over an actual.
+    Only non functional symbols are substituted.<br>
+</div>
+
+<pre><span id="VALmake_subst"><span class="keyword">val</span> <a href="code_VALReduce.make_subst.html">make_subst</a></span> : <code class="type">M.key list -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> M.t</code></pre><div class="info ">
+<code class="code">make_subst&nbsp;xs&nbsp;ys</code> builds a substitution that is a map linking each element
+    of <code class="code">xs</code> to the corresponding (by index) element of <code class="code">ys</code>.<br>
+</div>
+
+<pre><span id="VALsubst"><span class="keyword">val</span> <a href="code_VALReduce.subst.html">subst</a></span> : <code class="type">M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -><br>       <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
+<code class="code">subst&nbsp;(xs,&nbsp;p)&nbsp;ys</code> substitutes the formal parameters <code class="code">xs</code> with the actual
+    parameters <code class="code">ys</code> in the pattern <code class="code">p</code>.<br>
+</div>
+<br>
+<h3 id="3_Rewriting">Rewriting</h3><br>
+
+<pre><span id="VALrewrite_actual"><span class="keyword">val</span> <a href="code_VALReduce.rewrite_actual.html">rewrite_actual</a></span> : <code class="type">(M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
+Inline the recognized patterns in an actual.
+    If the actual is a symbol <code class="code">s</code>, then we look in the map if <code class="code">s</code> should be
+    inlined. In this case, we use <a href="Reduce.html#VALsubst"><code class="code"><span class="constructor">Reduce</span>.subst</code></a> to perform the inlining, that is to
+    instantiate the recognized pattern obtained in the map with the actual
+    parameters of <code class="code">s</code>.<br>
+</div>
+
+<pre><span id="VALrewrite_pattern"><span class="keyword">val</span> <a href="code_VALReduce.rewrite_pattern.html">rewrite_pattern</a></span> : <code class="type">(M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -> <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a></code></pre><div class="info ">
+Inline the recognized patterns in a pattern.<br>
+</div>
+
+<pre><span id="VALrewrite_production"><span class="keyword">val</span> <a href="code_VALReduce.rewrite_production.html">rewrite_production</a></span> : <code class="type">(M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a></code></pre><div class="info ">
+Inline the recognized patterns in a production.<br>
+</div>
+
+<pre><span id="VALrewrite_rule"><span class="keyword">val</span> <a href="code_VALReduce.rewrite_rule.html">rewrite_rule</a></span> : <code class="type">(M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a></code></pre><div class="info ">
+Inline the recognized patterns in a rule.<br>
+</div>
+
+<pre><span id="VALrewrite"><span class="keyword">val</span> <a href="code_VALReduce.rewrite.html">rewrite</a></span> : <code class="type">(M.key list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list</code></pre><div class="info ">
+Inline the recognized patterns in the grammar.<br>
+</div>
+<br>
+<h2 id="2_Reducing">Reducing</h2><br>
+<br>
+<h3 id="3_Patternrecognition">Pattern recognition</h3><br>
+
+<pre><span id="VALcompose"><span class="keyword">val</span> <a href="code_VALReduce.compose.html">compose</a></span> : <code class="type">'a option -> 'a option -> 'a option</code></pre><div class="info ">
+A "monadic" composition operator for the <code class="code">option</code> monad.
+    <code class="code">compose&nbsp;x&nbsp;y</code> returns <code class="code">y</code> if <code class="code">x</code> fails otherwise it returns <code class="code">x</code>.<br>
+</div>
+
+<pre><span id="VAL(@@)"><span class="keyword">val</span> <a href="code_VALReduce.(_at__at_).html">(@@)</a></span> : <code class="type">'a option -> 'a option -> 'a option</code></pre><div class="info ">
+An infix notation for <a href="Reduce.html#VALcompose"><code class="code"><span class="constructor">Reduce</span>.compose</code></a>.<br>
+</div>
+
+<pre><span id="VALfind_rule"><span class="keyword">val</span> <a href="code_VALReduce.find_rule.html">find_rule</a></span> : <code class="type">string -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> option</code></pre><div class="info ">
+Find a rule by its left-hand side (name) in the grammar.<br>
+</div>
+
+<pre><span id="VALalias"><span class="keyword">val</span> <a href="code_VALReduce.alias.html">alias</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> string -> string -> bool</code></pre><div class="info ">
+Define a recursive equivalence between rules by
+    transitivity.
+<p>
+
+    <code class="code">alias&nbsp;rules&nbsp;r&nbsp;r'</code> is <code class="code"><span class="keyword">true</span></code> if <code class="code">r&nbsp;=&nbsp;r'</code> or if the rule of name <code class="code">r'</code> in
+    <code class="code">rules</code> is made of a unique production consisting of a unique symbol
+    recursively equivalent to <code class="code">r</code>.<br>
+</div>
+
+<pre><span id="VALequal_params"><span class="keyword">val</span> <a href="code_VALReduce.equal_params.html">equal_params</a></span> : <code class="type">string list -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> bool</code></pre><div class="info ">
+Define an equivalence between formal and actual parameters.<br>
+</div>
+
+<pre><span id="VALnot_occurs"><span class="keyword">val</span> <a href="code_VALReduce.not_occurs.html">not_occurs</a></span> : <code class="type">string -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> bool</code></pre><div class="info ">
+<code class="code">not_occurs&nbsp;s&nbsp;a</code> is <code class="code"><span class="keyword">true</span></code> when the symbol <code class="code">s</code> does not occur in
+    the actual <code class="code">a</code>.<br>
+</div>
+
+<pre><span id="VALgeneralize"><span class="keyword">val</span> <a href="code_VALReduce.generalize.html">generalize</a></span> : <code class="type">'a -> 'b -> ('a * 'b) option</code></pre><div class="info ">
+Merely wrap the arguments under a <code class="code"><span class="constructor">Some</span></code>.<br>
+</div>
+
+<pre><span id="VALis_list"><span class="keyword">val</span> <a href="code_VALReduce.is_list.html">is_list</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is a list, that is if it has the following shape:
+    <pre class="verbatim">l(xs) ::=           or    l(xs) ::=
+        | eps                     | `cons`
+        | `cons`                  | eps</pre>
+    where<ul>
+<li><code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code></li>
+<li><code class="code">s</code> and <code class="code">l</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a></li>
+<li><code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a></li>
+<li><code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code></li>
+</ul>
+<br>
+</div>
+
+<pre><span id="VALis_nonempty_list"><span class="keyword">val</span> <a href="code_VALReduce.is_nonempty_list.html">is_nonempty_list</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is a separated non empty list,
+    that is if it has the following shape:
+    <pre class="verbatim">nel(xs) ::=           or    nel(xs) ::=
+          | `base`                    | `cons`
+          | `cons`                    | `base`</pre>
+    where<ul>
+<li><code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code></li>
+<li><code class="code">s</code> and <code class="code">nel</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a></li>
+<li><code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a></li>
+<li><code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code></li>
+<li><code class="code">acts&nbsp;=&nbsp;<span class="keywordsign">`</span>base<span class="keywordsign">`</span></code></li>
+</ul>
+
+    This condition is explained for a left-recursive list but the function
+    also copes with right-recursion.<br>
+</div>
+
+<pre><span id="VALis_sep_nonempty_list"><span class="keyword">val</span> <a href="code_VALReduce.is_sep_nonempty_list.html">is_sep_nonempty_list</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is a separated non empty list,
+    that is if it has the following shape:
+    <pre class="verbatim">snel(xs) ::=           or    snel(xs) ::=
+           | `base`                     | `cons`
+           | `cons`                     | `base`</pre>
+    where<ul>
+<li><code class="code"><span class="keywordsign">`</span>cons<span class="keywordsign">`</span>&nbsp;=&nbsp;s(ys)&nbsp;::&nbsp;acts</code></li>
+<li><code class="code">s</code> and <code class="code">snel</code> are equivalent according to <a href="Reduce.html#VALalias"><code class="code"><span class="constructor">Reduce</span>.alias</code></a></li>
+<li><code class="code">xs</code> and <code class="code">ys</code> are equivalent according to <a href="Reduce.html#VALequal_params"><code class="code"><span class="constructor">Reduce</span>.equal_params</code></a></li>
+<li><code class="code">s</code> does <a href="Reduce.html#VALnot_occurs"><code class="code"><span class="constructor">Reduce</span>.not_occurs</code></a> in <code class="code">acts</code></li>
+<li><code class="code">acts&nbsp;=&nbsp;sep&nbsp;@&nbsp;<span class="keywordsign">`</span>base<span class="keywordsign">`</span></code></li>
+</ul>
+
+    This condition is explained for a left-recursive list but the function
+    also copes with right-recursion.<br>
+</div>
+
+<pre><span id="VALis_sep_list"><span class="keyword">val</span> <a href="code_VALReduce.is_sep_list.html">is_sep_list</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is a separated list,
+    that is if it has the following shape:
+    <pre class="verbatim">sl ::=              or    sl ::=
+     | eps                     | snel(...)
+     | snel(...)               | eps</pre>
+    where <code class="code">snel</code> is recognized as a <code class="code">separated_nonempty_list</code> by
+    <a href="Reduce.html#VALis_sep_nonempty_list"><code class="code"><span class="constructor">Reduce</span>.is_sep_nonempty_list</code></a>.<br>
+</div>
+
+<pre><span id="VALis_option"><span class="keyword">val</span> <a href="code_VALReduce.is_option.html">is_option</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is an optional, that is if it has the following shape:
+    <pre class="verbatim">r ::=       or    r ::=
+   | eps              | `some`
+   | `some`           | eps</pre><br>
+</div>
+
+<pre><span id="VALrecognize"><span class="keyword">val</span> <a href="code_VALReduce.recognize.html">recognize</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) option</code></pre><div class="info ">
+Decide if the rule is a standard pattern.<br>
+</div>
+<br>
+<h3 id="3_Rulereducing">Rule reducing</h3><br>
+
+<pre><span id="VALreplace_prods"><span class="keyword">val</span> <a href="code_VALReduce.replace_prods.html">replace_prods</a></span> : <code class="type"><a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> 'a * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a></code></pre><div class="info ">
+Replace the right-hand side of a rule with the given pattern.<br>
+</div>
+
+<pre><span id="VALreduce_rule"><span class="keyword">val</span> <a href="code_VALReduce.reduce_rule.html">reduce_rule</a></span> : <code class="type">bool -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list * (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t -><br>       <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list * (string list * <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a>) M.t</code></pre><div class="info ">
+<code class="code">reduce_rule&nbsp;inline&nbsp;rules&nbsp;r&nbsp;(rs,&nbsp;rws)</code> returns a pair of a list of "reduced"
+    rules and a map from identifiers to a pair of a list of parameters and
+    a pattern, that is a map of recognized patterns.
+<p>
+
+    If the rule <code class="code">r</code> is recognized as a standard pattern then<ul>
+<li>if <code class="code">inline</code> is <code class="code"><span class="keyword">true</span></code>: <code class="code">r</code> is skipped and added to the map of recognized
+      patterns along with the according recognized pattern.</li>
+<li>if <code class="code">inline</code> is <code class="code"><span class="keyword">false</span></code>: the right-hand side of <code class="code">r</code> is replaced by the
+      recognized pattern.</li>
+</ul>
+<br>
+</div>
+<br>
+<h2 id="2_Alltogether">All together</h2><br>
+
+<pre><span id="VALreduce"><span class="keyword">val</span> <a href="code_VALReduce.reduce.html">reduce</a></span> : <code class="type">bool -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list</code></pre><div class="info ">
+<code class="code">reduce&nbsp;inline&nbsp;s</code> returns the grammar <code class="code">s</code> in which the right-hand sides
+    recognized as standard patterns are replaced by an instance of this pattern
+    (list, optional, ...).
+<p>
+
+    Moreover, if <code class="code">inline</code> is <code class="code"><span class="keyword">true</span></code> then the concerned
+    rules are deleted and inlined at each of their instances.<br>
+</div>
+</body></html>

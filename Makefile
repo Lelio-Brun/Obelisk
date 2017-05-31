@@ -1,14 +1,15 @@
 SRC=src
-DOC=doc
+DOC=docs
+MISC=misc
 TARGET=native
 MAIN=main.$(TARGET)
 EXE=obelisk
 FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers,roman
 PARSER=$(SRC)/parser.mly
-RECO=$(DOC)/reco.mly
+RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
 
-.PHONY: all latex html default reco doc clean
+.PHONY: all latex html default reco readme doc clean cleandoc
 
 all:
 	@ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
@@ -21,14 +22,14 @@ all:
 	@pdflatex -interaction batchmode $<
 
 %.png: %.pdf
-	@convert -density 150 $< -format png $(DOC)/$@
+	@convert -density 150 $< -format png $(MISC)/$@
 	@rm -f $*.tex $< $*.aux $*.log
 
 latex: all $(IMAGES:%=%.png)
 
 html: all
 	@./$(EXE) html $(PARSER) -o test.html
-	@wkhtmltoimage -f png --width 800 test.html $(DOC)/html.png
+	@wkhtmltoimage -f png --width 800 test.html $(MISC)/html.png
 	@rm -f test.html
 
 default:
@@ -41,7 +42,15 @@ reco:
 	@echo -e "\nDefault output on $(RECO) with '-i' switch:"
 	@./$(EXE) -i $(RECO)
 
-doc: latex html default reco
+readme: latex html default reco
 
-clean:
+doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
+	@ocamlbuild $(FLAGS) $(DOC)/$(EXE).docdir/index.html
+	@cp $(EXE).docdir/*.html $(DOC)
+	@rm -f $(EXE).docdir
+
+cleandoc:
+	@rm -rf $(DOCS)/*.html
+
+clean: cleandoc
 	@ocamlbuild -clean

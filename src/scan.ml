@@ -1,12 +1,22 @@
+(** Build the set of symbols appearing in a grammar. *)
+
 open Ast
 open Common
 open List
 
-let add_non_terminal symbols {name; params} =
+(** [add_defined symbols r] adds to the [symbols] set the name of [r]
+    (left-hand side) as a non terminal (see {!Common.Symbols.def_non_term})
+    if the rule has no parameter or as a functional non terminal along with
+    its parameters (see {!Common.Symbols.def_fun}) otherwise. *)
+let add_defined symbols {name; params} =
   match params with
    | [] -> Symbols.def_non_term name symbols
    | _ -> Symbols.def_fun name params symbols
 
+(** [add_terminal symbols r] recursively scans the right-hand side of [r] to add
+    the symbols which are not already "defined" in [symbols]
+    (see {!Common.Symbols.is_defined}) as terminals
+    (see {!Common.Symbols.def_term}). *)
 let add_terminal symbols {groups} =
   let rec add_terminal_actual symbols = function
     | Symbol (s, ps) ->
@@ -24,6 +34,8 @@ let add_terminal symbols {groups} =
   in
   fold_left add_terminal_group symbols groups
 
+(** [scan s] first gets the defined symbols of [s] then its terminals and
+    returns the whole set.  *)
 let scan s =
-  let symbols = fold_left add_non_terminal Symbols.empty s in
+  let symbols = fold_left add_defined Symbols.empty s in
   fold_left add_terminal symbols s
