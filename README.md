@@ -149,16 +149,16 @@ parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 
 #### LaTeX
 ##### Tabular
-![Tabular](doc/tabular.png)
+![Tabular](misc/tabular.png)
 
 ##### Syntax
-![Syntax](doc/syntax.png)
+![Syntax](misc/syntax.png)
 
 ##### Backnaur
-![Backnaur](doc/backnaur.png)
+![Backnaur](misc/backnaur.png)
 
 #### HTML
-![HTML](doc/html.png)
+![HTML](misc/html.png)
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
