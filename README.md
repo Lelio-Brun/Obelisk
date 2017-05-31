@@ -4,6 +4,8 @@
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of ocamlyacc.
 
+The code is [documented][doc].
+
 ## Installation
 ### Dependencies
 - OCaml 4.04.1
@@ -170,3 +172,4 @@ parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
 [Roman]: https://github.com/lindig/roman
+[doc]: https://lelio-brun.github.io/Obelisk/
