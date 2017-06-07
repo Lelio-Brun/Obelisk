@@ -4,7 +4,7 @@
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of ocamlyacc.
 
-The code is [documented][doc] (in progress).
+The code is [documented][doc].
 
 ## Installation
 ### Dependencies
