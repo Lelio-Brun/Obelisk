@@ -4,7 +4,7 @@
 %token LPAR RPAR BAR COLON EQ COMMA
 %token OPT PLUS STAR
 
-%token ACTION
+%token ACTION ATTRIBUTE
 %token <string> LID UID
 
 %token EOF
@@ -27,9 +27,15 @@ specification:
   rules=rule* EOF { rules }
 
 rule:
-  PUBLIC? INLINE? name=ident params=parameters(ident) COLON
+  flags? name=ident ATTRIBUTE* params=parameters(ident) COLON
   optional_bar groups=separated_nonempty_list(BAR, group)
   { { name; params; groups } }
+
+flags:
+  | PUBLIC        { () }
+  | INLINE        { () }
+  | PUBLIC INLINE { () }
+  | INLINE PUBLIC { () }
 
 optional_bar:
   /* epsilon */ %prec no_optional_bar
@@ -56,7 +62,7 @@ production:
 /* cf fancy-parser.mly of Menhir */
 
 producer:
-  ioption(terminated(LID, EQ)) actual=actual { actual }
+  ioption(terminated(LID, EQ)) actual=actual ATTRIBUTE* { actual }
 
 /* ------------------------------------------------------------------------- */
 /* The ideal syntax of actual parameters includes:

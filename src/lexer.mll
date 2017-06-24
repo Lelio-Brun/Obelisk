@@ -47,6 +47,7 @@ and token = parse
   | "%public"           { PUBLIC }
   | "%inline"           { INLINE }
   | "%prec"             { PREC }
+  | "[@"                { attribute lexbuf }
   | eof                 { EOF }
   | lid as s            { LID s }
   | uid as s            { UID s }
@@ -77,6 +78,13 @@ and ocaml_comment = parse
   | "(*"    { ocaml_comment lexbuf; ocaml_comment lexbuf }
   | eof     { error "Ocaml-style comment not terminated" }
   | _       { ocaml_comment lexbuf}
+
+and attribute = parse
+  | newline { newline lexbuf attribute }
+  | "]"     { ATTRIBUTE }
+  | "["     { ignore (attribute lexbuf); attribute lexbuf }
+  | eof     { error "Attribute not terminated" }
+  | _       { attribute lexbuf }
 
 {
   let lexer lexbuf =
