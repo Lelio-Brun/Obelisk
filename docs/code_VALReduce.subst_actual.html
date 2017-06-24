@@ -29,7 +29,7 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Reduce.subst_actual</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> subst_actual s =
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> subst_actual s a =
   <span class="keyword">let</span> subst_pattern =
     <span class="keyword">let</span> r = subst_actual s <span class="keyword">in</span>
     <span class="keyword">function</span>
@@ -45,7 +45,7 @@
     <span class="keywordsign">|</span> <span class="constructor">SepNEList</span> (sep, x) <span class="keywordsign">-&gt;</span> <span class="constructor">SepNEList</span> (r sep, r x)
   <span class="keyword">in</span>
   <span class="keyword">let</span> subst_production = <span class="constructor">List</span>.map (subst_actual s) <span class="keyword">in</span>
-  <span class="keyword">function</span>
+  <span class="keyword">match</span> a <span class="keyword">with</span>
   <span class="keywordsign">|</span> <span class="constructor">Symbol</span> (f, []) <span class="keywordsign">-&gt;</span>
     <span class="keyword">begin</span> <span class="keyword">try</span>
         <span class="constructor">M</span>.find f s

@@ -52,5 +52,5 @@
       <span class="keyword">end</span>
   <span class="keyword">in</span>
   <span class="keyword">match</span> r.prods <span class="keyword">with</span>
-  <span class="keywordsign">|</span> [x; y] <span class="keywordsign">-&gt;</span> f x y @@ f y x
+  <span class="keywordsign">|</span> [x; y] <span class="keywordsign">-&gt;</span> <span class="keyword">lazy</span> (f x y) @@ <span class="keyword">lazy</span> (f y x) |&gt; force
   <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="constructor">None</span></code></body></html>

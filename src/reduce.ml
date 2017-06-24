@@ -1,5 +1,6 @@
 (** Pattern-recognition and inlining.  *)
 
+open Lazy
 open ExtendedAst
 
 (** A map with identifiers keys. *)
@@ -11,7 +12,7 @@ module M = Map.Make(String)
 
 (** Performs a substitution over an actual.
     Only non functional symbols are substituted.  *)
-let rec subst_actual s =
+let rec subst_actual s a =
   let subst_pattern =
     let r = subst_actual s in
     function
@@ -27,7 +28,7 @@ let rec subst_actual s =
     | SepNEList (sep, x) -> SepNEList (r sep, r x)
   in
   let subst_production = List.map (subst_actual s) in
-  function
+  match a with
   | Symbol (f, []) ->
     begin try
         M.find f s
@@ -120,10 +121,10 @@ let rewrite rws =
 
 (** {3 Pattern recognition}  *)
 
-(** A "monadic" composition operator for the [option] monad.
+(** A lazy "monadic" composition operator for the [option] monad.
     [compose x y] returns [y] if [x] fails otherwise it returns [x]. *)
 let compose x y =
-  match x with
+  match force x with
   | None -> y
   | _ -> x
 
@@ -156,7 +157,7 @@ let equal_params = List.for_all2 (fun x y -> y = Symbol (x, []))
 
 (** [not_occurs s a] is [true] when the symbol [s] does not occur in
     the actual [a]. *)
-let rec not_occurs s =
+let rec not_occurs s a =
   let not_occurs_pattern =
     let n = not_occurs s in
     function
@@ -165,7 +166,7 @@ let rec not_occurs s =
     | SepList (x, y) | SepNEList (x, y) -> n x && n y
     | SepPair (x, y, z) | Delimited (x, y, z) -> n x && n y && n z
   in
-  function
+  match a with
   | Symbol (f, xs) -> f <> s && List.for_all (not_occurs s) xs
   | Pattern p -> not_occurs_pattern p
   | Modifier (x, _) -> not_occurs s x
@@ -247,7 +248,7 @@ let is_nonempty_list rules r =
       end
   in
   match r.prods with
-  | [x; y] -> f x y @@ f y x
+  | [x; y] -> lazy (f x y) @@ lazy (f y x) |> force
   | _ -> None
 
 (** Decide if the rule is a separated non empty list,
@@ -301,7 +302,7 @@ let is_sep_nonempty_list rules r =
       end
   in
   match r.prods with
-  | [x; y] -> f x y @@ f y x
+  | [x; y] -> lazy (f x y) @@ lazy (f y x) |> force
   | _ -> None
 
 (** Decide if the rule is a separated list,
@@ -347,11 +348,12 @@ let is_option r =
 
 (** Decide if the rule is a standard pattern. *)
 let recognize rules r =
-  is_list rules r
-  @@ is_nonempty_list rules r
-  @@ is_sep_nonempty_list rules r
-  @@ is_sep_list rules r
-  @@ is_option r
+  lazy (is_list rules r)
+  @@ lazy (is_nonempty_list rules r)
+  @@ lazy (is_sep_nonempty_list rules r)
+  @@ lazy (is_sep_list rules r)
+  @@ lazy (is_option r)
+  |> force
 
 (** {3 Rule reducing}  *)
 

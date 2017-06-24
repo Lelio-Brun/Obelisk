@@ -30,8 +30,9 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> recognize rules r =
-  is_list rules r
-  @@ is_nonempty_list rules r
-  @@ is_sep_nonempty_list rules r
-  @@ is_sep_list rules r
-  @@ is_option r</code></body></html>
+  <span class="keyword">lazy</span> (is_list rules r)
+  @@ <span class="keyword">lazy</span> (is_nonempty_list rules r)
+  @@ <span class="keyword">lazy</span> (is_sep_nonempty_list rules r)
+  @@ <span class="keyword">lazy</span> (is_sep_list rules r)
+  @@ <span class="keyword">lazy</span> (is_option r)
+  |&gt; force</code></body></html>

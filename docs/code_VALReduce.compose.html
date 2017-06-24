@@ -30,6 +30,6 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> compose x y =
-  <span class="keyword">match</span> x <span class="keyword">with</span>
+  <span class="keyword">match</span> force x <span class="keyword">with</span>
   <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span> y
   <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> x</code></body></html>

@@ -29,7 +29,7 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Reduce.not_occurs</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> not_occurs s =
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> not_occurs s a =
   <span class="keyword">let</span> not_occurs_pattern =
     <span class="keyword">let</span> n = not_occurs s <span class="keyword">in</span>
     <span class="keyword">function</span>
@@ -38,7 +38,7 @@
     <span class="keywordsign">|</span> <span class="constructor">SepList</span> (x, y) <span class="keywordsign">|</span> <span class="constructor">SepNEList</span> (x, y) <span class="keywordsign">-&gt;</span> n x <span class="keywordsign">&amp;&amp;</span> n y
     <span class="keywordsign">|</span> <span class="constructor">SepPair</span> (x, y, z) <span class="keywordsign">|</span> <span class="constructor">Delimited</span> (x, y, z) <span class="keywordsign">-&gt;</span> n x <span class="keywordsign">&amp;&amp;</span> n y <span class="keywordsign">&amp;&amp;</span> n z
   <span class="keyword">in</span>
-  <span class="keyword">function</span>
+  <span class="keyword">match</span> a <span class="keyword">with</span>
   <span class="keywordsign">|</span> <span class="constructor">Symbol</span> (f, xs) <span class="keywordsign">-&gt;</span> f &lt;&gt; s <span class="keywordsign">&amp;&amp;</span> <span class="constructor">List</span>.for_all (not_occurs s) xs
   <span class="keywordsign">|</span> <span class="constructor">Pattern</span> p <span class="keywordsign">-&gt;</span> not_occurs_pattern p
   <span class="keywordsign">|</span> <span class="constructor">Modifier</span> (x, _) <span class="keywordsign">-&gt;</span> not_occurs s x

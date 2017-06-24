@@ -105,12 +105,12 @@ Inline the recognized patterns in the grammar.<br>
 <br>
 <h3 id="3_Patternrecognition">Pattern recognition</h3><br>
 
-<pre><span id="VALcompose"><span class="keyword">val</span> <a href="code_VALReduce.compose.html">compose</a></span> : <code class="type">'a option -> 'a option -> 'a option</code></pre><div class="info ">
-A "monadic" composition operator for the <code class="code">option</code> monad.
+<pre><span id="VALcompose"><span class="keyword">val</span> <a href="code_VALReduce.compose.html">compose</a></span> : <code class="type">'a option Lazy.t -> 'a option Lazy.t -> 'a option Lazy.t</code></pre><div class="info ">
+A lazy "monadic" composition operator for the <code class="code">option</code> monad.
     <code class="code">compose&nbsp;x&nbsp;y</code> returns <code class="code">y</code> if <code class="code">x</code> fails otherwise it returns <code class="code">x</code>.<br>
 </div>
 
-<pre><span id="VAL(@@)"><span class="keyword">val</span> <a href="code_VALReduce.(_at__at_).html">(@@)</a></span> : <code class="type">'a option -> 'a option -> 'a option</code></pre><div class="info ">
+<pre><span id="VAL(@@)"><span class="keyword">val</span> <a href="code_VALReduce.(_at__at_).html">(@@)</a></span> : <code class="type">'a option Lazy.t -> 'a option Lazy.t -> 'a option Lazy.t</code></pre><div class="info ">
 An infix notation for <a href="Reduce.html#VALcompose"><code class="code"><span class="constructor">Reduce</span>.compose</code></a>.<br>
 </div>
 
