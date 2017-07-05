@@ -9,7 +9,7 @@ PARSER=$(SRC)/parser.mly
 RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
 
-.PHONY: all latex html default reco readme doc clean cleandoc
+.PHONY: all latex html default reco readme doc clean cleandoc install uninstall
 
 all:
 	@ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
@@ -54,3 +54,11 @@ cleandoc:
 
 clean: cleandoc
 	@ocamlbuild -clean
+
+install: all
+	echo $(BINDIR)
+	@mkdir -p $(BINDIR)
+	@install $(EXE) $(BINDIR)/$(EXE)
+
+uninstall:
+	@rm -f $(BINDIR)/$(EXE)
