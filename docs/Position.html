@@ -81,7 +81,7 @@ A "dummy" error location.<br>
 Build an error location from the start and end positions.<br>
 </div>
 
-<pre><span id="VALerr_loc"><span class="keyword">val</span> <a href="code_VALPosition.err_loc.html">err_loc</a></span> : <code class="type">string Pervasives.ref -> <a href="Position.html#TYPEposition">position</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALerr_loc"><span class="keyword">val</span> <a href="code_VALPosition.err_loc.html">err_loc</a></span> : <code class="type">string -> <a href="Position.html#TYPEposition">position</a> -> string -> unit</code></pre><div class="info ">
 Print a located error message on the standard error output.<br>
 </div>
 
@@ -89,7 +89,7 @@ Print a located error message on the standard error output.<br>
 Build an error location from the lexer buffer.<br>
 </div>
 
-<pre><span id="VALerr_loc_lexbuf"><span class="keyword">val</span> <a href="code_VALPosition.err_loc_lexbuf.html">err_loc_lexbuf</a></span> : <code class="type">string Pervasives.ref -> Lexing.lexbuf -> unit</code></pre><div class="info ">
+<pre><span id="VALerr_loc_lexbuf"><span class="keyword">val</span> <a href="code_VALPosition.err_loc_lexbuf.html">err_loc_lexbuf</a></span> : <code class="type">string * Lexing.lexbuf -> string -> unit</code></pre><div class="info ">
 Print an error message located with the lexer buffer.<br>
 </div>
 </body></html>

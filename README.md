@@ -31,8 +31,10 @@ This will provide you with a **obelisk** executable which you can feed *.mly* fi
 
 ## Usage
 ```
-obelisk [latex|html] [options] <file>
+obelisk [latex|html] [options] <files>
 ```
+
+If multiple files are specified, **Obelisk** will output a concatenated result, without consistency checks, so the user is responsible for avoiding eg. name clashes between the several files.
 
 By default **Obelisk** defaults to standard output, use `-o <file>` to specify an output file.
 
@@ -44,7 +46,7 @@ By default **Obelisk** defaults to standard output, use `-o <file>` to specify a
 
 Once recognized, if the `-i` switch is specified the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*). Without the `-i` flag, only the productions of the recognized rules are replaced, the total amount of rules remaining the same.
 
-For example, on these simple rules (from this [file](doc/reco.mly)):
+For example, on these simple rules (from this [file](misc/reco.mly)):
 ```
 my_option(X, Y):
   |     {}
@@ -119,7 +121,13 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ```
 <specification> ::= <rule>* EOF
 
-<rule> ::= [PUBLIC] [INLINE] <ident> parameters(<ident>) COLON <optional_bar> <group> (BAR <group>)*
+<rule> ::= [<flags>] <ident> ATTRIBUTE* parameters(<ident>) COLON
+           <optional_bar> <group> (BAR <group>)*
+
+<flags> ::= PUBLIC
+          | INLINE
+          | PUBLIC INLINE
+          | INLINE PUBLIC
 
 <optional_bar> ::= [BAR]
 
@@ -127,7 +135,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <production> ::= <producer>* [<precedence>]
 
-<producer> ::= [LID EQ] <actual>
+<producer> ::= [LID EQ] <actual> ATTRIBUTE*
 
 generic_actual(A, B) ::= <ident> parameters(A)
                        | B <modifier>

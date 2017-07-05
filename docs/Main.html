@@ -42,15 +42,18 @@
 The main driver of the application.
 <p>
 
-    Once parsed, the grammar is scanned (<a href="Scan.html"><code class="code"><span class="constructor">Scan</span></code></a>) to get back the symbols then
+    Once parsed the grammars are concatenated into one.
+<p>
+
+    The resulting grammar is scanned (<a href="Scan.html"><code class="code"><span class="constructor">Scan</span></code></a>) to get back the symbols then
     normalized (<a href="Normalize.html"><code class="code"><span class="constructor">Normalize</span></code></a>) and transformed (<a href="Transform.html"><code class="code"><span class="constructor">Transform</span></code></a>) to a simpler form.
     Finally, after an optional pass of pattern-recognition (<a href="Reduce.html"><code class="code"><span class="constructor">Reduce</span></code></a>) it is
     printed (<a href="Printers.html"><code class="code"><span class="constructor">Printers</span></code></a>).<br>
 </div>
 <hr width="100%">
 
-<pre><span id="VALifile"><span class="keyword">val</span> <a href="code_VALMain.ifile.html">ifile</a></span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
-The input file.<br>
+<pre><span id="VALifiles"><span class="keyword">val</span> <a href="code_VALMain.ifiles.html">ifiles</a></span> : <code class="type">string list Pervasives.ref</code></pre><div class="info ">
+The input files.<br>
 </div>
 
 <pre><span id="VALofile"><span class="keyword">val</span> <a href="code_VALMain.ofile.html">ofile</a></span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
@@ -139,10 +142,6 @@ The chosen mode, default to <a href="Main.html#TYPEELTmode.Default"><code class=
 Do we inline inferred patterns ? <code class="code"><span class="keyword">false</span></code> by default.<br>
 </div>
 
-<pre><span id="VALset_file"><span class="keyword">val</span> <a href="code_VALMain.set_file.html">set_file</a></span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
-Specify the filenames of <a href="Main.html#VALifile"><code class="code"><span class="constructor">Main</span>.ifile</code></a> and <a href="Main.html#VALofile"><code class="code"><span class="constructor">Main</span>.ofile</code></a>.<br>
-</div>
-
 <pre><span id="VALoptions"><span class="keyword">val</span> <a href="code_VALMain.options.html">options</a></span> : <code class="type">(Arg.key * Arg.spec * Arg.doc) list Pervasives.ref</code></pre><div class="info ">
 Default common command-line options.<br>
 </div>
@@ -164,8 +163,12 @@ Function called on anonymous arguments.
     It is used to trigger the LaTeX and HTML modes and to get the input file.<br>
 </div>
 
-<pre><span id="VALget"><span class="keyword">val</span> <a href="code_VALMain.get.html">get</a></span> : <code class="type">unit -><br>       Lexing.lexbuf * (<a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEspec">ExtendedAst.spec</a> -> unit) *<br>       (unit -> unit)</code></pre><div class="info ">
-<b>Returns</b> the lexer buffer, a printer chosen from the according passed options
-    and a function to finally close the input channel.<br>
+<pre><span id="VALget"><span class="keyword">val</span> <a href="code_VALMain.get.html">get</a></span> : <code class="type">unit -><br>       (string * Lexing.lexbuf) list *<br>       (<a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEspec">ExtendedAst.spec</a> -> unit) * (unit -> unit)</code></pre><div class="info ">
+<b>Returns</b> the lexer buffers, a printer chosen from the according passed
+    options and a function to finally close the input and output channels.<br>
+</div>
+
+<pre><span id="VALparse"><span class="keyword">val</span> <a href="code_VALMain.parse.html">parse</a></span> : <code class="type">string * Lexing.lexbuf -> <a href="Ast.html#TYPEspec">Ast.spec</a></code></pre><div class="info ">
+<b>Returns</b> the obtained grammars per input file / lexer buffer.<br>
 </div>
 </body></html>

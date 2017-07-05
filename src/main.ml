@@ -1,15 +1,18 @@
 (** The main driver of the application.
 
-    Once parsed, the grammar is scanned ({!Scan}) to get back the symbols then
+    Once parsed the grammars are concatenated into one.
+
+    The resulting grammar is scanned ({!Scan}) to get back the symbols then
     normalized ({!Normalize}) and transformed ({!Transform}) to a simpler form.
     Finally, after an optional pass of pattern-recognition ({!Reduce}) it is
     printed ({!Printers}).  *)
 
+open List
 open Position
 open Format
 
-(** The input file.*)
-let ifile = ref ""
+(** The input files.*)
+let ifiles = ref []
 (** The output file. *)
 let ofile = ref ""
 
@@ -29,9 +32,6 @@ and latexmode =
 let mode = ref Default
 (** Do we inline inferred patterns ? [false] by default. *)
 let inline = ref false
-
-(** Specify the filenames of {!ifile} and {!ofile}. *)
-let set_file f s = f := s
 
 (** Default common command-line options. *)
 let options = ref (Arg.align [
@@ -66,17 +66,15 @@ let parse_cmd =
     options := Arg.align !options
 
   | f ->
-    set_file ifile f
+    ifiles := f :: !ifiles
 
-(** @return the lexer buffer, a printer chosen from the according passed options
-    and a function to finally close the input channel.*)
+(** @return the lexer buffers, a printer chosen from the according passed
+    options and a function to finally close the input and output channels.*)
 let get () =
   Arg.parse_dynamic options parse_cmd msg;
   try
-    if !ifile = "" then (Arg.usage !options msg; exit 1);
-    let inf = open_in !ifile in
+    if !ifiles = [] then (Arg.usage !options msg; exit 1);
     let outf = if !ofile = "" then stdout else open_out !ofile in
-    let lexbuf = Lexing.from_channel inf in
     let formatter = formatter_of_out_channel outf in
     let p = match !mode with
       | Default -> (module Printers.Default : GenericPrinter.PRINTER)
@@ -87,16 +85,32 @@ let get () =
     in
     let module P = (val p: GenericPrinter.PRINTER) in
     let print = P.print_spec formatter in
-    let close () = close_in inf; close_out outf in
-    lexbuf, print, close
+    let files = rev !ifiles in
+    let infs = map open_in files in
+    let lexbufs = map Lexing.from_channel infs in
+    let close () = iter close_in infs; close_out outf in
+    combine files lexbufs, print, close
   with Sys_error s ->
     eprintf "System Error%s@." s;
     exit 1
 
-let () =
-  let lexbuf, print, close = get () in
+(** @return the obtained grammars per input file / lexer buffer.  *)
+let parse (file, lexbuf as fl) =
   try
-    let s = Parser.specification Lexer.lexer lexbuf in
+    Lexer.init ();
+    Parser.specification Lexer.lexer lexbuf
+  with
+  | Lexer.LexingError s ->
+    err_loc_lexbuf fl (sprintf "Lexing Error: %s" s);
+    exit 1
+  | Parser.Error ->
+    err_loc_lexbuf fl "Parsing Error";
+    exit 1
+
+let () =
+  let lexbufs, print, close = get () in
+  try
+    let s = map parse lexbufs |> concat in
     let symbols = Scan.scan s in
     s
     |> Normalize.normalize
@@ -107,12 +121,4 @@ let () =
   with
   | Sys_error s ->
     eprintf "System Error%s@." s;
-    exit 1
-  | Lexer.LexingError s ->
-    err_loc_lexbuf ifile lexbuf;
-    eprintf "Lexing Error: %s@." s;
-    exit 1
-  | Parser.Error ->
-    err_loc_lexbuf ifile lexbuf;
-    eprintf "Parsing Error@.";
     exit 1

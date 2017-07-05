@@ -87,6 +87,9 @@ and attribute = parse
   | _       { attribute lexbuf }
 
 {
+  let init () =
+    prologue := true
+
   let lexer lexbuf =
     (if !prologue then main else token) lexbuf
 }
