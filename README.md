@@ -20,9 +20,7 @@ opam install ocamlbuild menhir
 ```
 
 ### Manual build
-Since [Roman] is a git submodule, you should `git clone --recursive` to clone the **Obelisk** repository or `git submodule update --init` after a simple clone.
-
-Then just type :
+Just `git clone` to clone the **Obelisk** repository, then type :
 ```
 make
 ```
@@ -179,5 +177,4 @@ parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 [tabu]: https://www.ctan.org/pkg/tabu
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
-[Roman]: https://github.com/lindig/roman
 [doc]: https://lelio-brun.github.io/Obelisk/
