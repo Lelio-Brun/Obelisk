@@ -1,8 +1,8 @@
 # Obelisk
 ## Overview
-**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (*.mly*).
+**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
-It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of ocamlyacc.
+It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
 
 The code is [documented][doc].
 
@@ -14,18 +14,24 @@ The code is [documented][doc].
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
-If you use [OPAM], just type :
+### OPAM
+If you use [OPAM], just type:
 ```
-opam install ocamlbuild menhir
+opam install obelisk
 ```
 
-### Manual build
-Just `git clone` to clone the **Obelisk** repository, then type :
+### Manual installation
+Just `git clone` to clone the **Obelisk** repository, then type:
 ```
 make
 ```
 
-This will provide you with a **obelisk** executable which you can feed *.mly* files with.
+This will provide you with a **obelisk** executable which you can feed _.mly_ files with.
+
+If you want to install obelisk, you can type:
+```
+make install BINDIR=<the destination directory>
+```
 
 ## Usage
 ```
@@ -101,14 +107,16 @@ my_rule(E, F, S1, S2) ::= [F E]
 ```
 
 ### Multi-format output
-By default the output format is a simple text format close to the BNF syntax. You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
+By default the output format is a simple text format close to the BNF syntax.
+You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
 
 Use the following options to tweak the LaTeX:
 - `-tabular`: a *tabular*-based format from the [tabu] package (default)
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
-In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs. The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form (thanks to the [Roman] module).
+In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
+The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form (thanks to the [Roman] module).
 
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
 
@@ -170,6 +178,7 @@ parameters(X) ::= [LPAR [X (COMMA X)*] RPAR]
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
+[ocamlyacc]: https://caml.inria.fr/pub/docs/manual-ocaml/lexyacc.html#sec307
 [OCaml]: http://ocaml.org/
 [OPAM]: http://opam.ocaml.org/
 [wkhtmltopdf]: https://wkhtmltopdf.org/
