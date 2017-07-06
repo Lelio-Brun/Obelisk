@@ -116,7 +116,7 @@ Use the following options to tweak the LaTeX:
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
 In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
-The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form (thanks to the [Roman] module).
+The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form.
 
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
 

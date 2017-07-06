@@ -32,11 +32,7 @@
 <code class="code"><span class="keyword">let</span> command x =
   <span class="keyword">let</span> roman =
     <span class="constructor">Str</span>.global_substitute (<span class="constructor">Str</span>.regexp <span class="string">"[0-9]+"</span>)
-      (<span class="keyword">fun</span> s <span class="keywordsign">-&gt;</span>
-         <span class="constructor">Str</span>.matched_string s
-         |&gt; int_of_string
-         |&gt; <span class="constructor">Roman</span>.as_roman
-         |&gt; <span class="constructor">String</span>.uppercase_ascii)
+      (<span class="keyword">fun</span> s <span class="keywordsign">-&gt;</span> <span class="constructor">Str</span>.matched_string s |&gt; to_roman)
   <span class="keyword">in</span>
   <span class="keyword">let</span> clear_underscore =
     <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">""</span>
