@@ -5,14 +5,35 @@ let documentclass header =
     ("@[<v 0>\\\\documentclass[preview]{standalone}@;@;\
       \\\\usepackage{suffix}@;" ^ header)
 
+let to_roman i =
+  let rec conv (i, x) (d, r as dr) =
+    if i mod d < i then
+      conv (i - d, x ^ r) dr
+    else
+      (i, x)
+  in
+  List.fold_left conv (int_of_string i, "")
+    [
+      1000, "M";
+      900, "CM";
+      500, "D";
+      400, "CD";
+      100, "C";
+      90, "XC";
+      50, "L";
+      40, "XL";
+      10, "X";
+      9, "IX";
+      5, "V";
+      4, "IV";
+      1, "I"
+    ]
+  |> snd
+
 let command x =
   let roman =
     Str.global_substitute (Str.regexp "[0-9]+")
-      (fun s ->
-         Str.matched_string s
-         |> int_of_string
-         |> Roman.as_roman
-         |> String.uppercase_ascii)
+      (fun s -> Str.matched_string s |> to_roman)
   in
   let clear_underscore =
     Str.global_replace (Str.regexp "_") ""
