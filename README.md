@@ -138,8 +138,10 @@ These two files are then intended to be included in a non-supplied main LaTeX fi
 \end{document}
 ```
 
+To avoid name clashes, in particular when using the `-package` option and eg. importing multiple grammars with the same token names (hence the same LaTeX commands names), you can specify a common prefix for the commands representing the tokens with the option `-prefix <myprefix>`.
+
 #### HTML
-The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than with the `latex` switch).
+The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than in the `latex` mode).
 
 ### Example
 Here are the different formats output obtained by **Obelisk** from its own [parser](src/parser.mly).

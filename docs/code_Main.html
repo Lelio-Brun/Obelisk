@@ -50,6 +50,8 @@
 <span class="keyword">let</span>&nbsp;ofile&nbsp;=&nbsp;ref&nbsp;<span class="string">""</span><br>
 </code><table><tr><td></td><td><span class="comment">(** The <i>.sty</i> package file (used only in LaTeX mode). *)</span></td></tr></table><code class="code"><br>
 <span class="keyword">let</span>&nbsp;pfile&nbsp;=&nbsp;ref&nbsp;<span class="string">""</span><br>
+</code><table><tr><td></td><td><span class="comment">(** The LaTeX tokens commands prefix. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;prefix&nbsp;=&nbsp;ref&nbsp;<span class="string">""</span><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** The different output modes. *)</span></td></tr></table><code class="code"><br>
 <span class="keyword">type</span>&nbsp;mode&nbsp;=<br>
@@ -83,7 +85,8 @@
 &nbsp;&nbsp;<span class="string">"-tabular"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Tabular</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;tabular&nbsp;environment&nbsp;(default)"</span>;<br>
 &nbsp;&nbsp;<span class="string">"-syntax"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Syntax</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;`syntax`&nbsp;package"</span>;<br>
 &nbsp;&nbsp;<span class="string">"-backnaur"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Unit</span>&nbsp;(set_latexmode&nbsp;<span class="constructor">Backnaur</span>),&nbsp;<span class="string">"&nbsp;Use&nbsp;`backnaur`&nbsp;package"</span>;<br>
-&nbsp;&nbsp;<span class="string">"-package"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Set_string</span>&nbsp;pfile,&nbsp;<span class="string">"&nbsp;Set&nbsp;the&nbsp;package&nbsp;name,&nbsp;without&nbsp;extension.&nbsp;Use&nbsp;with&nbsp;`-o`"</span><br>
+&nbsp;&nbsp;<span class="string">"-package"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Set_string</span>&nbsp;pfile,&nbsp;<span class="string">"&nbsp;Set&nbsp;the&nbsp;package&nbsp;name,&nbsp;without&nbsp;extension.&nbsp;Use&nbsp;with&nbsp;`-o`"</span>;<br>
+&nbsp;&nbsp;<span class="string">"-prefix"</span>,&nbsp;<span class="constructor">Arg</span>.<span class="constructor">Set_string</span>&nbsp;prefix,&nbsp;<span class="string">"&nbsp;Set&nbsp;the&nbsp;LaTeX&nbsp;tokens&nbsp;commands&nbsp;(macros)&nbsp;prefix"</span><br>
 ]<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** Usage message.  *)</span></td></tr></table><code class="code"><br>
@@ -123,6 +126,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">PP</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>&nbsp;=&nbsp;<span class="keyword">struct</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;p&nbsp;=&nbsp;formatter_package<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;package&nbsp;=&nbsp;!pfile<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prefix&nbsp;=&nbsp;!prefix<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span>&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;p&nbsp;=&nbsp;<span class="keyword">match</span>&nbsp;!mode&nbsp;<span class="keyword">with</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Default</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Printers</span>.<span class="constructor">Default</span>&nbsp;:&nbsp;<span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>)<br>

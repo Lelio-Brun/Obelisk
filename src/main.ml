@@ -17,6 +17,8 @@ let ifiles = ref []
 let ofile = ref ""
 (** The {i .sty} package file (used only in LaTeX mode). *)
 let pfile = ref ""
+(** The LaTeX tokens commands prefix. *)
+let prefix = ref ""
 
 (** The different output modes. *)
 type mode =
@@ -50,7 +52,8 @@ let latex_opt = [
   "-tabular", Arg.Unit (set_latexmode Tabular), " Use tabular environment (default)";
   "-syntax", Arg.Unit (set_latexmode Syntax), " Use `syntax` package";
   "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
-  "-package", Arg.Set_string pfile, " Set the package name, without extension. Use with `-o`"
+  "-package", Arg.Set_string pfile, " Set the package name, without extension. Use with `-o`";
+  "-prefix", Arg.Set_string prefix, " Set the LaTeX tokens commands (macros) prefix"
 ]
 
 (** Usage message.  *)
@@ -90,6 +93,7 @@ let get () =
     let module PP : MiniLatex.PACKAGEPRINTER = struct
       let p = formatter_package
       let package = !pfile
+      let prefix = !prefix
     end in
     let p = match !mode with
       | Default -> (module Printers.Default : GenericPrinter.PRINTER)

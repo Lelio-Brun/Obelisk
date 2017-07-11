@@ -82,7 +82,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;clear_underscore&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">""</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;roman&nbsp;x&nbsp;|&gt;&nbsp;clear_underscore<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">P</span>.prefix&nbsp;^&nbsp;x&nbsp;|&gt;&nbsp;roman&nbsp;|&gt;&nbsp;clear_underscore<br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;begin_document&nbsp;env&nbsp;ts&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;commands&nbsp;ts&nbsp;=<br>

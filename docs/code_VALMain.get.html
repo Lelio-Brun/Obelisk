@@ -46,6 +46,7 @@
     <span class="keyword">let</span> <span class="keyword">module</span> <span class="constructor">PP</span> : <span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span> = <span class="keyword">struct</span>
       <span class="keyword">let</span> p = formatter_package
       <span class="keyword">let</span> package = !pfile
+      <span class="keyword">let</span> prefix = !prefix
     <span class="keyword">end</span> <span class="keyword">in</span>
     <span class="keyword">let</span> p = <span class="keyword">match</span> !mode <span class="keyword">with</span>
       <span class="keywordsign">|</span> <span class="constructor">Default</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">Default</span> : <span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>)

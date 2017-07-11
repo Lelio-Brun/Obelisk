@@ -37,4 +37,4 @@
     <span class="keyword">let</span> clear_underscore =
       <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">""</span>
     <span class="keyword">in</span>
-    roman x |&gt; clear_underscore</code></body></html>
+    <span class="constructor">P</span>.prefix ^ x |&gt; roman |&gt; clear_underscore</code></body></html>

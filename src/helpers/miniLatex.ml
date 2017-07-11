@@ -1,6 +1,7 @@
 module type PACKAGEPRINTER = sig
   val p: Format.formatter
   val package: string
+  val prefix: string
 end
 
 module Make (P : PACKAGEPRINTER) = struct
@@ -56,7 +57,7 @@ module Make (P : PACKAGEPRINTER) = struct
     let clear_underscore =
       Str.global_replace (Str.regexp "_") ""
     in
-    roman x |> clear_underscore
+    P.prefix ^ x |> roman |> clear_underscore
 
   let begin_document env ts =
     let commands ts =
