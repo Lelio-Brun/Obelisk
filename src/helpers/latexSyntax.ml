@@ -26,22 +26,25 @@ module Make (P : MiniLatex.PACKAGEPRINTER) : module type of Helper = struct
     documentclass
       (usepackage "" "syntax" ^
        "@;\
-        \\\\newcommand{\\\\term}[1]{#1}@;\
+        \\\\newcommand{\\\\gramterm}[1]{#1}@;\
+        \\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\
         \\\\newcommand{\\\\gramdef}{::=}@;\
-        \\\\newlength{\\\\maxindent}@;\
-        \\\\settowidth{\\\\maxindent}{\\\\synt{" ^ max ^
+        \\\\newcommand{\\\\grambar}{\\\\alt}@;\
+        \\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\
+        \\\\newlength{\\\\grammaxindent}@;\
+        \\\\settowidth{\\\\grammaxindent}{\\\\synt{" ^ max ^
        "} \\\\gramdef{} }@;\
-        \\\\setlength{\\\\grammarindent}{\\\\maxindent}@;@;");
+        \\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;");
     begin_document "grammar" (Common.Symbols.terminals symbols)
 
   let print_footer () = end_document "grammar"
 
   let def = "> \\\\gramdef{} "
-  let prod_bar = "\\\\alt "
-  let bar = "@ \\\\alt@ "
+  let prod_bar = "\\\\grambar "
+  let bar = "@ \\\\grambar@ "
   let space = "@ "
   let break = "@;"
-  let eps = "$\\\\epsilon$"
+  let eps = "\\\\grameps"
 
   let print_rule_name is_not_fun =
     print_fmt (if is_not_fun then "<%s" else "<%s")
@@ -51,8 +54,8 @@ module Make (P : MiniLatex.PACKAGEPRINTER) : module type of Helper = struct
     print_string "@]@;@;"
 
   let print_symbol is_term _ s print_params =
-    if is_term then print_fmt "\\term{\\%s{}}" (command s)
-    else begin print_fmt "\\synt{%s" s;
+    if is_term then print_fmt "\\gramterm{\\%s{}}" (command s)
+    else begin print_fmt "\\gramnonterm{%s" s;
       print_params ();
       print_string "}"
     end

@@ -67,17 +67,17 @@ module Make (P : PACKAGEPRINTER) = struct
     in
     commands ts;
     print_fmt_package
-      "\\newcommand\\bnfopt[1]{[#1]}@;\
-       \\newcommand\\bnfplus[1]{#1\\ensuremath{^+}}@;\
-       \\newcommand\\bnfstar[1]{#1\\ensuremath{^*}}@;\
-       \\newcommand\\bnfseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
-       \\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
+      "\\newcommand\\gramopt[1]{[#1]}@;\
+       \\newcommand\\gramplus[1]{#1\\ensuremath{^+}}@;\
+       \\newcommand\\gramstar[1]{#1\\ensuremath{^*}}@;\
+       \\newcommand\\gramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
+       \\newcommand\\gramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
        \\newcommand\\paren[1]{(#1)}@;\
-       \\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\
-       \\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\
-       \\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;\
-       \\WithSuffix\\newcommand\\bnfseplist*[2]{\\paren{\\bnfseplist{#1}{#2}}}@;\
-       \\WithSuffix\\newcommand\\bnfsepnelist*[2]{\\paren{\\bnfsepnelist{#1}{#2}}}";
+       \\WithSuffix\\newcommand\\gramopt*[1]{\\paren{\\gramopt{#1}}}@;\
+       \\WithSuffix\\newcommand\\gramplus*[1]{\\paren{\\gramplus{#1}}}@;\
+       \\WithSuffix\\newcommand\\gramstar*[1]{\\paren{\\gramstar{#1}}}@;\
+       \\WithSuffix\\newcommand\\gramseplist*[2]{\\paren{\\gramseplist{#1}{#2}}}@;\
+       \\WithSuffix\\newcommand\\gramsepnelist*[2]{\\paren{\\gramsepnelist{#1}{#2}}}";
     print_fmt "%s\\begin{%s}@;" (if use then "" else "\n\n\\begin{document}\n\n") env
 
   let end_document env =
@@ -89,10 +89,10 @@ module Make (P : PACKAGEPRINTER) = struct
       print ();
       print_string "}"
     in
-    cmd "bnfopt", cmd "bnfplus", cmd "bnfstar"
+    cmd "gramopt", cmd "gramplus", cmd "gramstar"
 
   let print_sep_list e nonempty print_sep print_x =
-    print_fmt "\\bnfsep%slist%s{"
+    print_fmt "\\gramsep%slist%s{"
       (if nonempty then "ne" else "")
       (if e then "*" else "");
     print_sep ();

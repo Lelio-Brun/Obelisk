@@ -56,18 +56,18 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;documentclass<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"syntax"</span>&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newcommand{\\\\term}[1]{#1}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newlength{\\\\maxindent}@;\\\\settowidth{\\\\maxindent}{\\\\synt{"</span>&nbsp;^&nbsp;max&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"}&nbsp;\\\\gramdef{}&nbsp;}@;\\\\setlength{\\\\grammarindent}{\\\\maxindent}@;@;"</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newcommand{\\\\gramterm}[1]{#1}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newcommand{\\\\grambar}{\\\\alt}@;\\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\\\\newlength{\\\\grammaxindent}@;\\\\settowidth{\\\\grammaxindent}{\\\\synt{"</span>&nbsp;^&nbsp;max&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"}&nbsp;\\\\gramdef{}&nbsp;}@;\\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;"</span>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&gt;&nbsp;\\\\gramdef{}&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\alt&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\alt@&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\grambar&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"@;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"$\\\\epsilon$"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"\\\\grameps"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"&lt;%s"</span>)<br>
@@ -77,8 +77,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;_&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\term{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">begin</span>&nbsp;print_fmt&nbsp;<span class="string">"\\synt{%s"</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramterm{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">begin</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramnonterm{%s"</span>&nbsp;s;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_params&nbsp;();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>

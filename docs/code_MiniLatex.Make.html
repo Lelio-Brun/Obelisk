@@ -93,7 +93,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;commands&nbsp;ts;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\bnfopt[1]{[#1]}@;\\newcommand\\bnfplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\bnfstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\bnfseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\paren[1]{(#1)}@;\\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;\\WithSuffix\\newcommand\\bnfseplist*[2]{\\paren{\\bnfseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\bnfsepnelist*[2]{\\paren{\\bnfsepnelist{#1}{#2}}}"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\gramopt[1]{[#1]}@;\\newcommand\\gramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\gramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\gramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\gramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\paren[1]{(#1)}@;\\WithSuffix\\newcommand\\gramopt*[1]{\\paren{\\gramopt{#1}}}@;\\WithSuffix\\newcommand\\gramplus*[1]{\\paren{\\gramplus{#1}}}@;\\WithSuffix\\newcommand\\gramstar*[1]{\\paren{\\gramstar{#1}}}@;\\WithSuffix\\newcommand\\gramseplist*[2]{\\paren{\\gramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\gramsepnelist*[2]{\\paren{\\gramsepnelist{#1}{#2}}}"</span>;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s\\begin{%s}@;"</span>&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\begin{document}\n\n"</span>)&nbsp;env<br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;end_document&nbsp;env&nbsp;=<br>
@@ -105,10 +105,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;cmd&nbsp;<span class="string">"bnfopt"</span>,&nbsp;cmd&nbsp;<span class="string">"bnfplus"</span>,&nbsp;cmd&nbsp;<span class="string">"bnfstar"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;cmd&nbsp;<span class="string">"gramopt"</span>,&nbsp;cmd&nbsp;<span class="string">"gramplus"</span>,&nbsp;cmd&nbsp;<span class="string">"gramstar"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_sep_list&nbsp;e&nbsp;nonempty&nbsp;print_sep&nbsp;print_x&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\bnfsep%slist%s{"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\gramsep%slist%s{"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;nonempty&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"ne"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_sep&nbsp;();<br>

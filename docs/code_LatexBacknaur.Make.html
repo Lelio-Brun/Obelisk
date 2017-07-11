@@ -36,29 +36,29 @@
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;documentclass<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">"[epsilon]"</span>&nbsp;<span class="string">"backnaur"</span>&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\let\\\\oldbnfsp\\\\bnfsp@;\\\\renewcommand{\\\\bnfsp}{\\\\ensuremath{\\\\oldbnfsp}}@;\\\\let\\\\oldbnfpn\\\\bnfpn@;\\\\renewcommand{\\\\bnfpn}[1]{\\\\ensuremath{\\\\oldbnfpn{#1}}}@;\\\\let\\\\oldbnfprod\\\\bnfprod@;\\\\renewcommand{\\\\bnfprod}[3][\\\\textwidth]{\\\\oldbnfprod{#2}{%%@;&lt;0&nbsp;2&gt;\\\\begin{minipage}[t]{#1}@;&lt;0&nbsp;4&gt;$#3$@;&lt;0&nbsp;2&gt;\\\\end{minipage}}}@;@;\\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;"</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newcommand{\\\\gramsp}{\\\\ensuremath{\\\\bnfsp}}@;\\\\newcommand{\\\\gramterm}[1]{\\\\bnfts{#1}}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\ensuremath{\\\\bnfpn{#1}}}@;\\\\newcommand{\\\\grambar}{\\\\bnfbar}@;\\\\newcommand{\\\\grameps}{\\\\bnfes}@;\\\\newcommand{\\\\gramprod}[3][\\\\textwidth]{\\\\bnfprod{#2}{%%@;&lt;0&nbsp;2&gt;\\\\begin{minipage}[t]{#1}@;&lt;0&nbsp;4&gt;$#3$@;&lt;0&nbsp;2&gt;\\\\end{minipage}}}@;@;\\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;"</span>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;begin_document&nbsp;<span class="string">"bnf*"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"bnf*"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"}{"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\bnfbar&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\bnfbar@&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"\\\\bnfsp@&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\grambar&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"\\\\gramsp@&nbsp;"</span><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"@;\\\\\\\\"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"\\\\bnfes"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"\\\\grameps"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;name&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s"</span>&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;name)<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;\\\\bnfprod{"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;\\\\gramprod{"</span><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}\\\\\\\\@]@;"</span><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;_&nbsp;s&nbsp;print_params&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s'&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;s&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\bnfts{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_fmt&nbsp;<span class="string">"\\bnfpn{%s}"</span>&nbsp;s';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramterm{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramnonterm{%s}"</span>&nbsp;s';<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_params&nbsp;()<br>
 <br>
 <span class="keyword">end</span></code></body></html>
