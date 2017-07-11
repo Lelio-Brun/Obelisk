@@ -31,15 +31,27 @@
 <body>
 <code class="code"><span class="keyword">let</span> get () =
   <span class="constructor">Arg</span>.parse_dynamic options parse_cmd msg;
+  <span class="keyword">let</span> error () = <span class="constructor">Arg</span>.usage !options msg; exit 1 <span class="keyword">in</span>
   <span class="keyword">try</span>
-    <span class="keyword">if</span> !ifiles = [] <span class="keyword">then</span> (<span class="constructor">Arg</span>.usage !options msg; exit 1);
+    <span class="keyword">if</span> !ifiles = [] <span class="keyword">then</span> error ();
     <span class="keyword">let</span> outf = <span class="keyword">if</span> !ofile = <span class="string">""</span> <span class="keyword">then</span> stdout <span class="keyword">else</span> open_out !ofile <span class="keyword">in</span>
     <span class="keyword">let</span> formatter = formatter_of_out_channel outf <span class="keyword">in</span>
+    <span class="keyword">let</span> formatter_package, close_package = <span class="keyword">match</span> !pfile <span class="keyword">with</span>
+      <span class="keywordsign">|</span> <span class="string">""</span> <span class="keywordsign">-&gt;</span> formatter, <span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> ()
+      <span class="keywordsign">|</span> pkg <span class="keywordsign">-&gt;</span>
+        <span class="keyword">if</span> !ofile = <span class="string">""</span> <span class="keyword">then</span> error ();
+        <span class="keyword">let</span> f = open_out (pkg ^ <span class="string">".sty"</span>) <span class="keyword">in</span>
+        formatter_of_out_channel f, <span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> close_out f
+    <span class="keyword">in</span>
+    <span class="keyword">let</span> <span class="keyword">module</span> <span class="constructor">PP</span> : <span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span> = <span class="keyword">struct</span>
+      <span class="keyword">let</span> p = formatter_package
+      <span class="keyword">let</span> package = !pfile
+    <span class="keyword">end</span> <span class="keyword">in</span>
     <span class="keyword">let</span> p = <span class="keyword">match</span> !mode <span class="keyword">with</span>
       <span class="keywordsign">|</span> <span class="constructor">Default</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">Default</span> : <span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>)
-      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Tabular</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexTabular</span>)
-      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Syntax</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexSyntax</span>)
-      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Backnaur</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexBacknaur</span>)
+      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Tabular</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexTabular</span>(<span class="constructor">PP</span>))
+      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Syntax</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexSyntax</span>(<span class="constructor">PP</span>))
+      <span class="keywordsign">|</span> <span class="constructor">Latex</span> <span class="constructor">Backnaur</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">LatexBacknaur</span>(<span class="constructor">PP</span>))
       <span class="keywordsign">|</span> <span class="constructor">Html</span> <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Printers</span>.<span class="constructor">Html</span>)
     <span class="keyword">in</span>
     <span class="keyword">let</span> <span class="keyword">module</span> <span class="constructor">P</span> = (<span class="keyword">val</span> p: <span class="constructor">GenericPrinter</span>.<span class="constructor">PRINTER</span>) <span class="keyword">in</span>
@@ -47,7 +59,7 @@
     <span class="keyword">let</span> files = rev !ifiles <span class="keyword">in</span>
     <span class="keyword">let</span> infs = map open_in files <span class="keyword">in</span>
     <span class="keyword">let</span> lexbufs = map <span class="constructor">Lexing</span>.from_channel infs <span class="keyword">in</span>
-    <span class="keyword">let</span> close () = iter close_in infs; close_out outf <span class="keyword">in</span>
+    <span class="keyword">let</span> close () = iter close_in infs; close_out outf; close_package () <span class="keyword">in</span>
     combine files lexbufs, print, close
   <span class="keyword">with</span> <span class="constructor">Sys_error</span> s <span class="keywordsign">-&gt;</span>
     eprintf <span class="string">"System Error%s@."</span> s;

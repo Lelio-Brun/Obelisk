@@ -29,35 +29,40 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : LatexTabular</title>
 </head>
 <body>
-<code class="code"><span class="keyword">include</span>&nbsp;<span class="constructor">MiniLatex</span><br>
+<code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">Make</span>&nbsp;(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>)&nbsp;:&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Helper</span>&nbsp;=&nbsp;<span class="keyword">struct</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
-&nbsp;&nbsp;documentclass<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\\\usepackage{tabu}@;@;\\\\newenvironment{grammar}{@;&lt;0&nbsp;2&gt;\\\\begin{trivlist}@;&lt;0&nbsp;4&gt;\\\\item[]@;&lt;0&nbsp;6&gt;\\\\begin{tabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0&nbsp;6&gt;\\\\end{tabu}@;&lt;0&nbsp;2&gt;\\\\end{trivlist}@;}@;@;\\\\newcommand\\\\gramsp{\\\\quad}@;\\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}}@;\\\\newcommand\\\\func[1]{#1}@;\\\\newcommand\\\\term[1]{#1}@;"</span>;<br>
-&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
+&nbsp;&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">Make</span>(<span class="constructor">P</span>)<br>
 <br>
-<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;documentclass<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"tabu"</span>&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newenvironment{grammar}{@;&lt;0&nbsp;2&gt;\\\\begin{trivlist}@;&lt;0&nbsp;4&gt;\\\\item[]@;&lt;0&nbsp;6&gt;\\\\begin{tabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0&nbsp;6&gt;\\\\end{tabu}@;&lt;0&nbsp;2&gt;\\\\end{trivlist}@;}@;@;\\\\newcommand\\\\gramsp{\\\\quad}@;\\\\newcommand\\\\gramdef{$\\\\gramsp::=\\\\gramsp$}@;\\\\newcommand\\\\grambar{$\\\\gramsp|\\\\gramsp$}@;\\\\newcommand\\\\nonterm[1]{\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}}@;\\\\newcommand\\\\func[1]{#1}@;\\\\newcommand\\\\term[1]{#1}@;"</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
 <br>
-<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\gramdef&nbsp;&amp;&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\grambar&nbsp;&amp;"</span><br>
-<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"\\\\\\\\@;"</span><br>
-<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"$\\\\epsilon$"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;name&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\\func{%s}"</span>)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;name)<br>
-<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;"</span><br>
-<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;print_string&nbsp;<span class="string">"@;\\\\\\\\&amp;&nbsp;&amp;&nbsp;\\\\\\\\"</span>;<br>
-&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\gramdef&nbsp;&amp;&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"&amp;&nbsp;\\\\grambar&nbsp;&amp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"\\\\\\\\@;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"$\\\\epsilon$"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s'&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;s&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_non_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;s'<br>
-&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\term{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
-&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_fmt&nbsp;<span class="string">"\\func{%s}"</span>&nbsp;s';<br>
-&nbsp;&nbsp;print_params&nbsp;()<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;name&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\\func{%s}"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;name)<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;"</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@;\\\\\\\\&amp;&nbsp;&amp;&nbsp;\\\\\\\\"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s'&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;s&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_non_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\nonterm{%s}"</span>&nbsp;s'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\term{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_fmt&nbsp;<span class="string">"\\func{%s}"</span>&nbsp;s';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_params&nbsp;()<br>
+<br>
+<span class="keyword">end</span><br>
 </code></body></html>

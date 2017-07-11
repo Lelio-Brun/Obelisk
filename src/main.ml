@@ -15,6 +15,8 @@ open Format
 let ifiles = ref []
 (** The output file. *)
 let ofile = ref ""
+(** The {i .sty} package file (used only in LaTeX mode). *)
+let pfile = ref ""
 
 (** The different output modes. *)
 type mode =
@@ -47,7 +49,8 @@ let set_latexmode lm () =
 let latex_opt = [
   "-tabular", Arg.Unit (set_latexmode Tabular), " Use tabular environment (default)";
   "-syntax", Arg.Unit (set_latexmode Syntax), " Use `syntax` package";
-  "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package"
+  "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
+  "-package", Arg.Set_string pfile, " Set the package name, without extension. Use with `-o`"
 ]
 
 (** Usage message.  *)
@@ -72,15 +75,27 @@ let parse_cmd =
     options and a function to finally close the input and output channels.*)
 let get () =
   Arg.parse_dynamic options parse_cmd msg;
+  let error () = Arg.usage !options msg; exit 1 in
   try
-    if !ifiles = [] then (Arg.usage !options msg; exit 1);
+    if !ifiles = [] then error ();
     let outf = if !ofile = "" then stdout else open_out !ofile in
     let formatter = formatter_of_out_channel outf in
+    let formatter_package, close_package = match !pfile with
+      | "" -> formatter, fun () -> ()
+      | pkg ->
+        if !ofile = "" then error ();
+        let f = open_out (pkg ^ ".sty") in
+        formatter_of_out_channel f, fun () -> close_out f
+    in
+    let module PP : MiniLatex.PACKAGEPRINTER = struct
+      let p = formatter_package
+      let package = !pfile
+    end in
     let p = match !mode with
       | Default -> (module Printers.Default : GenericPrinter.PRINTER)
-      | Latex Tabular -> (module Printers.LatexTabular)
-      | Latex Syntax -> (module Printers.LatexSyntax)
-      | Latex Backnaur -> (module Printers.LatexBacknaur)
+      | Latex Tabular -> (module Printers.LatexTabular(PP))
+      | Latex Syntax -> (module Printers.LatexSyntax(PP))
+      | Latex Backnaur -> (module Printers.LatexBacknaur(PP))
       | Html -> (module Printers.Html)
     in
     let module P = (val p: GenericPrinter.PRINTER) in
@@ -88,7 +103,7 @@ let get () =
     let files = rev !ifiles in
     let infs = map open_in files in
     let lexbufs = map Lexing.from_channel infs in
-    let close () = iter close_in infs; close_out outf in
+    let close () = iter close_in infs; close_out outf; close_package () in
     combine files lexbufs, print, close
   with Sys_error s ->
     eprintf "System Error%s@." s;

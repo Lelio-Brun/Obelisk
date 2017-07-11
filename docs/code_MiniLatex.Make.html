@@ -1,0 +1,119 @@
+<html><head>
+<link rel="stylesheet" href="doc.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ast" rel="Chapter" href="Ast.html">
+<link title="ExtendedAst" rel="Chapter" href="ExtendedAst.html">
+<link title="Common" rel="Chapter" href="Common.html">
+<link title="Scan" rel="Chapter" href="Scan.html">
+<link title="Normalize" rel="Chapter" href="Normalize.html">
+<link title="Transform" rel="Chapter" href="Transform.html">
+<link title="Reduce" rel="Chapter" href="Reduce.html">
+<link title="Printer" rel="Chapter" href="Printer.html">
+<link title="GenericPrinter" rel="Chapter" href="GenericPrinter.html">
+<link title="Helper" rel="Chapter" href="Helper.html">
+<link title="MiniHelper" rel="Chapter" href="MiniHelper.html">
+<link title="Default" rel="Chapter" href="Default.html">
+<link title="MiniLatex" rel="Chapter" href="MiniLatex.html">
+<link title="LatexTabular" rel="Chapter" href="LatexTabular.html">
+<link title="LatexSyntax" rel="Chapter" href="LatexSyntax.html">
+<link title="LatexBacknaur" rel="Chapter" href="LatexBacknaur.html">
+<link title="Html" rel="Chapter" href="Html.html">
+<link title="Printers" rel="Chapter" href="Printers.html">
+<link title="Position" rel="Chapter" href="Position.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.Make</title>
+</head>
+<body>
+<code class="code">(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">PACKAGEPRINTER</span>)&nbsp;=&nbsp;<span class="keyword">struct</span><br>
+<br>
+&nbsp;&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">MiniHelper</span><br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;use&nbsp;=&nbsp;<span class="constructor">P</span>.package&nbsp;&lt;&gt;&nbsp;<span class="string">""</span><br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_string_package&nbsp;s&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;<span class="constructor">P</span>.p&nbsp;(<span class="constructor">Scanf</span>.format_from_string&nbsp;s&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_fmt_package&nbsp;s&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;<span class="constructor">P</span>.p&nbsp;s<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;usepackage&nbsp;opts&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.sprintf&nbsp;<span class="string">"\\\\%s%s{%s}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"RequirePackage"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"usepackage"</span>)&nbsp;opts&nbsp;s<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;documentclass&nbsp;header&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@[&lt;v&nbsp;0&gt;"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;use<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;print_fmt_package&nbsp;<span class="string">"\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"</span>&nbsp;<span class="constructor">P</span>.package<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_string&nbsp;<span class="string">"\\\\documentclass[preview]{standalone}@;@;"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string_package&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"suffix"</span>&nbsp;^&nbsp;header)<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;to_roman&nbsp;i&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;conv&nbsp;(i,&nbsp;x)&nbsp;(d,&nbsp;r&nbsp;<span class="keyword">as</span>&nbsp;dr)&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;i&nbsp;<span class="keyword">mod</span>&nbsp;d&nbsp;&lt;&nbsp;i&nbsp;<span class="keyword">then</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conv&nbsp;(i&nbsp;-&nbsp;d,&nbsp;x&nbsp;^&nbsp;r)&nbsp;dr<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(i,&nbsp;x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.fold_left&nbsp;conv&nbsp;(int_of_string&nbsp;i,&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1000,&nbsp;<span class="string">"M"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;900,&nbsp;<span class="string">"CM"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;500,&nbsp;<span class="string">"D"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400,&nbsp;<span class="string">"CD"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100,&nbsp;<span class="string">"C"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;90,&nbsp;<span class="string">"XC"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;50,&nbsp;<span class="string">"L"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40,&nbsp;<span class="string">"XL"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10,&nbsp;<span class="string">"X"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9,&nbsp;<span class="string">"IX"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5,&nbsp;<span class="string">"V"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4,&nbsp;<span class="string">"IV"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1,&nbsp;<span class="string">"I"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;snd<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;command&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;roman&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_substitute&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"[0-9]+"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">fun</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Str</span>.matched_string&nbsp;s&nbsp;|&gt;&nbsp;to_roman)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;clear_underscore&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">""</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;roman&nbsp;x&nbsp;|&gt;&nbsp;clear_underscore<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;begin_document&nbsp;env&nbsp;ts&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;commands&nbsp;ts&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;escape&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;nt&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\newcommand\\%s{%s}@;"</span>&nbsp;(command&nbsp;nt)&nbsp;(escape&nbsp;nt))&nbsp;ts;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;commands&nbsp;ts;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\bnfopt[1]{[#1]}@;\\newcommand\\bnfplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\bnfstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\bnfseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\bnfsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\paren[1]{(#1)}@;\\WithSuffix\\newcommand\\bnfopt*[1]{\\paren{\\bnfopt{#1}}}@;\\WithSuffix\\newcommand\\bnfplus*[1]{\\paren{\\bnfplus{#1}}}@;\\WithSuffix\\newcommand\\bnfstar*[1]{\\paren{\\bnfstar{#1}}}@;\\WithSuffix\\newcommand\\bnfseplist*[2]{\\paren{\\bnfseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\bnfsepnelist*[2]{\\paren{\\bnfsepnelist{#1}{#2}}}"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s\\begin{%s}@;"</span>&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\begin{document}\n\n"</span>)&nbsp;env<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;end_document&nbsp;env&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\end{%s}%s@]@."</span>&nbsp;env&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\end{document}"</span>)<br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;opt,&nbsp;plus,&nbsp;star&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cmd&nbsp;s&nbsp;e&nbsp;(print:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s%s{"</span>&nbsp;s&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;cmd&nbsp;<span class="string">"bnfopt"</span>,&nbsp;cmd&nbsp;<span class="string">"bnfplus"</span>,&nbsp;cmd&nbsp;<span class="string">"bnfstar"</span><br>
+<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_sep_list&nbsp;e&nbsp;nonempty&nbsp;print_sep&nbsp;print_x&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\bnfsep%slist%s{"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;nonempty&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"ne"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_sep&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}{"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_x&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
+<br>
+<span class="keyword">end</span></code></body></html>

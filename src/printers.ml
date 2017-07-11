@@ -6,13 +6,13 @@ open GenericPrinter
 module Default = Make(Default)
 
 (** The LaTeX default table-based printer. *)
-module LatexTabular = Make(LatexTabular)
+module LatexTabular (P : MiniLatex.PACKAGEPRINTER) = Make(LatexTabular.Make(P))
 
 (** The LaTeX "syntax" package based printer. *)
-module LatexSyntax = Make(LatexSyntax)
+module LatexSyntax (P : MiniLatex.PACKAGEPRINTER) = Make(LatexSyntax.Make(P))
 
 (** The LaTeX "backnaur" package based printer. *)
-module LatexBacknaur = Make(LatexBacknaur)
+module LatexBacknaur (P : MiniLatex.PACKAGEPRINTER) = Make(LatexBacknaur.Make(P))
 
 (** The HTML printer.  *)
 module Html = Make(Html)

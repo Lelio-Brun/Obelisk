@@ -37,13 +37,13 @@
 <span class="keyword">module</span>&nbsp;<span class="constructor">Default</span>&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">Default</span>)<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** The LaTeX default table-based printer. *)</span></td></tr></table><code class="code"><br>
-<span class="keyword">module</span>&nbsp;<span class="constructor">LatexTabular</span>&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexTabular</span>)<br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">LatexTabular</span>&nbsp;(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>)&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexTabular</span>.<span class="constructor">Make</span>(<span class="constructor">P</span>))<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** The LaTeX "syntax" package based printer. *)</span></td></tr></table><code class="code"><br>
-<span class="keyword">module</span>&nbsp;<span class="constructor">LatexSyntax</span>&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexSyntax</span>)<br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">LatexSyntax</span>&nbsp;(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>)&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexSyntax</span>.<span class="constructor">Make</span>(<span class="constructor">P</span>))<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** The LaTeX "backnaur" package based printer. *)</span></td></tr></table><code class="code"><br>
-<span class="keyword">module</span>&nbsp;<span class="constructor">LatexBacknaur</span>&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexBacknaur</span>)<br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">LatexBacknaur</span>&nbsp;(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>)&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">LatexBacknaur</span>.<span class="constructor">Make</span>(<span class="constructor">P</span>))<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** The HTML printer.  *)</span></td></tr></table><code class="code"><br>
 <span class="keyword">module</span>&nbsp;<span class="constructor">Html</span>&nbsp;=&nbsp;<span class="constructor">Make</span>(<span class="constructor">Html</span>)<br>
