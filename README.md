@@ -122,8 +122,9 @@ The commands names are auto-generated from the terminal names, and because of La
 By default in LaTeX mode, the `-o <grammar.tex>` switch will produce the standalone LaTeX file _<grammar.tex>_ which you can directly compile (eg. with _pdflatex_).
 
 But in conjunction with `-o <grammar.tex>`, you can use `-package <definitions>` to output two files:
-1. a LaTeX file _<grammar.tex>_ containing only the grammar contents
-2. a package file _<definitions.sty>_ (the _.sty_ extension is added automatically) containing the necessary extra packages requirements and command definitions
+1. a LaTeX file _<grammar.tex>_ containing only the grammar contents ;
+2. a package file _<definitions.sty>_ (the _.sty_ extension is added automatically) containing the necessary extra packages requirements and command definitions.
+
 These two files are then intended to be included in a non-supplied main LaTeX file following this example skeleton:
 ```latex
 \documentclass[preview]{standalone}
