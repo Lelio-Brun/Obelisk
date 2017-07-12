@@ -30,7 +30,7 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> print_sep_list e nonempty print_sep print_x =
-  print_fmt <span class="string">"\\bnfsep%slist%s{"</span>
+  print_fmt <span class="string">"\\gramsep%slist%s{"</span>
     (<span class="keyword">if</span> nonempty <span class="keyword">then</span> <span class="string">"ne"</span> <span class="keyword">else</span> <span class="string">""</span>)
     (<span class="keyword">if</span> e <span class="keyword">then</span> <span class="string">"*"</span> <span class="keyword">else</span> <span class="string">""</span>);
   print_sep ();

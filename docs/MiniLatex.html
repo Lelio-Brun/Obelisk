@@ -42,5 +42,15 @@
 
 <pre><span class="keyword">module</span> MiniLatex: <code class="code"><span class="keyword">sig</span></code> <a href="MiniLatex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span class="keyword">module type</span> <a href="MiniLatex.PACKAGEPRINTER.html">PACKAGEPRINTER</a> = <code class="code"><span class="keyword">sig</span></code> <a href="MiniLatex.PACKAGEPRINTER.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="MiniLatex.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">P</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="MiniLatex.PACKAGEPRINTER.html">PACKAGEPRINTER</a></code><code class="code">)&nbsp;</code>: <code class="code"><span class="keyword">sig</span></code> <a href="MiniLatex.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span class="keyword">include</span> <a href="MiniHelper.html">MiniHelper</a></pre>
+
+<pre><span id="VALuse"><span class="keyword">val</span> <a href="code_VALMiniLatex.use.html">use</a></span> : <code class="type">bool</code></pre>
+<pre><span id="VALprint_string_package"><span class="keyword">val</span> <a href="code_VALMiniLatex.print_string_package.html">print_string_package</a></span> : <code class="type">string -> unit</code></pre>
+<pre><span id="VALprint_fmt_package"><span class="keyword">val</span> <a href="code_VALMiniLatex.print_fmt_package.html">print_fmt_package</a></span> : <code class="type">('a, Format.formatter, unit) Pervasives.format -> 'a</code></pre>
+<pre><span id="VALusepackage"><span class="keyword">val</span> <a href="code_VALMiniLatex.usepackage.html">usepackage</a></span> : <code class="type">string -> string -> string</code></pre>
+<pre><span id="VALdocumentclass"><span class="keyword">val</span> <a href="code_VALMiniLatex.documentclass.html">documentclass</a></span> : <code class="type">string -> unit</code></pre>
+<pre><span id="VALto_roman"><span class="keyword">val</span> <a href="code_VALMiniLatex.to_roman.html">to_roman</a></span> : <code class="type">string -> string</code></pre>
+<pre><span id="VALcommand"><span class="keyword">val</span> <a href="code_VALMiniLatex.command.html">command</a></span> : <code class="type">string -> string</code></pre>
+<pre><span id="VALbegin_document"><span class="keyword">val</span> <a href="code_VALMiniLatex.begin_document.html">begin_document</a></span> : <code class="type">string -> string list -> unit</code></pre>
+<pre><span id="VALend_document"><span class="keyword">val</span> <a href="code_VALMiniLatex.end_document.html">end_document</a></span> : <code class="type">string -> unit</code></pre>
+<pre><span id="VALprint_sep_list"><span class="keyword">val</span> <a href="code_VALMiniLatex.print_sep_list.html">print_sep_list</a></span> : <code class="type">bool -> bool -> (unit -> 'a) -> (unit -> 'b) -> unit</code></pre></body></html>

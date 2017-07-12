@@ -26,8 +26,9 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : LatexBacknaur.rule_begin</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.usepackage</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> rule_begin () =
-  print_string <span class="string">"@[&lt;v 2&gt;\\\\gramprod{"</span></code></body></html>
+<code class="code"><span class="keyword">let</span> usepackage opts s =
+  <span class="constructor">Format</span>.sprintf <span class="string">"\\\\%s%s{%s}@;"</span>
+    (<span class="keyword">if</span> use <span class="keyword">then</span> <span class="string">"RequirePackage"</span> <span class="keyword">else</span> <span class="string">"usepackage"</span>) opts s</code></body></html>

@@ -30,5 +30,8 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> documentclass header =
-  print_string
-    (<span class="string">"@[&lt;v 0&gt;\\\\documentclass[preview]{standalone}@;@;\\\\usepackage{suffix}@;"</span> ^ header)</code></body></html>
+  print_string_package <span class="string">"@[&lt;v 0&gt;"</span>;
+  <span class="keyword">if</span> use
+  <span class="keyword">then</span> print_fmt_package <span class="string">"\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"</span> !pfile
+  <span class="keyword">else</span> print_string <span class="string">"\\\\documentclass[preview]{standalone}@;@;"</span>;
+  print_string_package (usepackage <span class="string">""</span> <span class="string">"suffix"</span> ^ header)</code></body></html>

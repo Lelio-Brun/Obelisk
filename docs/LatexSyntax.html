@@ -42,4 +42,17 @@
 
 <pre><span class="keyword">module</span> LatexSyntax: <code class="code"><span class="keyword">sig</span></code> <a href="LatexSyntax.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span class="keyword">module</span> <a href="LatexSyntax.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">P</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="MiniLatex.PACKAGEPRINTER.html">MiniLatex.PACKAGEPRINTER</a></code><code class="code">)&nbsp;</code>: <code class="code"><span class="keyword">sig</span></code> <a href="LatexSyntax.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span class="keyword">include</span> <a href="MiniLatex.html">MiniLatex</a></pre>
+
+<pre><span id="VALprint_header"><span class="keyword">val</span> <a href="code_VALLatexSyntax.print_header.html">print_header</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> unit</code></pre>
+<pre><span id="VALprint_footer"><span class="keyword">val</span> <a href="code_VALLatexSyntax.print_footer.html">print_footer</a></span> : <code class="type">unit -> unit</code></pre>
+<pre><span id="VALdef"><span class="keyword">val</span> <a href="code_VALLatexSyntax.def.html">def</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALprod_bar"><span class="keyword">val</span> <a href="code_VALLatexSyntax.prod_bar.html">prod_bar</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALbar"><span class="keyword">val</span> <a href="code_VALLatexSyntax.bar.html">bar</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALspace"><span class="keyword">val</span> <a href="code_VALLatexSyntax.space.html">space</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALbreak"><span class="keyword">val</span> <a href="code_VALLatexSyntax.break.html">break</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALeps"><span class="keyword">val</span> <a href="code_VALLatexSyntax.eps.html">eps</a></span> : <code class="type">string</code></pre>
+<pre><span id="VALprint_rule_name"><span class="keyword">val</span> <a href="code_VALLatexSyntax.print_rule_name.html">print_rule_name</a></span> : <code class="type">bool -> string -> unit</code></pre>
+<pre><span id="VALrule_begin"><span class="keyword">val</span> <a href="code_VALLatexSyntax.rule_begin.html">rule_begin</a></span> : <code class="type">unit -> unit</code></pre>
+<pre><span id="VALrule_end"><span class="keyword">val</span> <a href="code_VALLatexSyntax.rule_end.html">rule_end</a></span> : <code class="type">unit -> unit</code></pre>
+<pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALLatexSyntax.print_symbol.html">print_symbol</a></span> : <code class="type">bool -> 'a -> string -> (unit -> 'b) -> unit</code></pre></body></html>

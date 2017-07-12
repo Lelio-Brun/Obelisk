@@ -31,57 +31,53 @@
 <body>
 <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Common</span><br>
 <br>
-<span class="keyword">module</span>&nbsp;<span class="constructor">Make</span>&nbsp;(<span class="constructor">P</span>&nbsp;:&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">PACKAGEPRINTER</span>)&nbsp;:&nbsp;<span class="keyword">module</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Helper</span>&nbsp;=&nbsp;<span class="keyword">struct</span><br>
+<span class="keyword">include</span>&nbsp;<span class="constructor">MiniLatex</span><br>
 <br>
-&nbsp;&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">MiniLatex</span>.<span class="constructor">Make</span>(<span class="constructor">P</span>)<br>
-<br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;compare_length&nbsp;s1&nbsp;s2&nbsp;=&nbsp;compare&nbsp;(<span class="constructor">String</span>.length&nbsp;s2)&nbsp;(<span class="constructor">String</span>.length&nbsp;s1)&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=&nbsp;<span class="constructor">List</span>.(hd&nbsp;(sort&nbsp;compare_length&nbsp;(<span class="constructor">Symbols</span>.defined&nbsp;symbols)))&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;params&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;aux&nbsp;=&nbsp;<span class="keyword">function</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[x]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;x&nbsp;::&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;^&nbsp;<span class="string">",&nbsp;"</span>&nbsp;^&nbsp;aux&nbsp;xs<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span>&nbsp;<span class="keyword">function</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"("</span>&nbsp;^&nbsp;aux&nbsp;xs&nbsp;^&nbsp;<span class="string">")"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=&nbsp;<span class="keyword">match</span>&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined&nbsp;max&nbsp;symbols&nbsp;<span class="keyword">with</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Some</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;max&nbsp;^&nbsp;params&nbsp;xs<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">assert</span>&nbsp;<span class="keyword">false</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">String</span>.escaped&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;max)<br>
+<span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;compare_length&nbsp;s1&nbsp;s2&nbsp;=&nbsp;compare&nbsp;(<span class="constructor">String</span>.length&nbsp;s2)&nbsp;(<span class="constructor">String</span>.length&nbsp;s1)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=&nbsp;<span class="constructor">List</span>.(hd&nbsp;(sort&nbsp;compare_length&nbsp;(<span class="constructor">Symbols</span>.defined&nbsp;symbols)))&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;params&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;aux&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[x]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;x&nbsp;::&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;^&nbsp;<span class="string">",&nbsp;"</span>&nbsp;^&nbsp;aux&nbsp;xs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span>&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"("</span>&nbsp;^&nbsp;aux&nbsp;xs&nbsp;^&nbsp;<span class="string">")"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;documentclass<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"syntax"</span>&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newcommand{\\\\gramterm}[1]{#1}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newcommand{\\\\grambar}{\\\\alt}@;\\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\\\\newlength{\\\\grammaxindent}@;\\\\settowidth{\\\\grammaxindent}{\\\\synt{"</span>&nbsp;^&nbsp;max&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"}&nbsp;\\\\gramdef{}&nbsp;}@;\\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;"</span>);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;max&nbsp;=&nbsp;<span class="keyword">match</span>&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined&nbsp;max&nbsp;symbols&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Some</span>&nbsp;xs&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;max&nbsp;^&nbsp;params&nbsp;xs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">assert</span>&nbsp;<span class="keyword">false</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">String</span>.escaped&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;max)<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;documentclass<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"syntax"</span>&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newcommand{\\\\gramterm}[1]{#1}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newcommand{\\\\grambar}{\\\\alt}@;\\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\\\\newlength{\\\\grammaxindent}@;\\\\settowidth{\\\\grammaxindent}{\\\\synt{"</span>&nbsp;^&nbsp;max&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"}&nbsp;\\\\gramdef{}&nbsp;}@;\\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;"</span>);<br>
+&nbsp;&nbsp;begin_document&nbsp;<span class="string">"grammar"</span>&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols)<br>
 <br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
+<span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;end_document&nbsp;<span class="string">"grammar"</span><br>
 <br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&gt;&nbsp;\\\\gramdef{}&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\grambar&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"@;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"\\\\grameps"</span><br>
+<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&gt;&nbsp;\\\\gramdef{}&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"\\\\grambar&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;\\\\grambar@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"@;"</span><br>
+<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"\\\\grameps"</span><br>
 <br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"&lt;%s"</span>)<br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;"</span><br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
+<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
+&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"&lt;%s"</span>)<br>
+<span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;"</span><br>
+<span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
 <br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;_&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramterm{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">begin</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramnonterm{%s"</span>&nbsp;s;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_params&nbsp;();<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
-<br>
-<span class="keyword">end</span><br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;_&nbsp;s&nbsp;print_params&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;<span class="keyword">then</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramterm{\\%s{}}"</span>&nbsp;(command&nbsp;s)<br>
+&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="keyword">begin</span>&nbsp;print_fmt&nbsp;<span class="string">"\\gramnonterm{%s"</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_params&nbsp;();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
+&nbsp;&nbsp;<span class="keyword">end</span><br>
 </code></body></html>

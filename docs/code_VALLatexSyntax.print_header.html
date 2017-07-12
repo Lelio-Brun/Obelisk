@@ -49,6 +49,7 @@
     <span class="constructor">String</span>.escaped (<span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> max)
   <span class="keyword">in</span>
   documentclass
-    (<span class="string">"\\\\usepackage{syntax}@;@;\\\\newcommand{\\\\term}[1]{#1}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newlength{\\\\maxindent}@;\\\\settowidth{\\\\maxindent}{\\\\synt{"</span> ^ max ^
-     <span class="string">"} \\\\gramdef{} }@;\\\\setlength{\\\\grammarindent}{\\\\maxindent}@;@;"</span>);
+    (usepackage <span class="string">""</span> <span class="string">"syntax"</span> ^
+     <span class="string">"@;\\\\newcommand{\\\\gramterm}[1]{#1}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newcommand{\\\\grambar}{\\\\alt}@;\\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\\\\newlength{\\\\grammaxindent}@;\\\\settowidth{\\\\grammaxindent}{\\\\synt{"</span> ^ max ^
+     <span class="string">"} \\\\gramdef{} }@;\\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;"</span>);
   begin_document <span class="string">"grammar"</span> (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols)</code></body></html>
