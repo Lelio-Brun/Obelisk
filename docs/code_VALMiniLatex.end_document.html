@@ -29,5 +29,7 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.end_document</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> end_document env =
-  print_fmt <span class="string">"\\end{%s}%s@]@."</span> env (<span class="keyword">if</span> use <span class="keyword">then</span> <span class="string">""</span> <span class="keyword">else</span> <span class="string">"\n\n\\end{document}"</span>)</code></body></html>
+<code class="code"><span class="keyword">let</span> end_document () =
+  print_fmt <span class="string">"\\end{%s}%s@]@."</span>
+    (command <span class="string">"grammar"</span>)
+    (<span class="keyword">if</span> use () <span class="keyword">then</span> <span class="string">""</span> <span class="keyword">else</span> <span class="string">"\n\n\\end{document}"</span>)</code></body></html>

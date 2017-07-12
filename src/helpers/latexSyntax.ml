@@ -22,27 +22,31 @@ let print_header symbols =
     String.escaped (Str.global_replace (Str.regexp "_") "\\_" max)
   in
   documentclass
-    (usepackage "" "syntax" ^
-     "@;\
-      \\\\newcommand{\\\\gramterm}[1]{#1}@;\
-      \\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\
-      \\\\newcommand{\\\\gramdef}{::=}@;\
-      \\\\newcommand{\\\\grambar}{\\\\alt}@;\
-      \\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\
-      \\\\newlength{\\\\grammaxindent}@;\
-      \\\\settowidth{\\\\grammaxindent}{\\\\synt{" ^ max ^
-     "} \\\\gramdef{} }@;\
-      \\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;");
-  begin_document "grammar" (Common.Symbols.terminals symbols)
+    (usepackage "" "syntax" ^ "@;" ^
+     (if pre () = "" then ""
+     else
+       "\\\\newenvironment{" ^ command "grammar" ^
+       "}{\\\\begin{grammar}}{\\\\end{grammar}}@;@;") ^
+     newcommand "gramterm" 1 None "#1" ^
+     newcommand "gramnonterm" 1 None "\\\\synt{#1}" ^
+     newcommand "gramdef" 0 None "::=" ^
+     newcommand "grambar" 0 None "\\\\alt" ^
+     newcommand "grameps" 0 None "\\\\ensuremath{\\\\epsilon}" ^
+     "\\\\newlength{\\\\" ^ command "grammaxindent" ^
+     "}@;\
+      \\\\settowidth{\\\\" ^ command "grammaxindent" ^
+     "}{\\\\synt{" ^ max ^ "} \\\\" ^
+     command "gramdef" ^ "{} }@;@;");
+  begin_document
+    ("\\setlength{\\grammarindent}{\\" ^ command "grammaxindent" ^ "}")
+    (Common.Symbols.terminals symbols)
 
-let print_footer () = end_document "grammar"
-
-let def = "> \\\\gramdef{} "
-let prod_bar = "\\\\grambar "
-let bar = "@ \\\\grambar@ "
-let space = "@ "
-let break = "@;"
-let eps = "\\\\grameps"
+let def () = "> \\\\" ^ command "gramdef" ^ "{} "
+let prod_bar () = "\\\\" ^ command "grambar" ^ " "
+let bar () = "@ \\\\" ^ command "grambar" ^ "@ "
+let space () = "@ "
+let break () = "@;"
+let eps () = "\\\\" ^ command "grameps"
 
 let print_rule_name is_not_fun =
   print_fmt (if is_not_fun then "<%s" else "<%s")
@@ -52,8 +56,8 @@ let rule_end () =
   print_string "@]@;@;"
 
 let print_symbol is_term _ s print_params =
-  if is_term then print_fmt "\\gramterm{\\%s{}}" (command s)
-  else begin print_fmt "\\gramnonterm{%s" s;
+  if is_term then print_fmt "\\%s{\\%s{}}" (command "gramterm") (command s)
+  else begin print_fmt "\\%s{%s" (command "gramnonterm") s;
     print_params ();
     print_string "}"
   end

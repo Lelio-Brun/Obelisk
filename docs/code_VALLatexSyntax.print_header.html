@@ -49,7 +49,20 @@
     <span class="constructor">String</span>.escaped (<span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> max)
   <span class="keyword">in</span>
   documentclass
-    (usepackage <span class="string">""</span> <span class="string">"syntax"</span> ^
-     <span class="string">"@;\\\\newcommand{\\\\gramterm}[1]{#1}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\synt{#1}}@;\\\\newcommand{\\\\gramdef}{::=}@;\\\\newcommand{\\\\grambar}{\\\\alt}@;\\\\newcommand{\\\\grameps}{\\\\ensuremath{\\\\epsilon}}@;\\\\newlength{\\\\grammaxindent}@;\\\\settowidth{\\\\grammaxindent}{\\\\synt{"</span> ^ max ^
-     <span class="string">"} \\\\gramdef{} }@;\\\\setlength{\\\\grammarindent}{\\\\grammaxindent}@;@;"</span>);
-  begin_document <span class="string">"grammar"</span> (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols)</code></body></html>
+    (usepackage <span class="string">""</span> <span class="string">"syntax"</span> ^ <span class="string">"@;"</span> ^
+     (<span class="keyword">if</span> pre () = <span class="string">""</span> <span class="keyword">then</span> <span class="string">""</span>
+     <span class="keyword">else</span>
+       <span class="string">"\\\\newenvironment{"</span> ^ command <span class="string">"grammar"</span> ^
+       <span class="string">"}{\\\\begin{grammar}}{\\\\end{grammar}}@;@;"</span>) ^
+     newcommand <span class="string">"gramterm"</span> 1 <span class="constructor">None</span> <span class="string">"#1"</span> ^
+     newcommand <span class="string">"gramnonterm"</span> 1 <span class="constructor">None</span> <span class="string">"\\\\synt{#1}"</span> ^
+     newcommand <span class="string">"gramdef"</span> 0 <span class="constructor">None</span> <span class="string">"::="</span> ^
+     newcommand <span class="string">"grambar"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\alt"</span> ^
+     newcommand <span class="string">"grameps"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\ensuremath{\\\\epsilon}"</span> ^
+     <span class="string">"\\\\newlength{\\\\"</span> ^ command <span class="string">"grammaxindent"</span> ^
+     <span class="string">"}@;\\\\settowidth{\\\\"</span> ^ command <span class="string">"grammaxindent"</span> ^
+     <span class="string">"}{\\\\synt{"</span> ^ max ^ <span class="string">"} \\\\"</span> ^
+     command <span class="string">"gramdef"</span> ^ <span class="string">"{} }@;@;"</span>);
+  begin_document
+    (<span class="string">"\\setlength{\\grammarindent}{\\"</span> ^ command <span class="string">"grammaxindent"</span> ^ <span class="string">"}"</span>)
+    (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols)</code></body></html>

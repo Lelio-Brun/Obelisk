@@ -36,12 +36,12 @@
 <span class="keyword">let</span>&nbsp;print_header&nbsp;_&nbsp;=&nbsp;()<br>
 <span class="keyword">let</span>&nbsp;print_footer&nbsp;()&nbsp;=&nbsp;print_string&nbsp;<span class="string">"@."</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;def&nbsp;=&nbsp;<span class="string">"&nbsp;::=&nbsp;@[&lt;v&nbsp;-2&gt;"</span><br>
-<span class="keyword">let</span>&nbsp;prod_bar&nbsp;=&nbsp;<span class="string">"|&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;bar&nbsp;=&nbsp;<span class="string">"@&nbsp;|@&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;space&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
-<span class="keyword">let</span>&nbsp;break&nbsp;=&nbsp;<span class="string">"@;"</span><br>
-<span class="keyword">let</span>&nbsp;eps&nbsp;=&nbsp;<span class="string">"epsilon"</span><br>
+<span class="keyword">let</span>&nbsp;def&nbsp;()&nbsp;=&nbsp;<span class="string">"&nbsp;::=&nbsp;@[&lt;v&nbsp;-2&gt;"</span><br>
+<span class="keyword">let</span>&nbsp;prod_bar&nbsp;()&nbsp;=&nbsp;<span class="string">"|&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;bar&nbsp;()&nbsp;=&nbsp;<span class="string">"@&nbsp;|@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;space&nbsp;()&nbsp;=&nbsp;<span class="string">"@&nbsp;"</span><br>
+<span class="keyword">let</span>&nbsp;break&nbsp;()&nbsp;=&nbsp;<span class="string">"@;"</span><br>
+<span class="keyword">let</span>&nbsp;eps&nbsp;()&nbsp;=&nbsp;<span class="string">"epsilon"</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
 &nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s&gt;"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)<br>
@@ -60,8 +60,8 @@
 <br>
 <span class="keyword">let</span>&nbsp;print_sep_list&nbsp;e&nbsp;nonempty&nbsp;print_sep&nbsp;print_x&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print&nbsp;()&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_x&nbsp;();&nbsp;print_string&nbsp;space;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;star&nbsp;<span class="keyword">true</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_sep&nbsp;();&nbsp;print_string&nbsp;space;&nbsp;print_x&nbsp;())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_x&nbsp;();&nbsp;print_string&nbsp;(space&nbsp;());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;star&nbsp;<span class="keyword">true</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_sep&nbsp;();&nbsp;print_string&nbsp;(space&nbsp;());&nbsp;print_x&nbsp;())<br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;<span class="keyword">if</span>&nbsp;nonempty&nbsp;<span class="keyword">then</span>&nbsp;par&nbsp;e&nbsp;print&nbsp;<span class="keyword">else</span>&nbsp;enclose&nbsp;print&nbsp;<span class="string">"["</span>&nbsp;<span class="string">"]"</span><br>
 </code></body></html>

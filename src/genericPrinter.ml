@@ -17,7 +17,7 @@ module type PRINTER = module type of Printer
 module Make (H : HELPER) : PRINTER = struct
 
   (** Print a {!val:Helper.space} space. *)
-  let print_space () = H.print_string H.space
+  let print_space () = H.print_string (H.space ())
 
   (** [print_sep_encl print sep op cl xs] prints the elements of [xs] with
       the printer [print], separated by [sep] end enclosed by [op] and [cl] *)
@@ -52,8 +52,8 @@ module Make (H : HELPER) : PRINTER = struct
   (** Print a list of actuals.
       If the list is [nil], then the empty word {!val:Helper.eps} is printed. *)
   and print_actuals symbols = function
-    | [] -> H.print_string H.eps; print_space ()
-    | xs -> print_sep (print_actual symbols false) H.space xs
+    | [] -> H.print_string (H.eps ()); print_space ()
+    | xs -> print_sep (print_actual symbols false) (H.space ()) xs
 
   (** Print a possibly parenthesized actual. *)
   and print_actual symbols e = function
@@ -64,7 +64,7 @@ module Make (H : HELPER) : PRINTER = struct
     | Modifier (a, m) ->
       print_modifier m e (fun () -> print_actual symbols true a)
     | Anonymous ps ->
-      print_sep (print_actuals symbols) H.bar ps
+      print_sep (print_actuals symbols) (H.bar ()) ps
 
   (** Print a possibly parenthesized "modified" actual.
       Modular: see {!val:Helper.opt}, {!val:Helper.plus}
@@ -124,7 +124,7 @@ module Make (H : HELPER) : PRINTER = struct
           (Symbols.is_non_term s symbols) s
           (fun () ->
              print_sep_encl (print_actual symbols e)
-               ("," ^ H.space) "(" ")" ps))
+               ("," ^ (H.space ())) "(" ")" ps))
 
   (** Print a rule:
       + calls {!val:Helper.rule_begin}
@@ -139,8 +139,8 @@ module Make (H : HELPER) : PRINTER = struct
     H.rule_begin ();
     H.print_rule_name (params = []) name;
     print_sep_encl H.print_string ", " "(" ")" params;
-    H.print_string H.def;
-    print_sep (print_production symbols) (H.break ^ H.prod_bar) prods;
+    H.print_string (H.def ());
+    print_sep (print_production symbols) (H.break () ^ H.prod_bar ()) prods;
     H.rule_end ()
 
   (** Print the grammar by first calling {!val:Helper.print_header},

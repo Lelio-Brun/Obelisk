@@ -31,4 +31,4 @@
 <body>
 <code class="code"><span class="keyword">let</span> usepackage opts s =
   <span class="constructor">Format</span>.sprintf <span class="string">"\\\\%s%s{%s}@;"</span>
-    (<span class="keyword">if</span> use <span class="keyword">then</span> <span class="string">"RequirePackage"</span> <span class="keyword">else</span> <span class="string">"usepackage"</span>) opts s</code></body></html>
+    (<span class="keyword">if</span> use () <span class="keyword">then</span> <span class="string">"RequirePackage"</span> <span class="keyword">else</span> <span class="string">"usepackage"</span>) opts s</code></body></html>

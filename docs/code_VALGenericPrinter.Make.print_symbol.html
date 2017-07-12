@@ -37,8 +37,8 @@
   </code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a list of actuals.
       If the list is <code class="code">nil</code>, then the empty word <a href="Helper.html#VALeps"><code class="code"><span class="constructor">Helper</span>.eps</code></a> is printed. *)</span></td></tr></table><code class="code">
   <span class="keyword">and</span> print_actuals symbols = <span class="keyword">function</span>
-    <span class="keywordsign">|</span> [] <span class="keywordsign">-&gt;</span> <span class="constructor">H</span>.print_string <span class="constructor">H</span>.eps; print_space ()
-    <span class="keywordsign">|</span> xs <span class="keywordsign">-&gt;</span> print_sep (print_actual symbols <span class="keyword">false</span>) <span class="constructor">H</span>.space xs
+    <span class="keywordsign">|</span> [] <span class="keywordsign">-&gt;</span> <span class="constructor">H</span>.print_string (<span class="constructor">H</span>.eps ()); print_space ()
+    <span class="keywordsign">|</span> xs <span class="keywordsign">-&gt;</span> print_sep (print_actual symbols <span class="keyword">false</span>) (<span class="constructor">H</span>.space ()) xs
 
   </code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a possibly parenthesized actual. *)</span></td></tr></table><code class="code">
   <span class="keyword">and</span> print_actual symbols e = <span class="keyword">function</span>
@@ -49,7 +49,7 @@
     <span class="keywordsign">|</span> <span class="constructor">Modifier</span> (a, m) <span class="keywordsign">-&gt;</span>
       print_modifier m e (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> print_actual symbols <span class="keyword">true</span> a)
     <span class="keywordsign">|</span> <span class="constructor">Anonymous</span> ps <span class="keywordsign">-&gt;</span>
-      print_sep (print_actuals symbols) <span class="constructor">H</span>.bar ps
+      print_sep (print_actuals symbols) (<span class="constructor">H</span>.bar ()) ps
 
   </code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a possibly parenthesized "modified" actual.
       Modular: see <a href="Helper.html#VALopt"><code class="code"><span class="constructor">Helper</span>.opt</code></a>, <a href="Helper.html#VALplus"><code class="code"><span class="constructor">Helper</span>.plus</code></a>
@@ -111,4 +111,4 @@
           (<span class="constructor">Symbols</span>.is_non_term s symbols) s
           (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
              print_sep_encl (print_actual symbols e)
-               (<span class="string">","</span> ^ <span class="constructor">H</span>.space) <span class="string">"("</span> <span class="string">")"</span> ps))</code></body></html>
+               (<span class="string">","</span> ^ (<span class="constructor">H</span>.space ())) <span class="string">"("</span> <span class="string">")"</span> ps))</code></body></html>

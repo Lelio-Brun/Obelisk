@@ -33,19 +33,23 @@
 <br>
 <span class="keyword">include</span>&nbsp;<span class="constructor">MiniHelper</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;use&nbsp;=&nbsp;!pfile&nbsp;&lt;&gt;&nbsp;<span class="string">""</span><br>
+<span class="keyword">let</span>&nbsp;use&nbsp;()&nbsp;=&nbsp;!pfile&nbsp;&lt;&gt;&nbsp;<span class="string">""</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_string_package&nbsp;s&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;!formatter_package&nbsp;(<span class="constructor">Scanf</span>.format_from_string&nbsp;s&nbsp;<span class="string">""</span>)<br>
-<span class="keyword">let</span>&nbsp;print_fmt_package&nbsp;s&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;!formatter_package&nbsp;s<br>
+<span class="keyword">let</span>&nbsp;print_string_package&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;!formatter_package&nbsp;(<span class="constructor">Scanf</span>.format_from_string&nbsp;s&nbsp;<span class="string">""</span>)<br>
+<span class="keyword">let</span>&nbsp;print_fmt_package&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;!formatter_package&nbsp;s<br>
 <br>
 <span class="keyword">let</span>&nbsp;usepackage&nbsp;opts&nbsp;s&nbsp;=<br>
 &nbsp;&nbsp;<span class="constructor">Format</span>.sprintf&nbsp;<span class="string">"\\\\%s%s{%s}@;"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"RequirePackage"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"usepackage"</span>)&nbsp;opts&nbsp;s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;()&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"RequirePackage"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"usepackage"</span>)&nbsp;opts&nbsp;s<br>
 <br>
 <span class="keyword">let</span>&nbsp;documentclass&nbsp;header&nbsp;=<br>
 &nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@[&lt;v&nbsp;0&gt;"</span>;<br>
-&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;use<br>
-&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;print_fmt_package&nbsp;<span class="string">"\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"</span>&nbsp;!pfile<br>
+&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;use&nbsp;()<br>
+&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;print_fmt_package<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!pfile<br>
 &nbsp;&nbsp;<span class="keyword">else</span>&nbsp;print_string&nbsp;<span class="string">"\\\\documentclass[preview]{standalone}@;@;"</span>;<br>
 &nbsp;&nbsp;print_string_package&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"suffix"</span>&nbsp;^&nbsp;header)<br>
 <br>
@@ -74,7 +78,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;]<br>
 &nbsp;&nbsp;|&gt;&nbsp;snd<br>
 <br>
-<span class="keyword">let</span>&nbsp;command&nbsp;x&nbsp;=<br>
+<span class="keyword">let</span>&nbsp;valid&nbsp;x&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;roman&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_substitute&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"[0-9]+"</span>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">fun</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Str</span>.matched_string&nbsp;s&nbsp;|&gt;&nbsp;to_roman)<br>
@@ -82,9 +86,14 @@
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;clear_underscore&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">""</span><br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;!prefix&nbsp;^&nbsp;x&nbsp;|&gt;&nbsp;roman&nbsp;|&gt;&nbsp;clear_underscore<br>
+&nbsp;&nbsp;x&nbsp;|&gt;&nbsp;roman&nbsp;|&gt;&nbsp;clear_underscore<br>
 <br>
-<span class="keyword">let</span>&nbsp;begin_document&nbsp;env&nbsp;ts&nbsp;=<br>
+<span class="keyword">let</span>&nbsp;command&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;!prefix&nbsp;^&nbsp;x&nbsp;|&gt;&nbsp;valid<br>
+<br>
+<span class="keyword">let</span>&nbsp;pre&nbsp;()&nbsp;=&nbsp;valid&nbsp;!prefix<br>
+<br>
+<span class="keyword">let</span>&nbsp;begin_document&nbsp;misc&nbsp;ts&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;commands&nbsp;ts&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;escape&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;nt&nbsp;<span class="keywordsign">-&gt;</span><br>
@@ -92,23 +101,47 @@
 &nbsp;&nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@;"</span><br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;commands&nbsp;ts;<br>
+&nbsp;&nbsp;print_endline&nbsp;(pre&nbsp;());<br>
 &nbsp;&nbsp;print_fmt_package<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\gramopt[1]{[#1]}@;\\newcommand\\gramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\gramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\gramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\gramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\paren[1]{(#1)}@;\\WithSuffix\\newcommand\\gramopt*[1]{\\paren{\\gramopt{#1}}}@;\\WithSuffix\\newcommand\\gramplus*[1]{\\paren{\\gramplus{#1}}}@;\\WithSuffix\\newcommand\\gramstar*[1]{\\paren{\\gramstar{#1}}}@;\\WithSuffix\\newcommand\\gramseplist*[2]{\\paren{\\gramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\gramsepnelist*[2]{\\paren{\\gramsepnelist{#1}{#2}}}"</span>;<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s\\begin{%s}@;"</span>&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\begin{document}\n\n"</span>)&nbsp;env<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{(#1)}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;());<br>
+&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s%s\\begin{%s}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;()&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\begin{document}\n\n"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;misc&nbsp;=&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;misc&nbsp;^&nbsp;<span class="string">"\n"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(command&nbsp;<span class="string">"grammar"</span>)<br>
 <br>
-<span class="keyword">let</span>&nbsp;end_document&nbsp;env&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\end{%s}%s@]@."</span>&nbsp;env&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\end{document}"</span>)<br>
+<span class="keyword">let</span>&nbsp;newcommand&nbsp;x&nbsp;n&nbsp;o&nbsp;cmd&nbsp;=<br>
+&nbsp;&nbsp;<span class="string">"\\\\newcommand\\\\"</span>&nbsp;^&nbsp;pre&nbsp;()&nbsp;^&nbsp;x&nbsp;^<br>
+&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;n&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;0&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"["</span>&nbsp;^&nbsp;string_of_int&nbsp;n&nbsp;^&nbsp;<span class="string">"]"</span><br>
+&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;^&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;o&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">""</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Some</span>&nbsp;y&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"["</span>&nbsp;^&nbsp;y&nbsp;^&nbsp;<span class="string">"]"</span><br>
+&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;^&nbsp;<span class="string">"{"</span>&nbsp;^&nbsp;cmd&nbsp;^&nbsp;<span class="string">"}@;"</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;end_document&nbsp;()&nbsp;=<br>
+&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\end{%s}%s@]@."</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(command&nbsp;<span class="string">"grammar"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;()&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\end{document}"</span>)<br>
+<br>
+<span class="keyword">let</span>&nbsp;print_footer&nbsp;=&nbsp;end_document<br>
 <br>
 <span class="keyword">let</span>&nbsp;opt,&nbsp;plus,&nbsp;star&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cmd&nbsp;s&nbsp;e&nbsp;(print:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s%s{"</span>&nbsp;s&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s%s%s{"</span>&nbsp;(pre&nbsp;())&nbsp;s&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;cmd&nbsp;<span class="string">"gramopt"</span>,&nbsp;cmd&nbsp;<span class="string">"gramplus"</span>,&nbsp;cmd&nbsp;<span class="string">"gramstar"</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;print_sep_list&nbsp;e&nbsp;nonempty&nbsp;print_sep&nbsp;print_x&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\gramsep%slist%s{"</span><br>
+&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%sgramsep%slist%s{"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;nonempty&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"ne"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>);<br>
 &nbsp;&nbsp;print_sep&nbsp;();<br>

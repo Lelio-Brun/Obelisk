@@ -65,12 +65,12 @@ let print_footer () =
      @]@;</body>@;\
      @]@;</html>@]@."
 
-let def = "</th>@;<td>"
-let prod_bar = "@[<v 2><tr>@;<th class=\"bar\"></th>@;<td>"
-let bar = " | "
-let space = "@ "
-let break = "@;"
-let eps = "epsilon"
+let def () = "</th>@;<td>"
+let prod_bar () = "@[<v 2><tr>@;<th class=\"bar\"></th>@;<td>"
+let bar () = " | "
+let space () = "@ "
+let break () = "@;"
+let eps () = "epsilon"
 
 let print_rule_name is_not_fun =
   print_fmt

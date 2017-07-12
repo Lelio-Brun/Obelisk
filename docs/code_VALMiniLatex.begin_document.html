@@ -29,7 +29,7 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.begin_document</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> begin_document env ts =
+<code class="code"><span class="keyword">let</span> begin_document misc ts =
   <span class="keyword">let</span> commands ts =
     <span class="keyword">let</span> escape = <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> <span class="keyword">in</span>
     <span class="constructor">List</span>.iter (<span class="keyword">fun</span> nt <span class="keywordsign">-&gt;</span>
@@ -37,6 +37,13 @@
     print_string_package <span class="string">"@;"</span>
   <span class="keyword">in</span>
   commands ts;
+  print_endline (pre ());
   print_fmt_package
-    <span class="string">"\\newcommand\\gramopt[1]{[#1]}@;\\newcommand\\gramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\gramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\gramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\gramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\paren[1]{(#1)}@;\\WithSuffix\\newcommand\\gramopt*[1]{\\paren{\\gramopt{#1}}}@;\\WithSuffix\\newcommand\\gramplus*[1]{\\paren{\\gramplus{#1}}}@;\\WithSuffix\\newcommand\\gramstar*[1]{\\paren{\\gramstar{#1}}}@;\\WithSuffix\\newcommand\\gramseplist*[2]{\\paren{\\gramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\gramsepnelist*[2]{\\paren{\\gramsepnelist{#1}{#2}}}"</span>;
-  print_fmt <span class="string">"%s\\begin{%s}@;"</span> (<span class="keyword">if</span> use <span class="keyword">then</span> <span class="string">""</span> <span class="keyword">else</span> <span class="string">"\n\n\\begin{document}\n\n"</span>) env</code></body></html>
+    <span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{(#1)}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"</span>
+    (pre ()) (pre ()) (pre ()) (pre ()) (pre ()) (pre ())
+    (pre ()) (pre ()) (pre ()) (pre ()) (pre ())
+    (pre ()) (pre ()) (pre ()) (pre ()) (pre ());
+  print_fmt <span class="string">"%s%s\\begin{%s}@;"</span>
+    (<span class="keyword">if</span> use () <span class="keyword">then</span> <span class="string">""</span> <span class="keyword">else</span> <span class="string">"\n\n\\begin{document}\n\n"</span>)
+    (<span class="keyword">if</span> misc = <span class="string">""</span> <span class="keyword">then</span> <span class="string">""</span> <span class="keyword">else</span> misc ^ <span class="string">"\n"</span>)
+    (command <span class="string">"grammar"</span>)</code></body></html>

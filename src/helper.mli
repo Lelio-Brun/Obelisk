@@ -54,22 +54,22 @@ val plus: bool -> (unit -> unit) -> unit
 val star: bool -> (unit -> unit) -> unit
 
 (** The rule definition symbol.  *)
-val def: string
+val def: unit -> string
 
 (** The bar at the start of each alternative production. *)
-val prod_bar: string
+val prod_bar: unit -> string
 
 (** The bar for the anonymous rules. *)
-val bar: string
+val bar: unit -> string
 
 (** The optionally parenthesizing function. *)
 val par: bool -> (unit -> unit) -> unit
 
 (** The space. *)
-val space: string
+val space: unit -> string
 
 (** The line break. *)
-val break: string
+val break: unit -> string
 
 (** The empty word epsilon.  *)
-val eps: string
+val eps: unit -> string

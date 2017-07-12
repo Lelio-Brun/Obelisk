@@ -30,11 +30,4 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> command x =
-  <span class="keyword">let</span> roman =
-    <span class="constructor">Str</span>.global_substitute (<span class="constructor">Str</span>.regexp <span class="string">"[0-9]+"</span>)
-      (<span class="keyword">fun</span> s <span class="keywordsign">-&gt;</span> <span class="constructor">Str</span>.matched_string s |&gt; to_roman)
-  <span class="keyword">in</span>
-  <span class="keyword">let</span> clear_underscore =
-    <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">""</span>
-  <span class="keyword">in</span>
-  !prefix ^ x |&gt; roman |&gt; clear_underscore</code></body></html>
+  !prefix ^ x |&gt; valid</code></body></html>

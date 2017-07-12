@@ -31,6 +31,14 @@
 <body>
 <code class="code"><span class="keyword">let</span> print_header symbols =
   documentclass
-    (usepackage <span class="string">"[epsilon]"</span> <span class="string">"backnaur"</span> ^
-     <span class="string">"@;\\\\newcommand{\\\\gramsp}{\\\\ensuremath{\\\\bnfsp}}@;\\\\newcommand{\\\\gramterm}[1]{\\\\bnfts{#1}}@;\\\\newcommand{\\\\gramnonterm}[1]{\\\\ensuremath{\\\\bnfpn{#1}}}@;\\\\newcommand{\\\\grambar}{\\\\bnfbar}@;\\\\newcommand{\\\\grameps}{\\\\bnfes}@;\\\\newcommand{\\\\gramprod}[3][\\\\textwidth]{\\\\bnfprod{#2}{%%@;&lt;0 2&gt;\\\\begin{minipage}[t]{#1}@;&lt;0 4&gt;$#3$@;&lt;0 2&gt;\\\\end{minipage}}}@;@;\\\\newcommand{\\\\bnfbar}{\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}}@;@;"</span>);
-  begin_document <span class="string">"bnf*"</span> (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols)</code></body></html>
+    (usepackage <span class="string">"[epsilon]"</span> <span class="string">"backnaur"</span> ^ <span class="string">"@;"</span> ^
+     <span class="string">"\\\\newenvironment{"</span> ^ command <span class="string">"grammar"</span> ^
+     <span class="string">"}{\\\\begin{bnf*}}{\\\\end{bnf*}}@;@;"</span> ^
+      newcommand <span class="string">"gramsp"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\ensuremath{\\\\bnfsp}"</span> ^
+      newcommand <span class="string">"gramterm"</span> 1 <span class="constructor">None</span> <span class="string">"\\\\bnfts{#1}"</span> ^
+      newcommand <span class="string">"gramnonterm"</span> 1 <span class="constructor">None</span> <span class="string">"\\\\ensuremath{\\\\bnfpn{#1}}"</span> ^
+      newcommand <span class="string">"grameps"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\bnfes"</span> ^
+      newcommand <span class="string">"gramprod"</span> 3 (<span class="constructor">Some</span> <span class="string">"\\\\textwidth"</span>)
+        <span class="string">"\\\\bnfprod{#2}{%%@;&lt;0 2&gt;\\\\begin{minipage}[t]{#1}@;&lt;0 4&gt;$#3$@;&lt;0 2&gt;\\\\end{minipage}}"</span> ^
+      newcommand <span class="string">"grambar"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\hspace*{-2.5em}\\\\bnfor\\\\hspace*{1.2em}"</span> ^ <span class="string">"@;"</span>);
+  begin_document <span class="string">""</span> (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols)</code></body></html>
