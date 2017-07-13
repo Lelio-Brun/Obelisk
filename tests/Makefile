@@ -9,9 +9,9 @@ exec=../$(EXE) $(1) -o $(TMP) $(2) && printf "\tTesting $(2)\tok\n"
 exec_pkg=../$(EXE) $(1) -o $(TMPPKG).tex -package $(PKG) -prefix my_prefix42 $(2) && printf "\tTesting $(2) (package mode)\tok\n"
 test=$(foreach f, $(MLYS), $(call exec,$(1),$(f));)
 test_latex=$(foreach f, $(MLYS), $(call exec,$(1),$(f));\
-	pdflatex -halt-on-error $(TMP))
+	pdflatex -interaction batchmode $(TMP))
 test_latex_pkg=$(foreach f, $(MLYS), $(call exec_pkg,$(1),$(f));\
-	pdflatex -halt-on-error $(MAIN))
+	pdflatex -interaction batchmode $(MAIN))
 
 .PHONY: all clean latex tabular syntax backnaur html default
 
