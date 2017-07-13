@@ -5,20 +5,20 @@ PKG=pkg
 TMPPKG=tmppkg
 MAIN=main
 
-exec=../$(EXE) $(1) -o $(TMP) $(2) && echo -e "\tTesting $(2)\tok"
-exec_pkg=../$(EXE) $(1) -o $(TMPPKG).tex -package $(PKG) -prefix my_prefix42 $(2) && echo -e "\tTesting $(2) (package mode)\tok"
+exec=../$(EXE) $(1) -o $(TMP) $(2) && printf "\tTesting $(2)\tok\n"
+exec_pkg=../$(EXE) $(1) -o $(TMPPKG).tex -package $(PKG) -prefix my_prefix42 $(2) && printf "\tTesting $(2) (package mode)\tok\n"
 test=$(foreach f, $(MLYS), $(call exec,$(1),$(f));)
 test_latex=$(foreach f, $(MLYS), $(call exec,$(1),$(f));\
-	pdflatex -interaction batchmode $(TMP))
+	pdflatex -halt-on-error $(TMP))
 test_latex_pkg=$(foreach f, $(MLYS), $(call exec_pkg,$(1),$(f));\
-	pdflatex -interaction batchmode $(MAIN))
+	pdflatex -halt-on-error $(MAIN))
 
 .PHONY: all clean latex tabular syntax backnaur html default
 
 all: default latex html
 
 default:
-	@echo "Default mode."
+	@printf "Default mode."
 	@$(call test,,)
 
 latex: $(MAIN) tabular syntax backnaur
@@ -31,22 +31,22 @@ $(MAIN): Makefile
 \\\\end{document}\n" > $@
 
 tabular:
-	@echo "Latex tabular mode."
+	@printf "Latex tabular mode.\n"
 	@$(call test_latex,latex -$@)
 	@$(call test_latex_pkg,latex -$@)
 
 syntax:
-	@echo "Latex syntax mode."
+	@printf "Latex syntax mode.\n"
 	@$(call test_latex,latex -$@)
 	@$(call test_latex_pkg,latex -$@)
 
 backnaur:
-	@echo "Latex backnaur mode."
+	@printf "Latex backnaur mode.\n"
 	@$(call test_latex,latex -$@)
 	@$(call test_latex_pkg,latex -$@)
 
 html:
-	@echo "Html mode."
+	@printf "Html mode.\n"
 	@$(call test,$@)
 
 clean:

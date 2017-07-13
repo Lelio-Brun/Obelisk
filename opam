@@ -14,6 +14,6 @@ build-test: [make "tests"]
 depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build}
-  "menhir"
+  "menhir" {build}
 ]
 available: [ ocaml-version >= "4.03" ]
