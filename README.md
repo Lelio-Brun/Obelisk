@@ -1,4 +1,6 @@
 # Obelisk
+[![Build Status](https://travis-ci.org/Lelio-Brun/Obelisk.svg?branch=master)](https://travis-ci.org/Lelio-Brun/Obelisk)
+
 ## Overview
 **Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
 

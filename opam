@@ -10,9 +10,10 @@ dev-repo: "https://github.com/Lelio-Brun/Obelisk.git"
 build: [make]
 install: [make "install" "BINDIR=%{bin}%"]
 remove: [make "uninstall" "BINDIR=%{bin}%"]
+build-test: [make "tests"]
 depends: [
-  "ocamlfind"
-  "ocamlbuild"
+  "ocamlfind" {build}
+  "ocamlbuild" {build}
   "menhir"
 ]
 available: [ ocaml-version >= "4.03" ]

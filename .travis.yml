@@ -1,0 +1,14 @@
+language: c
+sudo: required
+install: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
+script: bash -ex .travis-opam.sh
+env:
+  - OCAML_VERSION=4.00 PACKAGE=obelisk
+  - OCAML_VERSION=4.01 PACKAGE=obelisk
+  - OCAML_VERSION=4.02 PACKAGE=obelisk
+  - OCAML_VERSION=4.03 PACKAGE=obelisk
+  - OCAML_VERSION=4.04 PACKAGE=obelisk
+  - OCAML_VERSION=4.05 PACKAGE=obelisk
+os:
+  - linux
+  - osx
