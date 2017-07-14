@@ -1,14 +1,12 @@
 language: c
-sudo: required
 dist: trusty
+sudo: required
 
 addons:
   apt:
     packages:
-      - texlive-full
+      - texlive
       - texlive-latex-extra
-# before_install: sudo apt-get -qq update
-# install: sudo apt-get install -y --no-install-recommends texlive-full texlive-latex-extra
 
 before_script: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
 script: bash -ex .travis-opam.sh
