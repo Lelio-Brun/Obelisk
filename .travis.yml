@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - texlive
+      - texlive-math-extra
       - texlive-latex-extra
 
 before_script: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
