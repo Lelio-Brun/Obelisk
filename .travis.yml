@@ -5,8 +5,8 @@ dist: trusty
 addons:
   apt:
     packages:
-      -texlive-full
-      -texlive-latex-extra
+      - texlive-full
+      - texlive-latex-extra
 # before_install: sudo apt-get -qq update
 # install: sudo apt-get install -y --no-install-recommends texlive-full texlive-latex-extra
 
