@@ -41,7 +41,7 @@ syntax:
 	@$(call test_latex_pkg,latex -$@)
 
 backnaur:
-	@printf "Latex backnaur mode.\n"
+	@printf "\nLatex backnaur mode.\n"
 	@$(call test_latex,latex -$@)
 	@$(call test_latex_pkg,latex -$@)
 
