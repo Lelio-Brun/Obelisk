@@ -15,16 +15,17 @@ let add_defined symbols {name; params} =
 
 (** [add_terminal symbols r] recursively scans the right-hand side of [r] to add
     the symbols which are not already "defined" in [symbols]
-    (see {!Common.Symbols.is_defined}) as terminals
+    (see {!Common.Symbols.is_defined}) neither parameters as terminals
     (see {!Common.Symbols.def_term}). *)
-let add_terminal symbols {groups} =
+let add_terminal symbols {params; groups} =
   let rec add_terminal_actual symbols = function
     | Symbol (s, ps) ->
       let symbols = fold_left add_terminal_actual symbols ps in
       if Symbols.is_defined s symbols = None
       && String.uppercase_ascii s = s
       && ps = []
-      then Symbols.def_term s symbols else symbols
+      && not (List.mem s params)
+      then (print_endline s; Symbols.def_term s symbols) else symbols
     | Modifier (a, _) ->
       add_terminal_actual symbols a
     | Anonymous gs ->
