@@ -33,8 +33,9 @@
 <br>
 <span class="keyword">let</span>&nbsp;print_header&nbsp;symbols&nbsp;=<br>
 &nbsp;&nbsp;documentclass<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"tabu"</span>&nbsp;^<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newenvironment{"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"grammar"</span>&nbsp;^&nbsp;<span class="string">"}{@;&lt;0&nbsp;2&gt;\\\\begin{trivlist}@;&lt;0&nbsp;4&gt;\\\\item[]@;&lt;0&nbsp;6&gt;\\\\begin{tabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0&nbsp;6&gt;\\\\end{tabu}@;&lt;0&nbsp;2&gt;\\\\end{trivlist}@;}@;@;"</span>&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"longtable"</span>&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;usepackage&nbsp;<span class="string">""</span>&nbsp;<span class="string">"tabu"</span>&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"@;\\\\newenvironment{"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"grammar"</span>&nbsp;^&nbsp;<span class="string">"}{@;&lt;0&nbsp;2&gt;\\\\begin{trivlist}@;&lt;0&nbsp;4&gt;\\\\item[]@;&lt;0&nbsp;6&gt;\\\\begin{longtabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0&nbsp;6&gt;\\\\end{longtabu}@;&lt;0&nbsp;2&gt;\\\\end{trivlist}@;}@;@;"</span>&nbsp;^<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newcommand&nbsp;<span class="string">"gramsp"</span>&nbsp;0&nbsp;<span class="constructor">None</span>&nbsp;<span class="string">"\\\\quad"</span>&nbsp;^<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newcommand&nbsp;<span class="string">"gramdef"</span>&nbsp;0&nbsp;<span class="constructor">None</span>&nbsp;(<span class="string">"$\\\\"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"gramsp"</span>&nbsp;^&nbsp;<span class="string">"::=\\\\"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"gramsp"</span>&nbsp;^&nbsp;<span class="string">"$"</span>)&nbsp;^<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newcommand&nbsp;<span class="string">"grambar"</span>&nbsp;0&nbsp;<span class="constructor">None</span>&nbsp;(<span class="string">"$\\\\"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"gramsp"</span>&nbsp;^&nbsp;<span class="string">"|\\\\"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"gramsp"</span>&nbsp;^&nbsp;<span class="string">"$"</span>)&nbsp;^<br>

@@ -31,8 +31,9 @@
 <body>
 <code class="code"><span class="keyword">let</span> print_header symbols =
   documentclass
-    (usepackage <span class="string">""</span> <span class="string">"tabu"</span> ^
-     <span class="string">"@;\\\\newenvironment{"</span> ^ command <span class="string">"grammar"</span> ^ <span class="string">"}{@;&lt;0 2&gt;\\\\begin{trivlist}@;&lt;0 4&gt;\\\\item[]@;&lt;0 6&gt;\\\\begin{tabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0 6&gt;\\\\end{tabu}@;&lt;0 2&gt;\\\\end{trivlist}@;}@;@;"</span> ^
+    (usepackage <span class="string">""</span> <span class="string">"longtable"</span> ^
+     usepackage <span class="string">""</span> <span class="string">"tabu"</span> ^
+     <span class="string">"@;\\\\newenvironment{"</span> ^ command <span class="string">"grammar"</span> ^ <span class="string">"}{@;&lt;0 2&gt;\\\\begin{trivlist}@;&lt;0 4&gt;\\\\item[]@;&lt;0 6&gt;\\\\begin{longtabu}{r%@{}c%@{}X%@{}}@;}{@;&lt;0 6&gt;\\\\end{longtabu}@;&lt;0 2&gt;\\\\end{trivlist}@;}@;@;"</span> ^
      newcommand <span class="string">"gramsp"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\quad"</span> ^
      newcommand <span class="string">"gramdef"</span> 0 <span class="constructor">None</span> (<span class="string">"$\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"::=\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"$"</span>) ^
      newcommand <span class="string">"grambar"</span> 0 <span class="constructor">None</span> (<span class="string">"$\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"|\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"$"</span>) ^

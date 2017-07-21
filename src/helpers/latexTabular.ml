@@ -2,14 +2,15 @@ include MiniLatex
 
 let print_header symbols =
   documentclass
-    (usepackage "" "tabu" ^
+    (usepackage "" "longtable" ^
+     usepackage "" "tabu" ^
      "@;\
       \\\\newenvironment{" ^ command "grammar" ^ "}{@;<0 2>\
       \\\\begin{trivlist}@;<0 4>\
       \\\\item[]@;<0 6>\
-      \\\\begin{tabu}{r%@{}c%@{}X%@{}}@;\
+      \\\\begin{longtabu}{r%@{}c%@{}X%@{}}@;\
       }{@;<0 6>\
-      \\\\end{tabu}@;<0 2>\
+      \\\\end{longtabu}@;<0 2>\
       \\\\end{trivlist}@;}@;@;" ^
      newcommand "gramsp" 0 None "\\\\quad" ^
      newcommand "gramdef" 0 None ("$\\\\" ^ command "gramsp" ^ "::=\\\\" ^ command "gramsp" ^ "$") ^
