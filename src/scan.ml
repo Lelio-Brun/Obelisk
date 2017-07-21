@@ -25,7 +25,7 @@ let add_terminal symbols {params; groups} =
       && String.uppercase_ascii s = s
       && ps = []
       && not (List.mem s params)
-      then (print_endline s; Symbols.def_term s symbols) else symbols
+      then Symbols.def_term s symbols else symbols
     | Modifier (a, _) ->
       add_terminal_actual symbols a
     | Anonymous gs ->
