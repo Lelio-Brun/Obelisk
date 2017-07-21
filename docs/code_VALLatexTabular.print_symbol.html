@@ -29,9 +29,12 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : LatexTabular.print_symbol</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol is_term is_non_term s print_params =
-  <span class="keyword">let</span> s' = <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> s <span class="keyword">in</span>
-  <span class="keyword">if</span> is_non_term <span class="keyword">then</span> print_fmt <span class="string">"\\%s{%s}"</span> (command <span class="string">"gramnonterm"</span>) s'
-  <span class="keyword">else</span> <span class="keyword">if</span> is_term <span class="keyword">then</span> print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramterm"</span>) (command s)
-  <span class="keyword">else</span> print_fmt <span class="string">"\\%s{%s}"</span> (command <span class="string">"gramfunc"</span>) s';
-  print_params ()</code></body></html>
+<code class="code"><span class="keyword">let</span> print_symbol symbols s print_params =
+  print_symbol_aux
+    (<span class="keyword">fun</span> t <span class="keywordsign">-&gt;</span> print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramterm"</span>) (command t))
+    (<span class="keyword">fun</span> nt <span class="keywordsign">-&gt;</span> print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramnonterm"</span>) (command nt))
+    (<span class="keyword">fun</span> f pps <span class="keywordsign">-&gt;</span> print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramfunc"</span>) (command f); pps ())
+    (<span class="keyword">fun</span> u <span class="keywordsign">-&gt;</span> print_fmt <span class="string">"%s"</span> (<span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> u))
+    symbols
+    s
+    print_params</code></body></html>

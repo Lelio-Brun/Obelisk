@@ -26,15 +26,8 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : LatexSyntax.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.print_non_term</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols s print_params =
-  print_symbol_aux
-    print_term
-    print_non_term
-    (<span class="keyword">fun</span> f pps <span class="keywordsign">-&gt;</span> print_fmt <span class="string">"\\%s{\\%s{}"</span> (command <span class="string">"gramnonterm"</span>) (command f); pps (); print_string <span class="string">"}"</span>)
-    print_undef
-    symbols
-    s
-    print_params</code></body></html>
+<code class="code"><span class="keyword">let</span> print_non_term nt =
+  print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramnonterm"</span>) (command nt)</code></body></html>

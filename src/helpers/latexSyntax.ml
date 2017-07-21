@@ -29,6 +29,7 @@ let print_header symbols =
        "}{\\\\begin{grammar}}{\\\\end{grammar}}@;@;") ^
      newcommand "gramterm" 1 None "#1" ^
      newcommand "gramnonterm" 1 None "\\\\synt{#1}" ^
+     newcommand "gramfunc" 1 None "\\\\synt{#1}" ^
      newcommand "gramdef" 0 None "::=" ^
      newcommand "grambar" 0 None "\\\\alt" ^
      newcommand "grameps" 0 None "\\\\ensuremath{\\\\epsilon}" ^
@@ -39,7 +40,7 @@ let print_header symbols =
      command "gramdef" ^ "{} }@;@;");
   begin_document
     ("\\setlength{\\grammarindent}{\\" ^ command "grammaxindent" ^ "}")
-    (Common.Symbols.terminals symbols)
+    symbols
 
 let def () = "> \\\\" ^ command "gramdef" ^ "{} "
 let prod_bar () = "\\\\" ^ command "grambar" ^ " "
@@ -55,9 +56,12 @@ let rule_begin () =
 let rule_end () =
   print_string "@]@;@;"
 
-let print_symbol is_term _ s print_params =
-  if is_term then print_fmt "\\%s{\\%s{}}" (command "gramterm") (command s)
-  else begin print_fmt "\\%s{%s" (command "gramnonterm") s;
-    print_params ();
-    print_string "}"
-  end
+let print_symbol symbols s print_params =
+  print_symbol_aux
+    print_term
+    print_non_term
+    (fun f pps -> print_fmt "\\%s{\\%s{}" (command "gramnonterm") (command f); pps (); print_string "}")
+    print_undef
+    symbols
+    s
+    print_params

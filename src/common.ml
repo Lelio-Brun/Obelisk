@@ -47,8 +47,8 @@ module Symbols : SYMBOLS = struct
       from identifiers to {!symbols} *)
 
   module M = Map.Make(String)
-  type t = symbols M.t
-  and symbols =
+  type t = symbol M.t
+  and symbol =
     | Terminal
     | NonTerminal
     | Fun of string list

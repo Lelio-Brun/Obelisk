@@ -78,8 +78,8 @@
       from identifiers to <code class="code">symbols</code> *)</span></td></tr></table><code class="code"><br>
 <br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">M</span>&nbsp;=&nbsp;<span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>)<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;symbols&nbsp;<span class="constructor">M</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;symbol&nbsp;<span class="constructor">M</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;symbol&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Terminal</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NonTerminal</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fun</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;list<br>

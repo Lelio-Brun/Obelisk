@@ -32,11 +32,11 @@ val production_begin: unit -> unit
 (** Printed at the end of each production. *)
 val production_end: unit -> unit
 
-(** [print_symbol is_term is_non_term s print_params] prints the symbol [s] and
+(** [print_symbol symbols s print_params] prints the symbol [s] and
     its parameters thanks to [print_params]. A different formatting is possible
     accordingly to [s] being a terminal, a non terminal or
     a functional non terminal. *)
-val print_symbol: bool -> bool -> string -> (unit -> unit) -> unit
+val print_symbol: Symbols.t -> string -> (unit -> unit) -> unit
 
 (** [print_sep_list e nonempty print_sep print_x] prints the possibly non empty
     separated list [separated[_nonempty]_list(sep, x)] where [sep] and [x] are

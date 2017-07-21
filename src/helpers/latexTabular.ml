@@ -19,7 +19,7 @@ let print_header symbols =
      newcommand "gramnonterm" 1 None "\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}" ^
      newcommand "gramfunc" 1 None "#1" ^
      newcommand "gramterm" 1 None "#1" ^ "@;");
-  begin_document "" (Common.Symbols.terminals symbols)
+  begin_document "" symbols
 
 let def () = "& \\\\" ^ command "gramdef" ^ " & "
 let prod_bar () = "& \\\\" ^ command "grambar" ^ " &"
@@ -37,9 +37,12 @@ let rule_end () =
   print_string "@;\\\\\\\\& & \\\\\\\\";
   print_string "@]@;@;"
 
-let print_symbol is_term is_non_term s print_params =
-  let s' = Str.global_replace (Str.regexp "_") "\\_" s in
-  if is_non_term then print_fmt "\\%s{%s}" (command "gramnonterm") s'
-  else if is_term then print_fmt "\\%s{\\%s{}}" (command "gramterm") (command s)
-  else print_fmt "\\%s{%s}" (command "gramfunc") s';
-  print_params ()
+let print_symbol symbols s print_params =
+  print_symbol_aux
+    (fun t -> print_fmt "\\%s{\\%s{}}" (command "gramterm") (command t))
+    (fun nt -> print_fmt "\\%s{\\%s{}}" (command "gramnonterm") (command nt))
+    (fun f pps -> print_fmt "\\%s{\\%s{}}" (command "gramfunc") (command f); pps ())
+    (fun u -> print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" u))
+    symbols
+    s
+    print_params

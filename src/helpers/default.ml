@@ -19,8 +19,8 @@ let rule_begin () = ()
 let rule_end () =
   print_string "@]@;@;"
 
-let print_symbol is_term is_non_term s print_params =
-  print_fmt (if is_non_term then "<%s>" else "%s") s;
+let print_symbol symbols s print_params =
+  print_fmt (if Common.Symbols.is_non_term s symbols then "<%s>" else "%s") s;
   print_params ()
 
 let opt e print = enclose print "[" "]"

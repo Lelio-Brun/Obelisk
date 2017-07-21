@@ -29,6 +29,6 @@
 <link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol is_term is_non_term s print_params =
-  print_fmt (<span class="keyword">if</span> is_non_term <span class="keyword">then</span> <span class="string">"&lt;%s&gt;"</span> <span class="keyword">else</span> <span class="string">"%s"</span>) s;
+<code class="code"><span class="keyword">let</span> print_symbol symbols s print_params =
+  print_fmt (<span class="keyword">if</span> <span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_non_term s symbols <span class="keyword">then</span> <span class="string">"&lt;%s&gt;"</span> <span class="keyword">else</span> <span class="string">"%s"</span>) s;
   print_params ()</code></body></html>

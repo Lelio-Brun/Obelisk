@@ -74,7 +74,8 @@ let eps () = "epsilon"
 
 let print_rule_name is_not_fun =
   print_fmt
-    (if is_not_fun then "<th><span class=\"nonterminal\">%s</span>" else "<th>%s")
+    (if is_not_fun then "<th><span class=\"nonterminal\">%s</span>"
+     else "<th>%s")
 let rule_begin () =
   print_string "@[<v 2><tr class=\"rule\">@;"
 let rule_end () =
@@ -84,9 +85,11 @@ let production_begin () = ()
 let production_end () =
   print_string "</td>@]@;</tr>"
 
-let print_symbol _ is_non_term s print_params =
+let print_symbol symbols s print_params =
   print_fmt
-    (if is_non_term then "<span class=\"nonterminal\">%s</span>" else "%s") s;
+    (if Common.Symbols.is_non_term s symbols
+     then "<span class=\"nonterminal\">%s</span>"
+     else "%s") s;
   print_params ()
 
 

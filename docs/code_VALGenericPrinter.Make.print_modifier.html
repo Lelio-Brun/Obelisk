@@ -100,15 +100,13 @@
     <span class="keywordsign">|</span> <span class="constructor">SepNEList</span> (sep, x) <span class="keywordsign">-&gt;</span>
       <span class="constructor">H</span>.print_sep_list e <span class="keyword">true</span> (print'' sep) (print'' x)
 
-  </code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
-      its parameters <code class="code">xs</code>. The output is parenthesized is <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
+  </code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
+      its parameters <code class="code">xs</code>. The output is parenthesized if <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
       the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
       See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>. *)</span></td></tr></table><code class="code">
-  <span class="keyword">and</span> print_symbol symbols e s ps =
-    <span class="constructor">H</span>.par (e <span class="keywordsign">&amp;&amp;</span> ps &lt;&gt; []) (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
-        <span class="constructor">H</span>.print_symbol
-          (<span class="constructor">Symbols</span>.is_term s symbols)
-          (<span class="constructor">Symbols</span>.is_non_term s symbols) s
+  <span class="keyword">and</span> print_symbol symbols e s xs =
+    <span class="constructor">H</span>.par (e <span class="keywordsign">&amp;&amp;</span> xs &lt;&gt; []) (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
+        <span class="constructor">H</span>.print_symbol symbols s
           (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
              print_sep_encl (print_actual symbols e)
-               (<span class="string">","</span> ^ (<span class="constructor">H</span>.space ())) <span class="string">"("</span> <span class="string">")"</span> ps))</code></body></html>
+               (<span class="string">","</span> ^ (<span class="constructor">H</span>.space ())) <span class="string">"("</span> <span class="string">")"</span> xs))</code></body></html>

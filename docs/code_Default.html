@@ -50,8 +50,8 @@
 <span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_non_term&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s&gt;"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)&nbsp;s;<br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;s&nbsp;print_params&nbsp;=<br>
+&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_non_term&nbsp;s&nbsp;symbols&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s&gt;"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)&nbsp;s;<br>
 &nbsp;&nbsp;print_params&nbsp;()<br>
 <br>
 <span class="keyword">let</span>&nbsp;opt&nbsp;e&nbsp;print&nbsp;=&nbsp;enclose&nbsp;print&nbsp;<span class="string">"["</span>&nbsp;<span class="string">"]"</span><br>

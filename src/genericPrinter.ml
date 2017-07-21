@@ -113,18 +113,16 @@ module Make (H : HELPER) : PRINTER = struct
     | SepNEList (sep, x) ->
       H.print_sep_list e true (print'' sep) (print'' x)
 
-  (** [print_symbols symbols e s ps] modularly prints the symbol [s] and
-      its parameters [xs]. The output is parenthesized is [e] is [true] AND
+  (** [print_symbols symbols e s xs] modularly prints the symbol [s] and
+      its parameters [xs]. The output is parenthesized if [e] is [true] AND
       the symbol is functional (ie. [xs <> nil]).
       See {!val:Helper.print_symbol}. *)
-  and print_symbol symbols e s ps =
-    H.par (e && ps <> []) (fun () ->
-        H.print_symbol
-          (Symbols.is_term s symbols)
-          (Symbols.is_non_term s symbols) s
+  and print_symbol symbols e s xs =
+    H.par (e && xs <> []) (fun () ->
+        H.print_symbol symbols s
           (fun () ->
              print_sep_encl (print_actual symbols e)
-               ("," ^ (H.space ())) "(" ")" ps))
+               ("," ^ (H.space ())) "(" ")" xs))
 
   (** Print a rule:
       + calls {!val:Helper.rule_begin}

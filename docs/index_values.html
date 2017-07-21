@@ -58,7 +58,7 @@ An internal helper to add a symbol.
 <td><div class="info">
 <code class="code">add_terminal&nbsp;symbols&nbsp;r</code> recursively scans the right-hand side of <code class="code">r</code> to add
     the symbols which are not already "defined" in <code class="code">symbols</code>
-    (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>) as terminals
+    (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>) neither parameters as terminals
     (see <a href="Common.Symbols.html#VALdef_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.def_term</code></a>).
 </div>
 </td></tr>
@@ -444,6 +444,8 @@ Print a list of actuals.
 Printed at the end of the output.
 </div>
 </td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_fun">print_fun</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
 <tr><td><a href="Html.html#VALprint_header">print_header</a> [<a href="Html.html">Html</a>]</td>
 <td></td></tr>
 <tr><td><a href="LatexBacknaur.html#VALprint_header">print_header</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
@@ -464,6 +466,8 @@ Printed at the beginning of the output.
 Print a possibly parenthesized "modified" actual.
 </div>
 </td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_non_term">print_non_term</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
 <tr><td><a href="GenericPrinter.Make.html#VALprint_pattern">print_pattern</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
 <td><div class="info">
 Print a possibly parenthesized pattern.
@@ -552,26 +556,32 @@ Print an escaped string.
 <td></td></tr>
 <tr><td><a href="Html.html#VALprint_symbol">print_symbol</a> [<a href="Html.html">Html</a>]</td>
 <td></td></tr>
-<tr><td><a href="LatexBacknaur.html#VALprint_symbol">print_symbol</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>
-<td></td></tr>
 <tr><td><a href="LatexSyntax.html#VALprint_symbol">print_symbol</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
 <td></td></tr>
 <tr><td><a href="LatexTabular.html#VALprint_symbol">print_symbol</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_symbol">print_symbol</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
 <td></td></tr>
 <tr><td><a href="Default.html#VALprint_symbol">print_symbol</a> [<a href="Default.html">Default</a>]</td>
 <td></td></tr>
 <tr><td><a href="Helper.html#VALprint_symbol">print_symbol</a> [<a href="Helper.html">Helper</a>]</td>
 <td><div class="info">
-<code class="code">print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params</code> prints the symbol <code class="code">s</code> and
+<code class="code">print_symbol&nbsp;symbols&nbsp;s&nbsp;print_params</code> prints the symbol <code class="code">s</code> and
     its parameters thanks to <code class="code">print_params</code>.
 </div>
 </td></tr>
 <tr><td><a href="GenericPrinter.Make.html#VALprint_symbol">print_symbol</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
 <td><div class="info">
-<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
+<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
       its parameters <code class="code">xs</code>.
 </div>
 </td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_symbol_aux">print_symbol_aux</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_term">print_term</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_undef">print_undef</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
 <tr><td><a href="Html.html#VALprod_bar">prod_bar</a> [<a href="Html.html">Html</a>]</td>
 <td></td></tr>
 <tr><td><a href="LatexBacknaur.html#VALprod_bar">prod_bar</a> [<a href="LatexBacknaur.html">LatexBacknaur</a>]</td>

@@ -46,15 +46,16 @@
 <br>
 </code><table><tr><td></td><td><span class="comment">(** <code class="code">add_terminal&nbsp;symbols&nbsp;r</code> recursively scans the right-hand side of <code class="code">r</code> to add
     the symbols which are not already "defined" in <code class="code">symbols</code>
-    (see <code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code>) as terminals
+    (see <code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code>) neither parameters as terminals
     (see <code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.def_term</code>). *)</span></td></tr></table><code class="code"><br>
-<span class="keyword">let</span>&nbsp;add_terminal&nbsp;symbols&nbsp;{groups}&nbsp;=<br>
+<span class="keyword">let</span>&nbsp;add_terminal&nbsp;symbols&nbsp;{params;&nbsp;groups}&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;add_terminal_actual&nbsp;symbols&nbsp;=&nbsp;<span class="keyword">function</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Symbol</span>&nbsp;(s,&nbsp;ps)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;symbols&nbsp;=&nbsp;fold_left&nbsp;add_terminal_actual&nbsp;symbols&nbsp;ps&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">Symbols</span>.is_defined&nbsp;s&nbsp;symbols&nbsp;=&nbsp;<span class="constructor">None</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;<span class="constructor">String</span>.uppercase_ascii&nbsp;s&nbsp;=&nbsp;s<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;ps&nbsp;=&nbsp;[]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;not&nbsp;(<span class="constructor">List</span>.mem&nbsp;s&nbsp;params)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Symbols</span>.def_term&nbsp;s&nbsp;symbols&nbsp;<span class="keyword">else</span>&nbsp;symbols<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Modifier</span>&nbsp;(a,&nbsp;_)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_terminal_actual&nbsp;symbols&nbsp;a<br>

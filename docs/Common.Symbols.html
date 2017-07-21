@@ -42,32 +42,32 @@ The actual implementation for the set of symbols, see <a href="Common.SYMBOLS.ht
 <hr width="100%">
 <br>
 The set of symbols is implemented by a map
-      from identifiers to <a href="Common.Symbols.html#TYPEsymbols"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.symbols</code></a><br>
+      from identifiers to <code class="code">symbols</code><br>
 
 <pre><span class="keyword">module</span> <a href="Common.Symbols.M.html">M</a>: <code class="type">Map.Make</code><code class="code">(</code><code class="type">String</code><code class="code">)</code></pre>
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t</code> </pre>
 
 
-<pre><code><span id="TYPEsymbols"><span class="keyword">type</span> <code class="type"></code>symbols</span> = </code></pre><table class="typetable">
+<pre><code><span id="TYPEsymbol"><span class="keyword">type</span> <code class="type"></code>symbol</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsymbols.Terminal"><span class="constructor">Terminal</span></span></code></td>
+<code><span id="TYPEELTsymbol.Terminal"><span class="constructor">Terminal</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsymbols.NonTerminal"><span class="constructor">NonTerminal</span></span></code></td>
+<code><span id="TYPEELTsymbol.NonTerminal"><span class="constructor">NonTerminal</span></span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsymbols.Fun"><span class="constructor">Fun</span></span> <span class="keyword">of</span> <code class="type">string list</code></code></td>
+<code><span id="TYPEELTsymbol.Fun"><span class="constructor">Fun</span></span> <span class="keyword">of</span> <code class="type">string list</code></code></td>
 
 </tr></table>
 
@@ -81,39 +81,39 @@ See <a href="Common.SYMBOLS.html#VALempty"><code class="code"><span class="const
 An internal helper to add a symbol.<br>
 </div>
 
-<pre><span id="VALdef_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_term.html">def_term</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t</code></pre><div class="info ">
+<pre><span id="VALdef_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_term.html">def_term</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALdef_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_term</code></a>.<br>
 </div>
 
-<pre><span id="VALdef_non_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_non_term.html">def_non_term</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t</code></pre><div class="info ">
+<pre><span id="VALdef_non_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_non_term.html">def_non_term</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALdef_non_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_non_term</code></a>.<br>
 </div>
 
-<pre><span id="VALdef_fun"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_fun.html">def_fun</a></span> : <code class="type">M.key -><br>       string list -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t</code></pre><div class="info ">
+<pre><span id="VALdef_fun"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.def_fun.html">def_fun</a></span> : <code class="type">M.key -><br>       string list -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALdef_fun"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.def_fun</code></a>.<br>
 </div>
 
-<pre><span id="VALterminals"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.terminals.html">terminals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> M.key list</code></pre><div class="info ">
+<pre><span id="VALterminals"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.terminals.html">terminals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> M.key list</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALterminals"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.terminals</code></a>.<br>
 </div>
 
-<pre><span id="VALnon_terminals"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.non_terminals.html">non_terminals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> M.key list</code></pre><div class="info ">
+<pre><span id="VALnon_terminals"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.non_terminals.html">non_terminals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> M.key list</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALnon_terminals"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.non_terminals</code></a>.<br>
 </div>
 
-<pre><span id="VALdefined"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.defined.html">defined</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> M.key list</code></pre><div class="info ">
+<pre><span id="VALdefined"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.defined.html">defined</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> M.key list</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALdefined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.defined</code></a>.<br>
 </div>
 
-<pre><span id="VALis_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_term.html">is_term</a></span> : <code class="type">M.key -> <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> bool</code></pre><div class="info ">
+<pre><span id="VALis_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_term.html">is_term</a></span> : <code class="type">M.key -> <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> bool</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALis_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_term</code></a>.<br>
 </div>
 
-<pre><span id="VALis_non_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_non_term.html">is_non_term</a></span> : <code class="type">M.key -> <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> bool</code></pre><div class="info ">
+<pre><span id="VALis_non_term"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_non_term.html">is_non_term</a></span> : <code class="type">M.key -> <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> bool</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALis_non_term"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_non_term</code></a>.<br>
 </div>
 
-<pre><span id="VALis_defined"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_defined.html">is_defined</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbols">symbols</a> M.t -> string list option</code></pre><div class="info ">
+<pre><span id="VALis_defined"><span class="keyword">val</span> <a href="code_VALCommon.Symbols.is_defined.html">is_defined</a></span> : <code class="type">M.key -><br>       <a href="Common.Symbols.html#TYPEsymbol">symbol</a> M.t -> string list option</code></pre><div class="info ">
 See <a href="Common.SYMBOLS.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.is_defined</code></a>.<br>
 </div>
 </body></html>

@@ -112,8 +112,8 @@ Print a possibly parenthesized pattern.<ul>
 </div>
 
 <pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> string -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
-<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
-      its parameters <code class="code">xs</code>. The output is parenthesized is <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
+<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
+      its parameters <code class="code">xs</code>. The output is parenthesized if <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
       the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
       See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>.<br>
 </div>

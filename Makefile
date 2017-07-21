@@ -8,6 +8,7 @@ FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers
 PARSER=$(SRC)/parser.mly
 RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
+PREFIX=my
 
 .PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall
 
@@ -16,7 +17,7 @@ all:
 	@mv $(MAIN) $(EXE)
 
 %.tex:
-	@./$(EXE) latex -$* $(PARSER) -o $@
+	@./$(EXE) latex -prefix $(PREFIX) -$* $(PARSER) -o $@
 
 %.pdf: %.tex
 	@pdflatex -interaction batchmode $<

@@ -130,18 +130,16 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">SepNEList</span>&nbsp;(sep,&nbsp;x)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_sep_list&nbsp;e&nbsp;<span class="keyword">true</span>&nbsp;(print''&nbsp;sep)&nbsp;(print''&nbsp;x)<br>
 <br>
-&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps</code> modularly prints the symbol <code class="code">s</code> and
-      its parameters <code class="code">xs</code>. The output is parenthesized is <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
+&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** <code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
+      its parameters <code class="code">xs</code>. The output is parenthesized if <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
       the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
       See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>. *)</span></td></tr></table><code class="code"><br>
-&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_symbol&nbsp;symbols&nbsp;e&nbsp;s&nbsp;ps&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;(e&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;ps&nbsp;&lt;&gt;&nbsp;[])&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_symbol<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Symbols</span>.is_term&nbsp;s&nbsp;symbols)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Symbols</span>.is_non_term&nbsp;s&nbsp;symbols)&nbsp;s<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;print_symbol&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.par&nbsp;(e&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;xs&nbsp;&lt;&gt;&nbsp;[])&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_symbol&nbsp;symbols&nbsp;s<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_sep_encl&nbsp;(print_actual&nbsp;symbols&nbsp;e)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="string">","</span>&nbsp;^&nbsp;(<span class="constructor">H</span>.space&nbsp;()))&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;ps))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="string">","</span>&nbsp;^&nbsp;(<span class="constructor">H</span>.space&nbsp;()))&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;xs))<br>
 <br>
 &nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** Print a rule:<OL>
 <li>calls <a href="Helper.html#VALrule_begin"><code class="code"><span class="constructor">Helper</span>.rule_begin</code></a></li>

@@ -83,8 +83,8 @@ Printed at the beginning of each production.<br>
 Printed at the end of each production.<br>
 </div>
 
-<pre><span id="VALprint_symbol"><span class="keyword">val</span> print_symbol</span> : <code class="type">bool -> bool -> string -> (unit -> unit) -> unit</code></pre><div class="info ">
-<code class="code">print_symbol&nbsp;is_term&nbsp;is_non_term&nbsp;s&nbsp;print_params</code> prints the symbol <code class="code">s</code> and
+<pre><span id="VALprint_symbol"><span class="keyword">val</span> print_symbol</span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> string -> (unit -> unit) -> unit</code></pre><div class="info ">
+<code class="code">print_symbol&nbsp;symbols&nbsp;s&nbsp;print_params</code> prints the symbol <code class="code">s</code> and
     its parameters thanks to <code class="code">print_params</code>. A different formatting is possible
     accordingly to <code class="code">s</code> being a terminal, a non terminal or
     a functional non terminal.<br>
