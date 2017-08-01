@@ -36,13 +36,3 @@ let rule_begin () =
 let rule_end () =
   print_string "@;\\\\\\\\& & \\\\\\\\";
   print_string "@]@;@;"
-
-let print_symbol symbols s print_params =
-  print_symbol_aux
-    (fun t -> print_fmt "\\%s{\\%s{}}" (command "gramterm") (command t))
-    (fun nt -> print_fmt "\\%s{\\%s{}}" (command "gramnonterm") (command nt))
-    (fun f pps -> print_fmt "\\%s{\\%s{}}" (command "gramfunc") (command f); pps ())
-    (fun u -> print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" u))
-    symbols
-    s
-    print_params
