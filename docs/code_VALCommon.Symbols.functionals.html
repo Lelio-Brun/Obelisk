@@ -26,8 +26,9 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Common.Symbols.functionals</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols =
-  print_symbol_aux <span class="string">"&lt;"</span> <span class="string">"&gt;"</span> symbols</code></body></html>
+<code class="code"><span class="keyword">let</span> functionals m =
+    fst <span class="constructor">List</span>.(split (filter (<span class="keyword">function</span> _, <span class="constructor">Fun</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">false</span>)
+        (<span class="constructor">M</span>.bindings m)))</code></body></html>

@@ -46,10 +46,9 @@
 <span class="keyword">let</span>&nbsp;break&nbsp;()&nbsp;=&nbsp;<span class="string">"@;"</span><br>
 <span class="keyword">let</span>&nbsp;eps&nbsp;()&nbsp;=&nbsp;<span class="string">"epsilon"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
-&nbsp;&nbsp;print_fmt<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;th&gt;&lt;span&nbsp;class=\"nonterminal\"&gt;%s&lt;/span&gt;"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"&lt;th&gt;%s"</span>)<br>
+<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;=<br>
+&nbsp;&nbsp;print_rule&nbsp;<span class="string">"&lt;th&gt;&lt;span&nbsp;class=\"nonterminal\"&gt;"</span>&nbsp;<span class="string">"&lt;/span&gt;"</span><br>
+<br>
 <span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;&lt;tr&nbsp;class=\"rule\"&gt;@;"</span><br>
 <span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
@@ -59,13 +58,8 @@
 <span class="keyword">let</span>&nbsp;production_end&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"&lt;/td&gt;@]@;&lt;/tr&gt;"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;print_fmt<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_non_term&nbsp;s&nbsp;symbols<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;span&nbsp;class=\"nonterminal\"&gt;%s&lt;/span&gt;"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)&nbsp;s;<br>
-&nbsp;&nbsp;print_params&nbsp;()<br>
-<br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;print_symbol_aux&nbsp;<span class="string">"&lt;span&nbsp;class=\"nonterminal\"&gt;"</span>&nbsp;<span class="string">"&lt;/span&gt;"</span>&nbsp;symbols<br>
 <br>
 <span class="keyword">let</span>&nbsp;opt&nbsp;e&nbsp;print&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"&lt;span&nbsp;class=\"option\"&gt;"</span>;<br>

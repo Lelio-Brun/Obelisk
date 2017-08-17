@@ -135,8 +135,12 @@ module Make (H : HELPER) : PRINTER = struct
   *)
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
-    H.print_rule_name (params = []) name;
-    print_sep_encl H.print_string ", " "(" ")" params;
+    let print_params =
+      if params <> []
+      then Some (fun () -> print_sep_encl H.print_string ", " "(" ")" params)
+      else None
+    in
+    H.print_rule_name name print_params;
     H.print_string (H.def ());
     print_sep (print_production symbols) (H.break () ^ H.prod_bar ()) prods;
     H.rule_end ()

@@ -33,12 +33,27 @@
   <span class="keyword">let</span> commands symbols =
     <span class="keyword">let</span> escape = <span class="constructor">Str</span>.global_replace (<span class="constructor">Str</span>.regexp <span class="string">"_"</span>) <span class="string">"\\_"</span> <span class="keyword">in</span>
     <span class="constructor">List</span>.iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span>
-        print_fmt_package <span class="string">"\\newcommand\\%s{%s}@;"</span> (command x) (escape x))
+        print_fmt_package <span class="string">"\\newcommand\\%s{%s}@;"</span>
+          (command x) (escape x))
       (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols @ <span class="constructor">Common</span>.<span class="constructor">Symbols</span>.defined symbols);
-    print_string_package <span class="string">"@;"</span>
+    <span class="constructor">List</span>.iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span>
+        <span class="keyword">let</span> cx = command x <span class="keyword">in</span>
+        print_fmt_package <span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span>
+          cx (command <span class="string">"gramterm"</span>) cx)
+      (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals symbols);
+    <span class="constructor">List</span>.iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span>
+        <span class="keyword">let</span> cx = command x <span class="keyword">in</span>
+        print_fmt_package <span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span>
+          cx (command <span class="string">"gramnonterm"</span>) cx)
+      (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.non_terminals symbols);
+    <span class="constructor">List</span>.iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span>
+        <span class="keyword">let</span> cx = command x <span class="keyword">in</span>
+        print_fmt_package <span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span>
+          cx (command <span class="string">"gramfunc"</span>) cx)
+      (<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.functionals symbols);
+   print_string_package <span class="string">"@;"</span>
   <span class="keyword">in</span>
   commands symbols;
-  print_endline (pre ());
   print_fmt_package
     <span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{(#1)}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"</span>
     (pre ()) (pre ()) (pre ()) (pre ()) (pre ()) (pre ())

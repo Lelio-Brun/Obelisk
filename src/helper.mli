@@ -15,10 +15,10 @@ val print_footer: unit -> unit
 (** Print an escaped string. *)
 val print_string: string -> unit
 
-(** [print_rule_name is_not_fun x] prints the left-hand side of a rule where
-    [is_not_fun] is [true] if the rule has no parameter and [x] is the name of
-    the defined non terminal. *)
-val print_rule_name: bool -> string -> unit
+(** [print_rule_name x print_params] prints the left-hand side of a rule where
+    [x] is the name of the defined non terminal and [print_params] the function
+    to print the optional parameters. *)
+val print_rule_name: string -> (unit -> unit) option -> unit
 
 (** Printed at the beginning of each rule. *)
 val rule_begin: unit -> unit

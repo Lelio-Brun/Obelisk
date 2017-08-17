@@ -97,12 +97,27 @@
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;commands&nbsp;symbols&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;escape&nbsp;=&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\newcommand\\%s{%s}@;"</span>&nbsp;(command&nbsp;x)&nbsp;(escape&nbsp;x))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\newcommand\\%s{%s}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(command&nbsp;x)&nbsp;(escape&nbsp;x))<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols&nbsp;@&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.defined&nbsp;symbols);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cx&nbsp;=&nbsp;command&nbsp;x&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cx&nbsp;(command&nbsp;<span class="string">"gramterm"</span>)&nbsp;cx)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.terminals&nbsp;symbols);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cx&nbsp;=&nbsp;command&nbsp;x&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cx&nbsp;(command&nbsp;<span class="string">"gramnonterm"</span>)&nbsp;cx)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.non_terminals&nbsp;symbols);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">List</span>.iter&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;cx&nbsp;=&nbsp;command&nbsp;x&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_fmt_package&nbsp;<span class="string">"\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cx&nbsp;(command&nbsp;<span class="string">"gramfunc"</span>)&nbsp;cx)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.functionals&nbsp;symbols);<br>
+&nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@;"</span><br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;commands&nbsp;symbols;<br>
-&nbsp;&nbsp;print_endline&nbsp;(pre&nbsp;());<br>
 &nbsp;&nbsp;print_fmt_package<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{(#1)}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())<br>
@@ -150,15 +165,18 @@
 &nbsp;&nbsp;print_x&nbsp;();<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_term&nbsp;t&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s{\\%s{}}"</span>&nbsp;(command&nbsp;<span class="string">"gramterm"</span>)&nbsp;(command&nbsp;t)<br>
+<span class="keyword">let</span>&nbsp;print_comm&nbsp;star&nbsp;c&nbsp;=<br>
+&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s%s{}"</span>&nbsp;(command&nbsp;c)&nbsp;(<span class="keyword">if</span>&nbsp;star&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
 <br>
-<span class="keyword">let</span>&nbsp;print_non_term&nbsp;nt&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s{\\%s{}}"</span>&nbsp;(command&nbsp;<span class="string">"gramnonterm"</span>)&nbsp;(command&nbsp;nt)<br>
+<span class="keyword">let</span>&nbsp;print_term&nbsp;=&nbsp;print_comm&nbsp;<span class="keyword">true</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;print_non_term&nbsp;=&nbsp;print_comm&nbsp;<span class="keyword">true</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;print_fun&nbsp;f&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s{\\%s{}}"</span>&nbsp;(command&nbsp;<span class="string">"gramfunc"</span>)&nbsp;(command&nbsp;f);<br>
-&nbsp;&nbsp;print_params&nbsp;()<br>
+&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"\\%s{"</span>&nbsp;(command&nbsp;<span class="string">"gramfunc"</span>);<br>
+&nbsp;&nbsp;print_comm&nbsp;<span class="keyword">false</span>&nbsp;f;<br>
+&nbsp;&nbsp;print_params&nbsp;();<br>
+&nbsp;&nbsp;print_string&nbsp;<span class="string">"}"</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;print_undef&nbsp;u&nbsp;=<br>
 &nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s"</span>&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;u)<br>
@@ -170,10 +188,15 @@
 &nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Some</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;func&nbsp;s&nbsp;print_params<br>
 &nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;is_term&nbsp;s&nbsp;symbols&nbsp;<span class="keyword">then</span>&nbsp;term&nbsp;s&nbsp;<span class="keyword">else</span>&nbsp;undef&nbsp;s<br>
 <br>
-<span class="keyword">let</span>&nbsp;print_symbol&nbsp;=<br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;=<br>
 &nbsp;&nbsp;print_symbol_aux<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_term<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_non_term<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_fun<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_undef<br>
+&nbsp;&nbsp;&nbsp;&nbsp;symbols<br>
+<br>
+<span class="keyword">let</span>&nbsp;print_rule&nbsp;name&nbsp;=<br>
+&nbsp;&nbsp;print_comm&nbsp;<span class="keyword">false</span>&nbsp;name;<br>
+&nbsp;&nbsp;print_opt_params<br>
 </code></body></html>

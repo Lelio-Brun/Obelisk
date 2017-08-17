@@ -39,6 +39,6 @@
      newcommand <span class="string">"grambar"</span> 0 <span class="constructor">None</span> (<span class="string">"$\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"|\\\\"</span> ^ command <span class="string">"gramsp"</span> ^ <span class="string">"$"</span>) ^
      newcommand <span class="string">"grameps"</span> 0 <span class="constructor">None</span> <span class="string">"\\\\ensuremath{\\\\epsilon}"</span> ^
      newcommand <span class="string">"gramnonterm"</span> 1 <span class="constructor">None</span> <span class="string">"\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}"</span> ^
-     newcommand <span class="string">"gramfunc"</span> 1 <span class="constructor">None</span> <span class="string">"#1"</span> ^
+     newcommand <span class="string">"gramfunc"</span> 1 <span class="constructor">None</span> (<span class="string">"\\\\"</span> ^ command <span class="string">"gramnonterm"</span> ^ <span class="string">"{#1}"</span>) ^
      newcommand <span class="string">"gramterm"</span> 1 <span class="constructor">None</span> <span class="string">"#1"</span> ^ <span class="string">"@;"</span>);
   begin_document <span class="string">""</span> symbols</code></body></html>

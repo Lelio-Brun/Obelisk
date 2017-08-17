@@ -30,5 +30,7 @@
 </head>
 <body>
 <code class="code"><span class="keyword">let</span> print_fun f print_params =
-  print_fmt <span class="string">"\\%s{\\%s{}}"</span> (command <span class="string">"gramfunc"</span>) (command f);
-  print_params ()</code></body></html>
+  print_fmt <span class="string">"\\%s{"</span> (command <span class="string">"gramfunc"</span>);
+  print_comm <span class="keyword">false</span> f;
+  print_params ();
+  print_string <span class="string">"}"</span></code></body></html>

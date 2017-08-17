@@ -171,8 +171,12 @@
 *)</span></td></tr></table><code class="code"><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_rule&nbsp;symbols&nbsp;{name;&nbsp;params;&nbsp;prods}&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.rule_begin&nbsp;();<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_rule_name&nbsp;(params&nbsp;=&nbsp;[])&nbsp;name;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print_sep_encl&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="string">",&nbsp;"</span>&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;params;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_params&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;params&nbsp;&lt;&gt;&nbsp;[]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Some</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;print_sep_encl&nbsp;<span class="constructor">H</span>.print_string&nbsp;<span class="string">",&nbsp;"</span>&nbsp;<span class="string">"("</span>&nbsp;<span class="string">")"</span>&nbsp;params)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">None</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_rule_name&nbsp;name&nbsp;print_params;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.print_string&nbsp;(<span class="constructor">H</span>.def&nbsp;());<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print_sep&nbsp;(print_production&nbsp;symbols)&nbsp;(<span class="constructor">H</span>.break&nbsp;()&nbsp;^&nbsp;<span class="constructor">H</span>.prod_bar&nbsp;())&nbsp;prods;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">H</span>.rule_end&nbsp;()<br>

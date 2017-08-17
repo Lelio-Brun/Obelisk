@@ -53,8 +53,8 @@
 <span class="keyword">let</span>&nbsp;break&nbsp;()&nbsp;=&nbsp;<span class="string">"\\\\\\\\@;"</span><br>
 <span class="keyword">let</span>&nbsp;eps&nbsp;()&nbsp;=&nbsp;<span class="string">"\\\\"</span>&nbsp;^&nbsp;command&nbsp;<span class="string">"grameps"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;name&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s"</span>&nbsp;(<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"_"</span>)&nbsp;<span class="string">"\\_"</span>&nbsp;name)<br>
+<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;=<br>
+&nbsp;&nbsp;print_rule<br>
 <span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;print_fmt&nbsp;<span class="string">"@[&lt;v&nbsp;2&gt;\\%s{"</span>&nbsp;(command&nbsp;<span class="string">"gramprod"</span>)<br>
 <span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>

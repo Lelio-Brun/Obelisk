@@ -42,26 +42,18 @@ let print_header symbols =
     ("\\setlength{\\grammarindent}{\\" ^ command "grammaxindent" ^ "}")
     symbols
 
-let def () = "> \\\\" ^ command "gramdef" ^ "{} "
+let def () = " \\\\" ^ command "gramdef" ^ "{} "
 let prod_bar () = "\\\\" ^ command "grambar" ^ " "
 let bar () = "@ \\\\" ^ command "grambar" ^ "@ "
 let space () = "@ "
 let break () = "@;"
 let eps () = "\\\\" ^ command "grameps"
 
-let print_rule_name is_not_fun =
-  print_fmt (if is_not_fun then "<%s" else "<%s")
+let print_rule_name name print_params =
+  print_string "<";
+  print_rule name print_params;
+  print_string ">"
 let rule_begin () =
   print_string "@[<v 2>"
 let rule_end () =
   print_string "@]@;@;"
-
-let print_symbol symbols s print_params =
-  print_symbol_aux
-    print_term
-    print_non_term
-    (fun f pps -> print_fmt "\\%s{\\%s{}" (command "gramnonterm") (command f); pps (); print_string "}")
-    print_undef
-    symbols
-    s
-    print_params

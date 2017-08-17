@@ -25,8 +25,8 @@ let space () = "\\\\" ^ command "gramsp" ^ "@ "
 let break () = "\\\\\\\\@;"
 let eps () = "\\\\" ^ command "grameps"
 
-let print_rule_name is_not_fun name =
-  print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" name)
+let print_rule_name =
+  print_rule
 let rule_begin () =
   print_fmt "@[<v 2>\\%s{" (command "gramprod")
 let rule_end () =

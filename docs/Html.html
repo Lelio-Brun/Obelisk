@@ -52,12 +52,12 @@
 <pre><span id="VALspace"><span class="keyword">val</span> <a href="code_VALHtml.space.html">space</a></span> : <code class="type">unit -> string</code></pre>
 <pre><span id="VALbreak"><span class="keyword">val</span> <a href="code_VALHtml.break.html">break</a></span> : <code class="type">unit -> string</code></pre>
 <pre><span id="VALeps"><span class="keyword">val</span> <a href="code_VALHtml.eps.html">eps</a></span> : <code class="type">unit -> string</code></pre>
-<pre><span id="VALprint_rule_name"><span class="keyword">val</span> <a href="code_VALHtml.print_rule_name.html">print_rule_name</a></span> : <code class="type">bool -> string -> unit</code></pre>
+<pre><span id="VALprint_rule_name"><span class="keyword">val</span> <a href="code_VALHtml.print_rule_name.html">print_rule_name</a></span> : <code class="type">string -> (unit -> unit) option -> unit</code></pre>
 <pre><span id="VALrule_begin"><span class="keyword">val</span> <a href="code_VALHtml.rule_begin.html">rule_begin</a></span> : <code class="type">unit -> unit</code></pre>
 <pre><span id="VALrule_end"><span class="keyword">val</span> <a href="code_VALHtml.rule_end.html">rule_end</a></span> : <code class="type">unit -> unit</code></pre>
 <pre><span id="VALproduction_begin"><span class="keyword">val</span> <a href="code_VALHtml.production_begin.html">production_begin</a></span> : <code class="type">unit -> unit</code></pre>
 <pre><span id="VALproduction_end"><span class="keyword">val</span> <a href="code_VALHtml.production_end.html">production_end</a></span> : <code class="type">unit -> unit</code></pre>
-<pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALHtml.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> string -> (unit -> 'a) -> 'a</code></pre>
+<pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALHtml.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> string -> (unit -> 'a) -> unit</code></pre>
 <pre><span id="VALopt"><span class="keyword">val</span> <a href="code_VALHtml.opt.html">opt</a></span> : <code class="type">bool -> (unit -> unit) -> unit</code></pre>
 <pre><span id="VALplus"><span class="keyword">val</span> <a href="code_VALHtml.plus.html">plus</a></span> : <code class="type">bool -> (unit -> unit) -> unit</code></pre>
 <pre><span id="VALstar"><span class="keyword">val</span> <a href="code_VALHtml.star.html">star</a></span> : <code class="type">bool -> (unit -> unit) -> unit</code></pre>

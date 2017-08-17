@@ -66,12 +66,27 @@ let begin_document misc symbols =
   let commands symbols =
     let escape = Str.global_replace (Str.regexp "_") "\\_" in
     List.iter (fun x ->
-        print_fmt_package "\\newcommand\\%s{%s}@;" (command x) (escape x))
+        print_fmt_package "\\newcommand\\%s{%s}@;"
+          (command x) (escape x))
       (Common.Symbols.terminals symbols @ Common.Symbols.defined symbols);
-    print_string_package "@;"
+    List.iter (fun x ->
+        let cx = command x in
+        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+          cx (command "gramterm") cx)
+      (Common.Symbols.terminals symbols);
+    List.iter (fun x ->
+        let cx = command x in
+        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+          cx (command "gramnonterm") cx)
+      (Common.Symbols.non_terminals symbols);
+    List.iter (fun x ->
+        let cx = command x in
+        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+          cx (command "gramfunc") cx)
+      (Common.Symbols.functionals symbols);
+   print_string_package "@;"
   in
   commands symbols;
-  print_endline (pre ());
   print_fmt_package
     "\\newcommand\\%sgramopt[1]{[#1]}@;\
      \\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\
@@ -129,15 +144,18 @@ let print_sep_list e nonempty print_sep print_x =
   print_x ();
   print_string "}"
 
-let print_term t =
-  print_fmt "\\%s{\\%s{}}" (command "gramterm") (command t)
+let print_comm star c =
+  print_fmt "\\%s%s{}" (command c) (if star then "*" else "")
 
-let print_non_term nt =
-  print_fmt "\\%s{\\%s{}}" (command "gramnonterm") (command nt)
+let print_term = print_comm true
+
+let print_non_term = print_comm true
 
 let print_fun f print_params =
-  print_fmt "\\%s{\\%s{}}" (command "gramfunc") (command f);
-  print_params ()
+  print_fmt "\\%s{" (command "gramfunc");
+  print_comm false f;
+  print_params ();
+  print_string "}"
 
 let print_undef u =
   print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" u)
@@ -149,9 +167,14 @@ let print_symbol_aux term non_term func undef symbols s print_params =
   | Some _ -> func s print_params
   | None -> if is_term s symbols then term s else undef s
 
-let print_symbol =
+let print_symbol symbols =
   print_symbol_aux
     print_term
     print_non_term
     print_fun
     print_undef
+    symbols
+
+let print_rule name =
+  print_comm false name;
+  print_opt_params

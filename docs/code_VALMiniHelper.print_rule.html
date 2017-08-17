@@ -26,8 +26,10 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniHelper.print_rule</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols =
-  print_symbol_aux <span class="string">"&lt;"</span> <span class="string">"&gt;"</span> symbols</code></body></html>
+<code class="code"><span class="keyword">let</span> print_rule opening closing name print_params =
+  print_string (opening ^ name);
+  print_opt_params print_params;
+  print_string closing</code></body></html>

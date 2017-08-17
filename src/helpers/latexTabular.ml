@@ -17,7 +17,7 @@ let print_header symbols =
      newcommand "grambar" 0 None ("$\\\\" ^ command "gramsp" ^ "|\\\\" ^ command "gramsp" ^ "$") ^
      newcommand "grameps" 0 None "\\\\ensuremath{\\\\epsilon}" ^
      newcommand "gramnonterm" 1 None "\\\\ensuremath{\\\\langle\\\\textnormal{#1}\\\\rangle}" ^
-     newcommand "gramfunc" 1 None "#1" ^
+     newcommand "gramfunc" 1 None ("\\\\" ^ command "gramnonterm" ^ "{#1}") ^
      newcommand "gramterm" 1 None "#1" ^ "@;");
   begin_document "" symbols
 
@@ -28,9 +28,10 @@ let space () = "@ "
 let break () = "\\\\\\\\@;"
 let eps () = "\\\\" ^ command "grameps"
 
-let print_rule_name is_not_fun name =
-  print_fmt "\\%s{%s}" (command (if is_not_fun then "gramnonterm" else "gramfunc"))
-    (Str.global_replace (Str.regexp "_") "\\_" name)
+let print_rule_name name print_params =
+  print_fmt "\\%s{" (command "gramfunc");
+  print_rule name print_params;
+  print_string "}"
 let rule_begin () =
   print_string "@[<v 2>"
 let rule_end () =

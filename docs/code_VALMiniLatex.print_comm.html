@@ -26,8 +26,8 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniLatex.print_comm</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols =
-  print_symbol_aux <span class="string">"&lt;"</span> <span class="string">"&gt;"</span> symbols</code></body></html>
+<code class="code"><span class="keyword">let</span> print_comm star c =
+  print_fmt <span class="string">"\\%s%s{}"</span> (command c) (<span class="keyword">if</span> star <span class="keyword">then</span> <span class="string">"*"</span> <span class="keyword">else</span> <span class="string">""</span>)</code></body></html>

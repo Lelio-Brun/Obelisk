@@ -26,8 +26,9 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniHelper.print_opt_params</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols =
-  print_symbol_aux <span class="string">"&lt;"</span> <span class="string">"&gt;"</span> symbols</code></body></html>
+<code class="code"><span class="keyword">let</span> print_opt_params = <span class="keyword">function</span>
+  <span class="keywordsign">|</span> <span class="constructor">Some</span> pps <span class="keywordsign">-&gt;</span> pps ()
+  <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span> ()</code></body></html>

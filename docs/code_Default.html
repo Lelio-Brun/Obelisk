@@ -43,16 +43,15 @@
 <span class="keyword">let</span>&nbsp;break&nbsp;()&nbsp;=&nbsp;<span class="string">"@;"</span><br>
 <span class="keyword">let</span>&nbsp;eps&nbsp;()&nbsp;=&nbsp;<span class="string">"epsilon"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;is_not_fun&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;is_not_fun&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s&gt;"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)<br>
+<span class="keyword">let</span>&nbsp;print_rule_name&nbsp;=<br>
+&nbsp;&nbsp;print_rule&nbsp;<span class="string">"&lt;"</span>&nbsp;<span class="string">"&gt;"</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;rule_begin&nbsp;()&nbsp;=&nbsp;()<br>
 <span class="keyword">let</span>&nbsp;rule_end&nbsp;()&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"@]@;@;"</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;s&nbsp;print_params&nbsp;=<br>
-&nbsp;&nbsp;print_fmt&nbsp;(<span class="keyword">if</span>&nbsp;<span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_non_term&nbsp;s&nbsp;symbols&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"&lt;%s&gt;"</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"%s"</span>)&nbsp;s;<br>
-&nbsp;&nbsp;print_params&nbsp;()<br>
+<span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;=<br>
+&nbsp;&nbsp;print_symbol_aux&nbsp;<span class="string">"&lt;"</span>&nbsp;<span class="string">"&gt;"</span>&nbsp;symbols<br>
 <br>
 <span class="keyword">let</span>&nbsp;opt&nbsp;e&nbsp;print&nbsp;=&nbsp;enclose&nbsp;print&nbsp;<span class="string">"["</span>&nbsp;<span class="string">"]"</span><br>
 <span class="keyword">let</span>&nbsp;plus&nbsp;e&nbsp;print&nbsp;=&nbsp;par&nbsp;e&nbsp;print;&nbsp;print_string&nbsp;<span class="string">"+"</span><br>

@@ -66,6 +66,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;fst&nbsp;<span class="constructor">List</span>.(split&nbsp;(filter&nbsp;(<span class="keyword">function</span>&nbsp;_,&nbsp;<span class="constructor">NonTerminal</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">false</span>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">M</span>.bindings&nbsp;m)))<br>
 <br>
+&nbsp;</code><table><tr><td>&nbsp;</td><td><span class="comment">(** See <code class="code"><span class="constructor">SYMBOLS</span>.functionals</code>. *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;functionals&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;fst&nbsp;<span class="constructor">List</span>.(split&nbsp;(filter&nbsp;(<span class="keyword">function</span>&nbsp;_,&nbsp;<span class="constructor">Fun</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">false</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">M</span>.bindings&nbsp;m)))<br>
+<br>
 &nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;</td><td><span class="comment">(** See <code class="code"><span class="constructor">SYMBOLS</span>.defined</code>. *)</span></td></tr></table><code class="code"><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;defined&nbsp;m&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fst&nbsp;<span class="constructor">List</span>.(split&nbsp;(filter&nbsp;(<span class="keyword">function</span>&nbsp;_,&nbsp;<span class="constructor">Terminal</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">false</span>&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span>)<br>

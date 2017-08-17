@@ -61,10 +61,10 @@ Printed at the end of the output.<br>
 Print an escaped string.<br>
 </div>
 
-<pre><span id="VALprint_rule_name"><span class="keyword">val</span> print_rule_name</span> : <code class="type">bool -> string -> unit</code></pre><div class="info ">
-<code class="code">print_rule_name&nbsp;is_not_fun&nbsp;x</code> prints the left-hand side of a rule where
-    <code class="code">is_not_fun</code> is <code class="code"><span class="keyword">true</span></code> if the rule has no parameter and <code class="code">x</code> is the name of
-    the defined non terminal.<br>
+<pre><span id="VALprint_rule_name"><span class="keyword">val</span> print_rule_name</span> : <code class="type">string -> (unit -> unit) option -> unit</code></pre><div class="info ">
+<code class="code">print_rule_name&nbsp;x&nbsp;print_params</code> prints the left-hand side of a rule where
+    <code class="code">x</code> is the name of the defined non terminal and <code class="code">print_params</code> the function
+    to print the optional parameters.<br>
 </div>
 
 <pre><span id="VALrule_begin"><span class="keyword">val</span> rule_begin</span> : <code class="type">unit -> unit</code></pre><div class="info ">

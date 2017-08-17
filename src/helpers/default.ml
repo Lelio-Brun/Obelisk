@@ -12,16 +12,15 @@ let space () = "@ "
 let break () = "@;"
 let eps () = "epsilon"
 
-let print_rule_name is_not_fun =
-  print_fmt (if is_not_fun then "<%s>" else "%s")
+let print_rule_name =
+  print_rule "<" ">"
 
 let rule_begin () = ()
 let rule_end () =
   print_string "@]@;@;"
 
-let print_symbol symbols s print_params =
-  print_fmt (if Common.Symbols.is_non_term s symbols then "<%s>" else "%s") s;
-  print_params ()
+let print_symbol symbols =
+  print_symbol_aux "<" ">" symbols
 
 let opt e print = enclose print "[" "]"
 let plus e print = par e print; print_string "+"

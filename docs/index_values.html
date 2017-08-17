@@ -159,7 +159,7 @@ See <a href="Common.SYMBOLS.html#VALdef_term"><code class="code"><span class="co
 <tr><td><a href="Common.SYMBOLS.html#VALdefined">defined</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
 <td><div class="info">
 Get the list of "defined" symbols, that is both non terminals and
-      functional non terminals
+      functional non terminals.
 </div>
 </td></tr>
 <tr><td><a href="Common.Symbols.html#VALdefined">defined</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
@@ -228,6 +228,16 @@ Find a rule by its left-hand side (name) in the grammar.
 <tr><td><a href="Position.html#VALfrom">from</a> [<a href="Position.html">Position</a>]</td>
 <td><div class="info">
 Build an error location from the start and end positions.
+</div>
+</td></tr>
+<tr><td><a href="Common.SYMBOLS.html#VALfunctionals">functionals</a> [<a href="Common.SYMBOLS.html">Common.SYMBOLS</a>]</td>
+<td><div class="info">
+Get the list of functional non terminals.
+</div>
+</td></tr>
+<tr><td><a href="Common.Symbols.html#VALfunctionals">functionals</a> [<a href="Common.Symbols.html">Common.Symbols</a>]</td>
+<td><div class="info">
+See <a href="Common.SYMBOLS.html#VALfunctionals"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.functionals</code></a>.
 </div>
 </td></tr>
 <tr><td align="left"><br>G</td></tr>
@@ -429,6 +439,8 @@ Print a possibly parenthesized actual.
 Print a list of actuals.
 </div>
 </td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_comm">print_comm</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
 <tr><td><a href="MiniHelper.html#VALprint_fmt">print_fmt</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
 <td></td></tr>
 <tr><td><a href="MiniLatex.html#VALprint_fmt_package">print_fmt_package</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
@@ -468,6 +480,8 @@ Print a possibly parenthesized "modified" actual.
 </td></tr>
 <tr><td><a href="MiniLatex.html#VALprint_non_term">print_non_term</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
 <td></td></tr>
+<tr><td><a href="MiniHelper.html#VALprint_opt_params">print_opt_params</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
 <tr><td><a href="GenericPrinter.Make.html#VALprint_pattern">print_pattern</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
 <td><div class="info">
 Print a possibly parenthesized pattern.
@@ -480,6 +494,10 @@ Print a production by first calling <a href="Helper.html#VALproduction_begin"><c
       finally calling <a href="Helper.html#VALproduction_end"><code class="code"><span class="constructor">Helper</span>.production_end</code></a>.
 </div>
 </td></tr>
+<tr><td><a href="MiniLatex.html#VALprint_rule">print_rule</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniHelper.html#VALprint_rule">print_rule</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
+<td></td></tr>
 <tr><td><a href="GenericPrinter.Make.html#VALprint_rule">print_rule</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
 <td><div class="info">
 Print a rule: calls <a href="Helper.html#VALrule_begin"><code class="code"><span class="constructor">Helper</span>.rule_begin</code></a>, calls <a href="Helper.html#VALprint_rule_name"><code class="code"><span class="constructor">Helper</span>.print_rule_name</code></a> to print the left-hand side, prints the parameters, prints the definition symbol <a href="Helper.html#VALdef"><code class="code"><span class="constructor">Helper</span>.def</code></a>, prints the productions, separated by a line break <a href="Helper.html#VALbreak"><code class="code"><span class="constructor">Helper</span>.break</code></a>
@@ -498,9 +516,9 @@ Print a rule: calls <a href="Helper.html#VALrule_begin"><code class="code"><span
 <td></td></tr>
 <tr><td><a href="Helper.html#VALprint_rule_name">print_rule_name</a> [<a href="Helper.html">Helper</a>]</td>
 <td><div class="info">
-<code class="code">print_rule_name&nbsp;is_not_fun&nbsp;x</code> prints the left-hand side of a rule where
-    <code class="code">is_not_fun</code> is <code class="code"><span class="keyword">true</span></code> if the rule has no parameter and <code class="code">x</code> is the name of
-    the defined non terminal.
+<code class="code">print_rule_name&nbsp;x&nbsp;print_params</code> prints the left-hand side of a rule where
+    <code class="code">x</code> is the name of the defined non terminal and <code class="code">print_params</code> the function
+    to print the optional parameters.
 </div>
 </td></tr>
 <tr><td><a href="GenericPrinter.Make.html#VALprint_sep">print_sep</a> [<a href="GenericPrinter.Make.html">GenericPrinter.Make</a>]</td>
@@ -556,10 +574,6 @@ Print an escaped string.
 <td></td></tr>
 <tr><td><a href="Html.html#VALprint_symbol">print_symbol</a> [<a href="Html.html">Html</a>]</td>
 <td></td></tr>
-<tr><td><a href="LatexSyntax.html#VALprint_symbol">print_symbol</a> [<a href="LatexSyntax.html">LatexSyntax</a>]</td>
-<td></td></tr>
-<tr><td><a href="LatexTabular.html#VALprint_symbol">print_symbol</a> [<a href="LatexTabular.html">LatexTabular</a>]</td>
-<td></td></tr>
 <tr><td><a href="MiniLatex.html#VALprint_symbol">print_symbol</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
 <td></td></tr>
 <tr><td><a href="Default.html#VALprint_symbol">print_symbol</a> [<a href="Default.html">Default</a>]</td>
@@ -577,6 +591,8 @@ Print an escaped string.
 </div>
 </td></tr>
 <tr><td><a href="MiniLatex.html#VALprint_symbol_aux">print_symbol_aux</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
+<td></td></tr>
+<tr><td><a href="MiniHelper.html#VALprint_symbol_aux">print_symbol_aux</a> [<a href="MiniHelper.html">MiniHelper</a>]</td>
 <td></td></tr>
 <tr><td><a href="MiniLatex.html#VALprint_term">print_term</a> [<a href="MiniLatex.html">MiniLatex</a>]</td>
 <td></td></tr>

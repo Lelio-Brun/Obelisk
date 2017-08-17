@@ -24,8 +24,11 @@ module type SYMBOLS = sig
   (** Get the list of non terminals.  *)
   val non_terminals: t -> string list
 
+  (** Get the list of functional non terminals.  *)
+  val functionals: t -> string list
+
   (** Get the list of "defined" symbols, that is both non terminals and
-      functional non terminals *)
+      functional non terminals. *)
   val defined: t -> string list
 
   (** Test if the given symbol is a terminal. *)
@@ -76,6 +79,11 @@ module Symbols : SYMBOLS = struct
   (** See {!SYMBOLS.non_terminals}. *)
   let non_terminals m =
     fst List.(split (filter (function _, NonTerminal -> true | _ -> false)
+        (M.bindings m)))
+
+ (** See {!SYMBOLS.functionals}. *)
+  let functionals m =
+    fst List.(split (filter (function _, Fun _ -> true | _ -> false)
         (M.bindings m)))
 
   (** See {!SYMBOLS.defined}. *)

@@ -26,8 +26,15 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Default.print_symbol</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : MiniHelper.print_symbol_aux</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> print_symbol symbols =
-  print_symbol_aux <span class="string">"&lt;"</span> <span class="string">"&gt;"</span> symbols</code></body></html>
+<code class="code"><span class="keyword">let</span> print_symbol_aux opening closing symbols s print_params =
+  <span class="keyword">let</span> is_def = <span class="keyword">match</span> <span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined s symbols <span class="keyword">with</span>
+    <span class="keywordsign">|</span> <span class="constructor">Some</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span>
+    <span class="keywordsign">|</span> <span class="constructor">None</span> <span class="keywordsign">-&gt;</span> <span class="keyword">false</span>
+  <span class="keyword">in</span>
+  <span class="keyword">if</span> is_def <span class="keyword">then</span> print_string opening;
+  print_string s;
+  print_params ();
+  <span class="keyword">if</span> is_def <span class="keyword">then</span> print_string closing</code></body></html>
