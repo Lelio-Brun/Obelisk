@@ -5,6 +5,24 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 
 The code is [documented][doc].
 
+# Table of Contents
+* [Installation](#installation)
+  + [Dependencies](#dependencies)
+  + [OPAM](#opam)
+  + [Manual installation](#manual-installation)
+* [Usage](#usage)
+  + [Pattern recognition](#pattern-recognition)
+  + [Multi-format output](#multi-format-output)
+    - [LaTeX](#latex)
+    - [HTML](#html)
+  + [Example](#example)
+    - [Default](#default)
+    - [LaTeX](#latex-1)
+      * [Tabular](#tabular)
+      * [Syntax](#syntax)
+      * [Backnaur](#backnaur)
+    - [HTML](#html-1)
+
 ## Installation
 ### Dependencies
 - OCaml 4.04.1
