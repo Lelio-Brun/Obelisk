@@ -5,7 +5,7 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 
 The code is [documented][doc].
 
-# Table of Contents
+## Table of Contents
 * [Installation](#installation)
   + [Dependencies](#dependencies)
   + [OPAM](#opam)
