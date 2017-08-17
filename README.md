@@ -155,7 +155,7 @@ These two files are then intended to be included in a non-supplied main LaTeX fi
 \end{document}
 ```
 
-To avoid name clashes, in particular when using the `-package` option and eg. importing multiple grammars with the same LaTeX commands names, you can specify a common prefix for the commands with the option `-prefix <myprefix>`.
+To avoid name clashes, in particular when using the `-package` option and eg. importing multiple grammars with the same LaTeX commands names, or in the case where one of the syntax construction name matches one already defined LaTeX macro, you can specify a common prefix for the commands with the option `-prefix <myprefix>`.
 
 #### HTML
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than in the `latex` mode).
