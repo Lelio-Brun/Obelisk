@@ -55,7 +55,12 @@ let valid x =
   let clear_underscore =
     Str.global_replace (Str.regexp "_") ""
   in
-  x |> roman |> clear_underscore
+  let forbid_end x =
+    if !prefix = ""
+    then Str.global_replace (Str.regexp_case_fold "end") "my\\0" x
+    else x
+  in
+  x |> roman |> clear_underscore |> forbid_end
 
 let command x =
   !prefix ^ x |> valid

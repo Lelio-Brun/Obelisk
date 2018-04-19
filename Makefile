@@ -4,6 +4,7 @@ MISC=misc
 TARGET=native
 MAIN=main.$(TARGET)
 EXE=obelisk
+CC=ocamlbuild
 FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers
 PARSER=$(SRC)/parser.mly
 RECO=$(MISC)/reco.mly
@@ -13,7 +14,7 @@ PREFIX=my
 .PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall
 
 all:
-	@ocamlbuild $(FLAGS) $(SRC)/$(MAIN)
+	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
 	@mv $(MAIN) $(EXE)
 
 %.tex:
@@ -46,7 +47,7 @@ reco:
 readme: latex html default reco
 
 doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
-	@ocamlbuild $(FLAGS) $(DOC)/$(EXE).docdir/index.html
+	@$(CC) $(FLAGS) $(DOC)/$(EXE).docdir/index.html
 	@cp $(EXE).docdir/*.html $(DOC)
 	@rm -f $(EXE).docdir
 
@@ -57,7 +58,7 @@ cleandoc:
 	@rm -rf $(DOCS)/*.html
 
 clean: cleandoc
-	@ocamlbuild -clean
+	@$(CC) -clean
 	@$(MAKE) -C tests $@
 
 install: all

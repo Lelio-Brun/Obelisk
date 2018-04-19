@@ -49,7 +49,7 @@ let latex_opt = [
 ]
 
 (** Usage message. *)
-let msg = "obelisk [latex|html] [options] <source>"
+let msg = "obelisk [latex|html] [options] <source>\n  obelisk <mode> -help for <mode>-specific help."
 
 (** Function called on anonymous arguments.
     It is used to trigger the LaTeX and HTML modes and to get the input file. *)

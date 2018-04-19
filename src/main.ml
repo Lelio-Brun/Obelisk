@@ -43,7 +43,7 @@ let get () =
     let close () = iter close_in infs; close_out outf; close_package () in
     combine files lexbufs, print, close
   with Sys_error s ->
-    eprintf "System Error%s@." s;
+    eprintf "System Error: %s@." s;
     exit 1
 
 (** @return the obtained grammars per input file / lexer buffer.  *)
@@ -72,5 +72,5 @@ let () =
     close ()
   with
   | Sys_error s ->
-    eprintf "System Error%s@." s;
+    eprintf "System Error: %s@." s;
     exit 1
