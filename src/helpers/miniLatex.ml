@@ -1,5 +1,7 @@
 open Options
 
+let () = Random.self_init ()
+
 include MiniHelper
 
 let use () = !pfile <> ""
@@ -47,6 +49,10 @@ let to_roman i =
     ]
   |> snd
 
+let end_prefix =
+  let c () = char_of_int (97 + Random.int 25) in
+  Format.sprintf "%c%c%c" (c ()) (c ()) (c ())
+
 let valid x =
   let roman =
     Str.global_substitute (Str.regexp "[0-9]+")
@@ -57,7 +63,7 @@ let valid x =
   in
   let forbid_end x =
     if !prefix = ""
-    then Str.global_replace (Str.regexp_case_fold "end") "my\\0" x
+    then Str.global_replace (Str.regexp_case_fold "end") (end_prefix ^ "\\0") x
     else x
   in
   x |> roman |> clear_underscore |> forbid_end
