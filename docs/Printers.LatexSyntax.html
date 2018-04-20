@@ -40,48 +40,66 @@
 </div>
 <h1>Module <a href="type_Printers.LatexSyntax.html">Printers.LatexSyntax</a> (<a href="code_Printers.LatexSyntax.html">.ml</a>)</h1>
 
-<pre><span class="keyword">module</span> LatexSyntax: <code class="type"><a href="GenericPrinter.Make.html">GenericPrinter.Make</a></code><code class="code">(</code><code class="type"><a href="LatexSyntax.html">LatexSyntax</a></code><code class="code">)</code></pre><div class="info module top">
-The LaTeX "syntax" package based printer.<br>
+<pre><span id="MODULELatexSyntax"><span class="keyword">module</span> LatexSyntax</span>: <code class="type"><a href="GenericPrinter.Make.html">GenericPrinter.Make</a></code><code class="code">(</code><code class="type"><a href="LatexSyntax.html">LatexSyntax</a></code><code class="code">)</code></pre><div class="info module top">
+<div class="info-desc">
+<p>The LaTeX "syntax" package based printer.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALprint_space"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_space.html">print_space</a></span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Print a <a href="Helper.html#VALspace"><code class="code"><span class="constructor">Helper</span>.space</code></a> space.<br>
+<div class="info-desc">
+<p>Print a <a href="Helper.html#VALspace"><code class="code"><span class="constructor">Helper</span>.space</code></a> space.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_sep_encl"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_sep_encl.html">print_sep_encl</a></span> : <code class="type">('a -> unit) -> string -> string -> string -> 'a list -> unit</code></pre><div class="info ">
-<code class="code">print_sep_encl&nbsp;print&nbsp;sep&nbsp;op&nbsp;cl&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
-      the printer <code class="code">print</code>, separated by <code class="code">sep</code> end enclosed by <code class="code">op</code> and <code class="code">cl</code><br>
+<div class="info-desc">
+<p><code class="code">print_sep_encl&nbsp;print&nbsp;sep&nbsp;op&nbsp;cl&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code> end enclosed by <code class="code">op</code> and <code class="code">cl</code></p>
+</div>
 </div>
 
 <pre><span id="VALprint_sep"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_sep.html">print_sep</a></span> : <code class="type">('a -> unit) -> string -> 'a list -> unit</code></pre><div class="info ">
-<code class="code">print_sep&nbsp;print&nbsp;sep&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
-      the printer <code class="code">print</code>, separated by <code class="code">sep</code>.<br>
+<div class="info-desc">
+<p><code class="code">print_sep&nbsp;print&nbsp;sep&nbsp;xs</code> prints the elements of <code class="code">xs</code> with
+      the printer <code class="code">print</code>, separated by <code class="code">sep</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_production"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_production.html">print_production</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a> -> unit</code></pre><div class="info ">
-Print a production by first calling <a href="Helper.html#VALproduction_begin"><code class="code"><span class="constructor">Helper</span>.production_begin</code></a>
+<div class="info-desc">
+<p>Print a production by first calling <a href="Helper.html#VALproduction_begin"><code class="code"><span class="constructor">Helper</span>.production_begin</code></a>
       then printing the actuals and
-      finally calling <a href="Helper.html#VALproduction_end"><code class="code"><span class="constructor">Helper</span>.production_end</code></a>.<br>
+      finally calling <a href="Helper.html#VALproduction_end"><code class="code"><span class="constructor">Helper</span>.production_end</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_actuals"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actuals.html">print_actuals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a> -> unit</code></pre><div class="info ">
-Print a list of actuals.
-      If the list is <code class="code">nil</code>, then the empty word <a href="Helper.html#VALeps"><code class="code"><span class="constructor">Helper</span>.eps</code></a> is printed.<br>
+<div class="info-desc">
+<p>Print a list of actuals.
+      If the list is <code class="code">nil</code>, then the empty word <a href="Helper.html#VALeps"><code class="code"><span class="constructor">Helper</span>.eps</code></a> is printed.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_actual"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actual.html">print_actual</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> unit</code></pre><div class="info ">
-Print a possibly parenthesized actual.<br>
+<div class="info-desc">
+<p>Print a possibly parenthesized actual.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_modifier"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_modifier.html">print_modifier</a></span> : <code class="type"><a href="ExtendedAst.html#TYPEmodifier">ExtendedAst.modifier</a> -> bool -> (unit -> unit) -> unit</code></pre><div class="info ">
-Print a possibly parenthesized "modified" actual.
+<div class="info-desc">
+<p>Print a possibly parenthesized "modified" actual.
       Modular: see <a href="Helper.html#VALopt"><code class="code"><span class="constructor">Helper</span>.opt</code></a>, <a href="Helper.html#VALplus"><code class="code"><span class="constructor">Helper</span>.plus</code></a>
-      and <a href="Helper.html#VALstar"><code class="code"><span class="constructor">Helper</span>.star</code></a>.<br>
+      and <a href="Helper.html#VALstar"><code class="code"><span class="constructor">Helper</span>.star</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_pattern"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_pattern.html">print_pattern</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -> unit</code></pre><div class="info ">
-Print a possibly parenthesized pattern.<ul>
+<div class="info-desc">
+<p>Print a possibly parenthesized pattern.</p>
+<ul>
 <li><code class="code">option(x)</code> is printed as <code class="code">x</code> with the optional modifier (<code class="code">[x]</code>)</li>
 <li><code class="code">pair(x,&nbsp;y)</code> is printed as <code class="code">x&nbsp;y</code></li>
 <li><code class="code">separated_pair(x,&nbsp;sep,&nbsp;y)</code> is printed as <code class="code">x&nbsp;sep&nbsp;y</code></li>
@@ -94,18 +112,22 @@ Print a possibly parenthesized pattern.<ul>
 <li><code class="code">separated_list(sep,&nbsp;x)</code> and <code class="code">separated_nonempty_list(sep,&nbsp;x)</code> are
         modularly printed, see <a href="Helper.html#VALprint_sep_list"><code class="code"><span class="constructor">Helper</span>.print_sep_list</code></a></li>
 </ul>
-<br>
+</div>
 </div>
 
 <pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> string -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
-<code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
+<div class="info-desc">
+<p><code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
       its parameters <code class="code">xs</code>. The output is parenthesized if <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
       the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
-      See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>.<br>
+      See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_rule"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_rule.html">print_rule</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> -> unit</code></pre><div class="info ">
-Print a rule:<OL>
+<div class="info-desc">
+<p>Print a rule:</p>
+<OL>
 <li>calls <a href="Helper.html#VALrule_begin"><code class="code"><span class="constructor">Helper</span>.rule_begin</code></a></li>
 <li>calls <a href="Helper.html#VALprint_rule_name"><code class="code"><span class="constructor">Helper</span>.print_rule_name</code></a> to print the left-hand side</li>
 <li>prints the parameters</li>
@@ -114,11 +136,13 @@ Print a rule:<OL>
         and a bar <a href="Helper.html#VALprod_bar"><code class="code"><span class="constructor">Helper</span>.prod_bar</code></a></li>
 <li>calls <a href="Helper.html#VALrule_end"><code class="code"><span class="constructor">Helper</span>.rule_end</code></a></li>
 </OL>
-<br>
+</div>
 </div>
 
 <pre><span id="VALprint_spec"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_spec.html">print_spec</a></span> : <code class="type">Format.formatter -> <a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> unit</code></pre><div class="info ">
-Print the grammar by first calling <a href="Helper.html#VALprint_header"><code class="code"><span class="constructor">Helper</span>.print_header</code></a>,
-      then printing the rules and finally calling <a href="Helper.html#VALprint_footer"><code class="code"><span class="constructor">Helper</span>.print_footer</code></a>.<br>
+<div class="info-desc">
+<p>Print the grammar by first calling <a href="Helper.html#VALprint_header"><code class="code"><span class="constructor">Helper</span>.print_header</code></a>,
+      then printing the rules and finally calling <a href="Helper.html#VALprint_footer"><code class="code"><span class="constructor">Helper</span>.print_footer</code></a>.</p>
+</div>
 </div>
 </body></html>

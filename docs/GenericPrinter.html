@@ -40,20 +40,25 @@
 </div>
 <h1>Module <a href="type_GenericPrinter.html">GenericPrinter</a> (<a href="code_GenericPrinter.html">.ml</a>)</h1>
 
-<pre><span class="keyword">module</span> GenericPrinter: <code class="code"><span class="keyword">sig</span></code> <a href="GenericPrinter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Provide a generic functor to build a specific printer.<br>
+<pre><span id="MODULEGenericPrinter"><span class="keyword">module</span> GenericPrinter</span>: <code class="code"><span class="keyword">sig</span></code> <a href="GenericPrinter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Provide a generic functor to build a specific printer.</p>
+</div>
 </div>
 <hr width="100%">
 
-<pre><span class="keyword">module type</span> <a href="GenericPrinter.HELPER.html">HELPER</a> = <code class="type">module type of <a href="Helper.html">Helper</a></code></pre><div class="info">
-Alias for the <a href="Helper.html"><code class="code"><span class="constructor">Helper</span></code></a> signature.
+<pre><span id="MODULETYPEHELPER"><span class="keyword">module type</span> <a href="GenericPrinter.HELPER.html">HELPER</a></span> = <code class="type">module type of <a href="Helper.html">Helper</a></code></pre><div class="info">
+<p>Alias for the <a href="Helper.html"><code class="code"><span class="constructor">Helper</span></code></a> signature.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="GenericPrinter.PRINTER.html">PRINTER</a> = <code class="type">module type of <a href="Printer.html">Printer</a></code></pre><div class="info">
-Alias for the <a href="Printer.html"><code class="code"><span class="constructor">Printer</span></code></a> signature.
+<pre><span id="MODULETYPEPRINTER"><span class="keyword">module type</span> <a href="GenericPrinter.PRINTER.html">PRINTER</a></span> = <code class="type">module type of <a href="Printer.html">Printer</a></code></pre><div class="info">
+<p>Alias for the <a href="Printer.html"><code class="code"><span class="constructor">Printer</span></code></a> signature.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="GenericPrinter.Make.html">Make</a> <code class="code">(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="GenericPrinter.HELPER.html">HELPER</a></code><code class="code">)&nbsp;</code>: <code class="code"><span class="keyword">sig</span></code> <a href="GenericPrinter.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The functor to build a printer of signature <a href="Printer.html"><code class="code"><span class="constructor">Printer</span></code></a>.
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="GenericPrinter.Make.html">Make</a></span> <code class="code">(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="GenericPrinter.HELPER.html">HELPER</a></code><code class="code">)&nbsp;</code>: <code class="code"><span class="keyword">sig</span></code> <a href="GenericPrinter.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The functor to build a printer of signature <a href="Printer.html"><code class="code"><span class="constructor">Printer</span></code></a>.</p>
+
 </div>
 </body></html>

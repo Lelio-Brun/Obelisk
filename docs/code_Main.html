@@ -30,10 +30,8 @@
 </head>
 <body>
 <code class="code"></code><table><tr><td></td><td><span class="comment">(** The main driver of the application.
-<p>
 
     Once parsed the grammars are concatenated into one.
-<p>
 
     The resulting grammar is scanned (<code class="code"><span class="constructor">Scan</span></code>) to get back the symbols then
     normalized (<code class="code"><span class="constructor">Normalize</span></code>) and transformed (<code class="code"><span class="constructor">Transform</span></code>) to a simpler form.
@@ -76,7 +74,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;close&nbsp;()&nbsp;=&nbsp;iter&nbsp;close_in&nbsp;infs;&nbsp;close_out&nbsp;outf;&nbsp;close_package&nbsp;()&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;combine&nbsp;files&nbsp;lexbufs,&nbsp;print,&nbsp;close<br>
 &nbsp;&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Sys_error</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error%s@."</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error:&nbsp;%s@."</span>&nbsp;s;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** @return the obtained grammars per input file / lexer buffer.  *)</span></td></tr></table><code class="code"><br>
@@ -105,6 +103,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;close&nbsp;()<br>
 &nbsp;&nbsp;<span class="keyword">with</span><br>
 &nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sys_error</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error%s@."</span>&nbsp;s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eprintf&nbsp;<span class="string">"System&nbsp;Error:&nbsp;%s@."</span>&nbsp;s;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;exit&nbsp;1<br>
 </code></body></html>

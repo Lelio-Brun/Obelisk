@@ -38,14 +38,18 @@
 </div>
 <h1>Module <a href="type_Ast.html">Ast</a></h1>
 
-<pre><span class="keyword">module</span> Ast: <code class="code"><span class="keyword">sig</span></code> <a href="Ast.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-The raw Abstract Syntax Tree for grammars.<br>
+<pre><span id="MODULEAst"><span class="keyword">module</span> Ast</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Ast.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>The raw Abstract Syntax Tree for grammars.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEspec"><span class="keyword">type</span> <code class="type"></code>spec</span> = <code class="type"><a href="Ast.html#TYPErule">rule</a> list</code> </pre>
 <div class="info ">
-The grammar.<br>
+<div class="info-desc">
+<p>The grammar.</p>
+</div>
 </div>
 
 
@@ -56,7 +60,9 @@ The grammar.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTrule.name">name</span>&nbsp;: <code class="type">string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The left-hand side of the rule.<br>
+<div class="info-desc">
+<p>The left-hand side of the rule.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -66,7 +72,9 @@ The left-hand side of the rule.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTrule.params">params</span>&nbsp;: <code class="type">string list</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The possible list of parameters.<br>
+<div class="info-desc">
+<p>The possible list of parameters.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -76,26 +84,34 @@ The possible list of parameters.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTrule.groups">groups</span>&nbsp;: <code class="type"><a href="Ast.html#TYPEgroup">group</a> list</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The right-hand side of the rule.<br>
+<div class="info-desc">
+<p>The right-hand side of the rule.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
 <div class="info ">
-The rules.<br>
+<div class="info-desc">
+<p>The rules.</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEgroup"><span class="keyword">type</span> <code class="type"></code>group</span> = <code class="type"><a href="Ast.html#TYPEproduction">production</a> list</code> </pre>
 <div class="info ">
-The group of productions.<br>
+<div class="info-desc">
+<p>The group of productions.</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEproduction"><span class="keyword">type</span> <code class="type"></code>production</span> = <code class="type"><a href="Ast.html#TYPEactual">actual</a> list</code> </pre>
 <div class="info ">
-The productions.<br>
+<div class="info-desc">
+<p>The productions.</p>
+</div>
 </div>
 
 
@@ -106,7 +122,9 @@ The productions.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTactual.Symbol"><span class="constructor">Symbol</span></span> <span class="keyword">of</span> <code class="type">string * <a href="Ast.html#TYPEactual">actual</a> list</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-A possibly applied symbol.<br>
+<div class="info-desc">
+<p>A possibly applied symbol.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -116,7 +134,9 @@ A possibly applied symbol.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTactual.Modifier"><span class="constructor">Modifier</span></span> <span class="keyword">of</span> <code class="type"><a href="Ast.html#TYPEactual">actual</a> * <a href="Ast.html#TYPEmodifier">modifier</a></code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-A "modified" actual.<br>
+<div class="info-desc">
+<p>A "modified" actual.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -126,13 +146,17 @@ A "modified" actual.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTactual.Anonymous"><span class="constructor">Anonymous</span></span> <span class="keyword">of</span> <code class="type"><a href="Ast.html#TYPEgroup">group</a> list</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-An anonymous rule.<br>
+<div class="info-desc">
+<p>An anonymous rule.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">
-The actuals.<br>
+<div class="info-desc">
+<p>The actuals.</p>
+</div>
 </div>
 
 
@@ -143,7 +167,9 @@ The actuals.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTmodifier.Opt"><span class="constructor">Opt</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-optionnal<br>
+<div class="info-desc">
+<p>optionnal</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -153,7 +179,9 @@ optionnal<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTmodifier.Plus"><span class="constructor">Plus</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-non-empty list<br>
+<div class="info-desc">
+<p>non-empty list</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -163,13 +191,17 @@ non-empty list<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTmodifier.Star"><span class="constructor">Star</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-list<br>
+<div class="info-desc">
+<p>list</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">
-The modifiers.<br>
+<div class="info-desc">
+<p>The modifiers.</p>
+</div>
 </div>
 
 </body></html>

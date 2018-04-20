@@ -40,34 +40,46 @@
 </div>
 <h1>Module <a href="type_Normalize.html">Normalize</a> (<a href="code_Normalize.html">.ml</a>)</h1>
 
-<pre><span class="keyword">module</span> Normalize: <code class="code"><span class="keyword">sig</span></code> <a href="Normalize.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-This module provides a way to "flatten" the groups of productions.<br>
+<pre><span id="MODULENormalize"><span class="keyword">module</span> Normalize</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Normalize.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>This module provides a way to "flatten" the groups of productions.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALnormalize_actual"><span class="keyword">val</span> <a href="code_VALNormalize.normalize_actual.html">normalize_actual</a></span> : <code class="type"><a href="Ast.html#TYPEactual">Ast.actual</a> -> <a href="Ast.html#TYPEactual">Ast.actual</a></code></pre><div class="info ">
-Normalize an actual.
+<div class="info-desc">
+<p>Normalize an actual.
     Note that the anonymous rules are normalized in the same ways as
-    the groups, see <a href="Normalize.html#VALnormalize_group"><code class="code"><span class="constructor">Normalize</span>.normalize_group</code></a>.<br>
+    the groups, see <a href="Normalize.html#VALnormalize_group"><code class="code"><span class="constructor">Normalize</span>.normalize_group</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALnormalize_production"><span class="keyword">val</span> <a href="code_VALNormalize.normalize_production.html">normalize_production</a></span> : <code class="type"><a href="Ast.html#TYPEproduction">Ast.production</a> -> <a href="Ast.html#TYPEproduction">Ast.production</a></code></pre><div class="info ">
-Normalize a production by normalizing its actuals.<br>
+<div class="info-desc">
+<p>Normalize a production by normalizing its actuals.</p>
+</div>
 </div>
 
 <pre><span id="VALnormalize_group"><span class="keyword">val</span> <a href="code_VALNormalize.normalize_group.html">normalize_group</a></span> : <code class="type"><a href="Ast.html#TYPEgroup">Ast.group</a> -> <a href="Ast.html#TYPEgroup">Ast.group</a> list -> <a href="Ast.html#TYPEgroup">Ast.group</a> list</code></pre><div class="info ">
-Normalize a group.
+<div class="info-desc">
+<p>Normalize a group.
     Each production of the group is normalized then inserted in a new
     singleton group. As a result, <code class="code">normalize_group</code> returns a list of groups
-    with only one production each.<br>
+    with only one production each.</p>
+</div>
 </div>
 
 <pre><span id="VALnormalize_rule"><span class="keyword">val</span> <a href="code_VALNormalize.normalize_rule.html">normalize_rule</a></span> : <code class="type"><a href="Ast.html#TYPErule">Ast.rule</a> -> <a href="Ast.html#TYPErule">Ast.rule</a></code></pre><div class="info ">
-Normalize a rule by normalizing its groups.
-    In general, the number of groups <b>increases</b>.<br>
+<div class="info-desc">
+<p>Normalize a rule by normalizing its groups.
+    In general, the number of groups <b>increases</b>.</p>
+</div>
 </div>
 
 <pre><span id="VALnormalize"><span class="keyword">val</span> <a href="code_VALNormalize.normalize.html">normalize</a></span> : <code class="type"><a href="Ast.html#TYPErule">Ast.rule</a> list -> <a href="Ast.html#TYPErule">Ast.rule</a> list</code></pre><div class="info ">
-Normalize the grammar by normalizing its rules.<br>
+<div class="info-desc">
+<p>Normalize the grammar by normalizing its rules.</p>
+</div>
 </div>
 </body></html>

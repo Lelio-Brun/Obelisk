@@ -37,9 +37,9 @@
 </code><table><tr><td></td><td><span class="comment">(** A map with identifiers keys. *)</span></td></tr></table><code class="code"><br>
 <span class="keyword">module</span>&nbsp;<span class="constructor">M</span>&nbsp;=&nbsp;<span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>)<br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h2 id="2_Inlining">Inlining</h2>  *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Inlining">Inlining</h3>  *)</span></td></tr></table><code class="code"><br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h3 id="3_Instantiating">Instantiating</h3> *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h4 id="3_Instantiating">Instantiating</h4> *)</span></td></tr></table><code class="code"><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** Performs a substitution over an actual.
     Only non functional symbols are substituted.  *)</span></td></tr></table><code class="code"><br>
@@ -98,7 +98,7 @@
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;<span class="constructor">Pattern</span>&nbsp;p<br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h3 id="3_Rewriting">Rewriting</h3>  *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h4 id="3_Rewriting">Rewriting</h4>  *)</span></td></tr></table><code class="code"><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** Inline the recognized patterns in an actual.
     If the actual is a symbol <code class="code">s</code>, then we look in the map if <code class="code">s</code> should be
@@ -148,9 +148,9 @@
 <span class="keyword">let</span>&nbsp;rewrite&nbsp;rws&nbsp;=<br>
 &nbsp;&nbsp;<span class="constructor">List</span>.map&nbsp;(rewrite_rule&nbsp;rws)<br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h2 id="2_Reducing">Reducing</h2>  *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Reducing">Reducing</h3>  *)</span></td></tr></table><code class="code"><br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h3 id="3_Patternrecognition">Pattern recognition</h3>  *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h4 id="3_Patternrecognition">Pattern recognition</h4>  *)</span></td></tr></table><code class="code"><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** A lazy "monadic" composition operator for the <code class="code">option</code> monad.
     <code class="code">compose&nbsp;x&nbsp;y</code> returns <code class="code">y</code> if <code class="code">x</code> fails otherwise it returns <code class="code">x</code>. *)</span></td></tr></table><code class="code"><br>
@@ -170,7 +170,6 @@
 <br>
 </code><table><tr><td></td><td><span class="comment">(** Define a recursive equivalence between rules by
     transitivity.
-<p>
 
     <code class="code">alias&nbsp;rules&nbsp;r&nbsp;r'</code> is <code class="code"><span class="keyword">true</span></code> if <code class="code">r&nbsp;=&nbsp;r'</code> or if the rule of name <code class="code">r'</code> in
     <code class="code">rules</code> is made of a unique production consisting of a unique symbol
@@ -381,7 +380,7 @@
 &nbsp;&nbsp;@@&nbsp;<span class="keyword">lazy</span>&nbsp;(is_option&nbsp;r)<br>
 &nbsp;&nbsp;|&gt;&nbsp;force<br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h3 id="3_Rulereducing">Rule reducing</h3>  *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h4 id="3_Rulereducing">Rule reducing</h4>  *)</span></td></tr></table><code class="code"><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** Replace the right-hand side of a rule with the given pattern. *)</span></td></tr></table><code class="code"><br>
 <span class="keyword">let</span>&nbsp;replace_prods&nbsp;r&nbsp;(_,&nbsp;p)&nbsp;=<br>
@@ -390,7 +389,6 @@
 </code><table><tr><td></td><td><span class="comment">(** <code class="code">reduce_rule&nbsp;inline&nbsp;rules&nbsp;r&nbsp;(rs,&nbsp;rws)</code> returns a pair of a list of "reduced"
     rules and a map from identifiers to a pair of a list of parameters and
     a pattern, that is a map of recognized patterns.
-<p>
 
     If the rule <code class="code">r</code> is recognized as a standard pattern then<ul>
 <li>if <code class="code">inline</code> is <code class="code"><span class="keyword">true</span></code>: <code class="code">r</code> is skipped and added to the map of recognized
@@ -407,12 +405,11 @@
 &nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;::&nbsp;rs,&nbsp;rws<br>
 <br>
-</code><table><tr><td></td><td><span class="comment">(** <h2 id="2_Alltogether">All together</h2> *)</span></td></tr></table><code class="code"><br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Alltogether">All together</h3> *)</span></td></tr></table><code class="code"><br>
 <br>
 </code><table><tr><td></td><td><span class="comment">(** <code class="code">reduce&nbsp;inline&nbsp;s</code> returns the grammar <code class="code">s</code> in which the right-hand sides
     recognized as standard patterns are replaced by an instance of this pattern
     (list, optional, ...).
-<p>
 
     Moreover, if <code class="code">inline</code> is <code class="code"><span class="keyword">true</span></code> then the concerned
     rules are deleted and inlined at each of their instances. *)</span></td></tr></table><code class="code"><br>

@@ -36,61 +36,87 @@
 &nbsp;</div>
 <h1>Module type <a href="type_Common.SYMBOLS.html">Common.SYMBOLS</a></h1>
 
-<pre><span class="keyword">module type</span> SYMBOLS = <code class="code"><span class="keyword">sig</span></code> <a href="Common.SYMBOLS.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-The signature for the set of symbols appearing in a grammar.<br>
+<pre><span id="MODULETYPESYMBOLS"><span class="keyword">module type</span> SYMBOLS</span> = <code class="code"><span class="keyword">sig</span></code> <a href="Common.SYMBOLS.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>The signature for the set of symbols appearing in a grammar.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-The set of symbols.<br>
+<div class="info-desc">
+<p>The set of symbols.</p>
+</div>
 </div>
 
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="Common.SYMBOLS.html#TYPEt">t</a></code></pre><div class="info ">
-The empty set.<br>
+<div class="info-desc">
+<p>The empty set.</p>
+</div>
 </div>
 
 <pre><span id="VALdef_term"><span class="keyword">val</span> def_term</span> : <code class="type">string -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> <a href="Common.SYMBOLS.html#TYPEt">t</a></code></pre><div class="info ">
-Add a terminal to the symbols.<br>
+<div class="info-desc">
+<p>Add a terminal to the symbols.</p>
+</div>
 </div>
 
 <pre><span id="VALdef_non_term"><span class="keyword">val</span> def_non_term</span> : <code class="type">string -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> <a href="Common.SYMBOLS.html#TYPEt">t</a></code></pre><div class="info ">
-Add a non terminal to the symbols<br>
+<div class="info-desc">
+<p>Add a non terminal to the symbols</p>
+</div>
 </div>
 
 <pre><span id="VALdef_fun"><span class="keyword">val</span> def_fun</span> : <code class="type">string -> string list -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> <a href="Common.SYMBOLS.html#TYPEt">t</a></code></pre><div class="info ">
-Add a functional non terminal along with
-      its parameters to the symbols.<br>
+<div class="info-desc">
+<p>Add a functional non terminal along with
+      its parameters to the symbols.</p>
+</div>
 </div>
 
 <pre><span id="VALterminals"><span class="keyword">val</span> terminals</span> : <code class="type"><a href="Common.SYMBOLS.html#TYPEt">t</a> -> string list</code></pre><div class="info ">
-Get the list of terminals.<br>
+<div class="info-desc">
+<p>Get the list of terminals.</p>
+</div>
 </div>
 
 <pre><span id="VALnon_terminals"><span class="keyword">val</span> non_terminals</span> : <code class="type"><a href="Common.SYMBOLS.html#TYPEt">t</a> -> string list</code></pre><div class="info ">
-Get the list of non terminals.<br>
+<div class="info-desc">
+<p>Get the list of non terminals.</p>
+</div>
 </div>
 
 <pre><span id="VALfunctionals"><span class="keyword">val</span> functionals</span> : <code class="type"><a href="Common.SYMBOLS.html#TYPEt">t</a> -> string list</code></pre><div class="info ">
-Get the list of functional non terminals.<br>
+<div class="info-desc">
+<p>Get the list of functional non terminals.</p>
+</div>
 </div>
 
 <pre><span id="VALdefined"><span class="keyword">val</span> defined</span> : <code class="type"><a href="Common.SYMBOLS.html#TYPEt">t</a> -> string list</code></pre><div class="info ">
-Get the list of "defined" symbols, that is both non terminals and
-      functional non terminals.<br>
+<div class="info-desc">
+<p>Get the list of "defined" symbols, that is both non terminals and
+      functional non terminals.</p>
+</div>
 </div>
 
 <pre><span id="VALis_term"><span class="keyword">val</span> is_term</span> : <code class="type">string -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Test if the given symbol is a terminal.<br>
+<div class="info-desc">
+<p>Test if the given symbol is a terminal.</p>
+</div>
 </div>
 
 <pre><span id="VALis_non_term"><span class="keyword">val</span> is_non_term</span> : <code class="type">string -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Test if the given symbol is a non terminal.<br>
+<div class="info-desc">
+<p>Test if the given symbol is a non terminal.</p>
+</div>
 </div>
 
 <pre><span id="VALis_defined"><span class="keyword">val</span> is_defined</span> : <code class="type">string -> <a href="Common.SYMBOLS.html#TYPEt">t</a> -> string list option</code></pre><div class="info ">
-Test if the given symbol is "defined" and returns its parameters.
-      See <a href="Common.SYMBOLS.html#VALdefined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.defined</code></a>.<br>
+<div class="info-desc">
+<p>Test if the given symbol is "defined" and returns its parameters.
+      See <a href="Common.SYMBOLS.html#VALdefined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">SYMBOLS</span>.defined</code></a>.</p>
+</div>
 </div>
 </body></html>

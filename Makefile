@@ -4,6 +4,7 @@ MISC=misc
 TARGET=native
 MAIN=main.$(TARGET)
 EXE=obelisk
+VERSION=0.3.1
 CC=ocamlbuild
 FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers
 PARSER=$(SRC)/parser.mly
@@ -13,7 +14,7 @@ PREFIX=my
 
 .PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall
 
-all:
+all: opam
 	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
 	@mv $(MAIN) $(EXE)
 
@@ -50,6 +51,10 @@ doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
 	@$(CC) $(FLAGS) $(DOC)/$(EXE).docdir/index.html
 	@cp $(EXE).docdir/*.html $(DOC)
 	@rm -f $(EXE).docdir
+
+opam: Makefile
+	@sed -e "s/%%VERSION%%/$(VERSION)/"\
+       -e "s/%%NAME%%/$(EXE)/" < $@.in > $@
 
 tests: all
 	@$(MAKE) -C $@

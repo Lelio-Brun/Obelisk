@@ -40,41 +40,57 @@
 </div>
 <h1>Module <a href="type_Transform.html">Transform</a> (<a href="code_Transform.html">.ml</a>)</h1>
 
-<pre><span class="keyword">module</span> Transform: <code class="code"><span class="keyword">sig</span></code> <a href="Transform.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Transform a normalized <a href="Ast.html"><code class="code"><span class="constructor">Ast</span></code></a> towards an <a href="ExtendedAst.html"><code class="code"><span class="constructor">ExtendedAst</span></code></a>.<br>
+<pre><span id="MODULETransform"><span class="keyword">module</span> Transform</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Transform.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Transform a normalized <a href="Ast.html"><code class="code"><span class="constructor">Ast</span></code></a> towards an <a href="ExtendedAst.html"><code class="code"><span class="constructor">ExtendedAst</span></code></a>.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALtransform_actual"><span class="keyword">val</span> <a href="code_VALTransform.transform_actual.html">transform_actual</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPEactual">Ast.actual</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
-Transform an actual.
+<div class="info-desc">
+<p>Transform an actual.
     Note that the anonymous rules are transformed with the help
-    of <a href="Transform.html#VALtransform_group"><code class="code"><span class="constructor">Transform</span>.transform_group</code></a>.<br>
+    of <a href="Transform.html#VALtransform_group"><code class="code"><span class="constructor">Transform</span>.transform_group</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform_symbol"><span class="keyword">val</span> <a href="code_VALTransform.transform_symbol.html">transform_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> string -> <a href="Ast.html#TYPEactual">Ast.actual</a> list -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
-Transform all non defined symbols (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>)
+<div class="info-desc">
+<p>Transform all non defined symbols (see <a href="Common.Symbols.html#VALis_defined"><code class="code"><span class="constructor">Common</span>.<span class="constructor">Symbols</span>.is_defined</code></a>)
     corresponding to Menhir standard library symbols (<code class="code">list</code>, <code class="code">pair</code>, <code class="code">option</code>,
-    etc.) into patterns, and all other symbols into symbols.<br>
+    etc.) into patterns, and all other symbols into symbols.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform_modifier"><span class="keyword">val</span> <a href="code_VALTransform.transform_modifier.html">transform_modifier</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPEactual">Ast.actual</a> -> <a href="Ast.html#TYPEmodifier">Ast.modifier</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a></code></pre><div class="info ">
-Transform a "modified" actual.<br>
+<div class="info-desc">
+<p>Transform a "modified" actual.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform_production"><span class="keyword">val</span> <a href="code_VALTransform.transform_production.html">transform_production</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPEproduction">Ast.production</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a></code></pre><div class="info ">
-Transform a production by transforming its actuals.<br>
+<div class="info-desc">
+<p>Transform a production by transforming its actuals.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform_group"><span class="keyword">val</span> <a href="code_VALTransform.transform_group.html">transform_group</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPEgroup">Ast.group</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a></code></pre><div class="info ">
-Transform a supposed singleton group by returning the transformation of
-    its unique production.<br>
+<div class="info-desc">
+<p>Transform a supposed singleton group by returning the transformation of
+    its unique production.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform_rule"><span class="keyword">val</span> <a href="code_VALTransform.transform_rule.html">transform_rule</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPErule">Ast.rule</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a></code></pre><div class="info ">
-Transform a rule by transforming its groups into productions.<br>
+<div class="info-desc">
+<p>Transform a rule by transforming its groups into productions.</p>
+</div>
 </div>
 
 <pre><span id="VALtransform"><span class="keyword">val</span> <a href="code_VALTransform.transform.html">transform</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="Ast.html#TYPErule">Ast.rule</a> list -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list</code></pre><div class="info ">
-Transform a grammar by transforming its rules.<br>
+<div class="info-desc">
+<p>Transform a grammar by transforming its rules.</p>
+</div>
 </div>
 </body></html>

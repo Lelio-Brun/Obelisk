@@ -40,8 +40,10 @@
 </div>
 <h1>Module <a href="type_Position.html">Position</a> (<a href="code_Position.html">.ml</a>)</h1>
 
-<pre><span class="keyword">module</span> Position: <code class="code"><span class="keyword">sig</span></code> <a href="Position.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-A generic module for handling locations of errors.<br>
+<pre><span id="MODULEPosition"><span class="keyword">module</span> Position</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Position.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>A generic module for handling locations of errors.</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -52,7 +54,9 @@ A generic module for handling locations of errors.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTposition.start_p">start_p</span>&nbsp;: <code class="type">Lexing.position</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The start position.<br>
+<div class="info-desc">
+<p>The start position.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -62,34 +66,48 @@ The start position.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTposition.end_p">end_p</span>&nbsp;: <code class="type">Lexing.position</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The end position.<br>
+<div class="info-desc">
+<p>The end position.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
 <div class="info ">
-The error is located between two positions in the buffer.<br>
+<div class="info-desc">
+<p>The error is located between two positions in the buffer.</p>
+</div>
 </div>
 
 
 <pre><span id="VALdummy"><span class="keyword">val</span> <a href="code_VALPosition.dummy.html">dummy</a></span> : <code class="type"><a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
-A "dummy" error location.<br>
+<div class="info-desc">
+<p>A "dummy" error location.</p>
+</div>
 </div>
 
 <pre><span id="VALfrom"><span class="keyword">val</span> <a href="code_VALPosition.from.html">from</a></span> : <code class="type">Lexing.position -> Lexing.position -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
-Build an error location from the start and end positions.<br>
+<div class="info-desc">
+<p>Build an error location from the start and end positions.</p>
+</div>
 </div>
 
 <pre><span id="VALerr_loc"><span class="keyword">val</span> <a href="code_VALPosition.err_loc.html">err_loc</a></span> : <code class="type">string -> <a href="Position.html#TYPEposition">position</a> -> string -> unit</code></pre><div class="info ">
-Print a located error message on the standard error output.<br>
+<div class="info-desc">
+<p>Print a located error message on the standard error output.</p>
+</div>
 </div>
 
 <pre><span id="VALget_pos"><span class="keyword">val</span> <a href="code_VALPosition.get_pos.html">get_pos</a></span> : <code class="type">Lexing.lexbuf -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
-Build an error location from the lexer buffer.<br>
+<div class="info-desc">
+<p>Build an error location from the lexer buffer.</p>
+</div>
 </div>
 
 <pre><span id="VALerr_loc_lexbuf"><span class="keyword">val</span> <a href="code_VALPosition.err_loc_lexbuf.html">err_loc_lexbuf</a></span> : <code class="type">string * Lexing.lexbuf -> string -> unit</code></pre><div class="info ">
-Print an error message located with the lexer buffer.<br>
+<div class="info-desc">
+<p>Print an error message located with the lexer buffer.</p>
+</div>
 </div>
 </body></html>
