@@ -1,10 +1,10 @@
+include infos.env
+
 SRC=src
 DOC=docs
 MISC=misc
 TARGET=native
 MAIN=main.$(TARGET)
-EXE=obelisk
-VERSION=0.3.1
 CC=ocamlbuild
 FLAGS=-use-menhir -use-ocamlfind -pkgs str -Is $(SRC),$(SRC)/helpers
 PARSER=$(SRC)/parser.mly
@@ -12,7 +12,7 @@ RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
 PREFIX=my
 
-.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall
+.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish
 
 all: opam
 	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
@@ -36,13 +36,13 @@ html: all
 	@rm -f test.html
 
 default:
-	@echo -e "\nDefault output on $(PARSER):"
+	@printf "\nDefault output on $(PARSER):\n"
 	@./$(EXE) $(PARSER)
 
 reco:
-	@echo -e "\nDefault output on $(RECO):"
+	@printf "Default output on $(RECO):\n"
 	@./$(EXE) $(RECO)
-	@echo -e "\nDefault output on $(RECO) with '-i' switch:"
+	@printf "Default output on $(RECO) with '-i' switch:\n"
 	@./$(EXE) -i $(RECO)
 
 readme: latex html default reco
@@ -53,8 +53,11 @@ doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
 	@rm -f $(EXE).docdir
 
 opam: Makefile
-	@sed -e "s/%%VERSION%%/$(VERSION)/"\
-       -e "s/%%NAME%%/$(EXE)/" < $@.in > $@
+	@sed -e "s|%%VERSION%%|$(VERSION)|"\
+       -e "s|%%AUTHOR%%|$(AUTHOR)|"\
+       -e "s|%%MAIL%%|$(MAIL)|"\
+       -e "s|%%URL%%|$(URL)|"\
+       -e "s|%%NAME%%|$(EXE)|" < $@.in > $@
 
 tests: all
 	@$(MAKE) -C $@
@@ -67,9 +70,19 @@ clean: cleandoc
 	@$(MAKE) -C tests $@
 
 install: all
-	echo $(BINDIR)
+	@echo $(BINDIR)
 	@mkdir -p $(BINDIR)
 	@install $(EXE) $(BINDIR)/$(EXE)
 
 uninstall:
 	@rm -f $(BINDIR)/$(EXE)
+
+prepare:
+	@opam-publish prepare $(URL)/archive/v$(VERSION).tar.gz
+	@printf "url file:\n"
+	@cat $(PACKAGE)/url
+	@printf "descr file:\n"
+	@cat $(PACKAGE)/descr
+
+publish: prepare
+	@opam-publish submit $(PACKAGE)
