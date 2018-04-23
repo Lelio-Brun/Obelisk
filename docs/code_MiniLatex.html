@@ -31,8 +31,6 @@
 <body>
 <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Options</span><br>
 <br>
-<span class="keyword">let</span>&nbsp;()&nbsp;=&nbsp;<span class="constructor">Random</span>.self_init&nbsp;()<br>
-<br>
 <span class="keyword">include</span>&nbsp;<span class="constructor">MiniHelper</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;use&nbsp;()&nbsp;=&nbsp;!pfile&nbsp;&lt;&gt;&nbsp;<span class="string">""</span><br>
@@ -80,10 +78,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;]<br>
 &nbsp;&nbsp;|&gt;&nbsp;snd<br>
 <br>
-<span class="keyword">let</span>&nbsp;end_prefix&nbsp;=<br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;c&nbsp;()&nbsp;=&nbsp;char_of_int&nbsp;(97&nbsp;+&nbsp;<span class="constructor">Random</span>.int&nbsp;25)&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;<span class="constructor">Format</span>.sprintf&nbsp;<span class="string">"%c%c%c"</span>&nbsp;(c&nbsp;())&nbsp;(c&nbsp;())&nbsp;(c&nbsp;())<br>
-<br>
 <span class="keyword">let</span>&nbsp;valid&nbsp;x&nbsp;=<br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;roman&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Str</span>.global_substitute&nbsp;(<span class="constructor">Str</span>.regexp&nbsp;<span class="string">"[0-9]+"</span>)<br>
@@ -94,7 +88,7 @@
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;<span class="keyword">let</span>&nbsp;forbid_end&nbsp;x&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;!prefix&nbsp;=&nbsp;<span class="string">""</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp_case_fold&nbsp;<span class="string">"end"</span>)&nbsp;(end_prefix&nbsp;^&nbsp;<span class="string">"\\0"</span>)&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Str</span>.global_replace&nbsp;(<span class="constructor">Str</span>.regexp_case_fold&nbsp;<span class="string">"end"</span>)&nbsp;<span class="string">"zzz\\0"</span>&nbsp;x<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>&nbsp;x<br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;x&nbsp;|&gt;&nbsp;roman&nbsp;|&gt;&nbsp;clear_underscore&nbsp;|&gt;&nbsp;forbid_end<br>
