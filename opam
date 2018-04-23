@@ -1,0 +1,19 @@
+opam-version: "1.2"
+name: "obelisk"
+version: "0.3.1"
+maintainer: "Lélio Brun <lelio.brun@inria.fr>"
+authors: "Lélio Brun <lelio.brun@inria.fr>"
+homepage: "https://github.com/Lelio-Brun/Obelisk"
+bug-reports: "https://github.com/Lelio-Brun/Obelisk/issues"
+license: "MIT"
+dev-repo: "https://github.com/Lelio-Brun/Obelisk.git"
+build: [make]
+install: [make "install" "BINDIR=%{bin}%"]
+remove: [make "uninstall" "BINDIR=%{bin}%"]
+build-test: [make "tests"]
+depends: [
+  "ocamlfind" {build}
+  "ocamlbuild" {build}
+  "menhir" {build}
+]
+available: [ ocaml-version >= "4.03" ]
