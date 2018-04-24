@@ -6,6 +6,9 @@ TMPPKG=tmppkg
 PREFIX=my_prefix42
 MAIN=main
 
+PDFLATEX=pdflatex
+HASPDFLATEX:=$(shell command -v $(PDFLATEX) 2> /dev/null)
+
 LATEXMODE=-halt-on-error
 ifndef VERBOSE
 LATEXMODE=-interaction batchmode
@@ -21,7 +24,10 @@ test_latex_pkg=$(foreach f, $(MLYS), $(call exec_pkg,$(1),$(f));\
 
 .PHONY: all clean latex tabular syntax backnaur html default
 
-all: default latex html
+all: Makefile default html
+ifdef HASPDFLATEX
+	make latex
+endif
 
 default:
 	@printf "Default mode."

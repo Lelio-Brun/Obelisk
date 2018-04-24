@@ -17,8 +17,3 @@ depends: [
   "menhir" {build}
 ]
 available: [ ocaml-version >= "4.03" ]
-depexts: [
-  [["ubuntu"] ["texlive" "texlive-math-extra" "texlive-latex-extra"]]
-  [["debian"] ["texlive" "texlive-math-extra" "texlive-latex-extra"]]
-  [["archlinux"] ["texlive-core" "texlive-science" "texlive-latexextra"]]
-]
