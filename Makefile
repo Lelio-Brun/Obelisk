@@ -52,7 +52,7 @@ doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
 	@cp $(EXE).docdir/*.html $(DOC)
 	@rm -f $(EXE).docdir
 
-opam: Makefile
+opam: Makefile opam.in
 	@sed -e "s|%%VERSION%%|$(VERSION)|"\
        -e "s|%%AUTHOR%%|$(AUTHOR)|"\
        -e "s|%%MAIL%%|$(MAIL)|"\
