@@ -1,4 +1,6 @@
-include infos.env
+INFOS=infos.env
+
+include $(INFOS)
 
 SRC=src
 DOC=docs
@@ -58,6 +60,8 @@ opam: Makefile opam.in
        -e "s|%%MAIL%%|$(MAIL)|"\
        -e "s|%%URL%%|$(URL)|"\
        -e "s|%%NAME%%|$(EXE)|" < $@.in > $@
+
+Makefile: $(INFOS)
 
 tests: all
 	@$(MAKE) -C $@
