@@ -14,7 +14,7 @@ RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
 PREFIX=my
 
-.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish
+.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish travis
 
 all: opam
 	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
@@ -60,6 +60,9 @@ opam: Makefile opam.in
        -e "s|%%MAIL%%|$(MAIL)|"\
        -e "s|%%URL%%|$(URL)|"\
        -e "s|%%NAME%%|$(EXE)|" < $@.in > $@
+
+travis: Makefile travis.in
+	@sed -e "s|%%NAME%%|$(EXE)|" < $@.in > .$@.yml
 
 Makefile: $(INFOS)
 
