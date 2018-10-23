@@ -134,7 +134,7 @@ let (@@) = compose
 (** Find a rule by its left-hand side (name) in the grammar. *)
 let find_rule r rules =
   try
-    Some (List.find (fun {name} -> name = r) rules)
+    Some (List.find (fun { name; _ } -> name = r) rules)
   with Not_found -> None
 
 (** Define a recursive equivalence between rules by
@@ -147,7 +147,7 @@ let alias rules r =
   let rec eq r' =
     r = r' ||
     match find_rule r' rules with
-    | Some { prods = [[Symbol (s, _)]] } -> eq s
+    | Some { prods = [[Symbol (s, _)]]; _ } -> eq s
     | _ -> false
   in
   eq

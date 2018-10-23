@@ -7,14 +7,9 @@
 *.cmx
 *.cmxs
 *.cmxa
+*.merlin
 
-# ocamlbuild working directory
 _build/
-obelisk
-
-# ocamlbuild targets
-*.byte
-*.native
 
 # latex
 *.tex

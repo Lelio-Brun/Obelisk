@@ -47,7 +47,7 @@ let get () =
     exit 1
 
 (** @return the obtained grammars per input file / lexer buffer.  *)
-let parse (file, lexbuf as fl) =
+let parse (_, lexbuf as fl) =
   try
     Lexer.init ();
     Parser.specification Lexer.lexer lexbuf

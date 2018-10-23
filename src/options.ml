@@ -2,10 +2,13 @@
 
 (** The input files.*)
 let ifiles = ref []
+
 (** The output file. *)
 let ofile = ref ""
+
 (** The {i .sty} package file (used only in LaTeX mode). *)
 let pfile = ref ""
+
 (** The LaTeX commands prefix. *)
 let prefix = ref ""
 
@@ -26,6 +29,7 @@ and latexmode =
 
 (** The chosen mode, default to {!mode.Default}. *)
 let mode = ref Default
+
 (** Do we inline inferred patterns ? [false] by default. *)
 let inline = ref false
 

@@ -1,8 +1,6 @@
 (** Provide a generic functor to build a specific printer. *)
 
 open ExtendedAst
-open Common
-open Format
 
 (** Alias for the {!Helper} signature. *)
 module type HELPER = module type of Helper

@@ -1,6 +1,5 @@
 (** The generic signature for the printer helpers.  *)
 
-open ExtendedAst
 open Common
 
 (** A reference to the used formatter. *)
