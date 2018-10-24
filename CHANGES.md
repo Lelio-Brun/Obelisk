@@ -1,7 +1,8 @@
 # Changes
 
 ## Unreleased
-Drop `ocamlbuild` and `make` in favor of `dune`.
+- Drop `ocamlbuild` and `make` in favor of `dune`.
+- Drop API-doc style documentation (irrelevant)
 
 ## 0.3.2 - 2018-04-25
 This patch is a minor fix to 0.3.1: tests in LaTeX mode are now conditionally guarded on the presence of `pdflatex`` in the PATH.

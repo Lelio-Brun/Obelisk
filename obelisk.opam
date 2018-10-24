@@ -9,7 +9,7 @@ It is inspired from yacc2latex and is also written in OCaml, but is aimed at sup
 maintainer: "Lélio Brun <lelio.brun@inria.fr>"
 authors: "Lélio Brun <lelio.brun@inria.fr>"
 homepage: "https://github.com/Lelio-Brun/Obelisk"
-doc: "https://lelio-brun.github.io/Obelisk/"
+doc: "https://github.com/Lelio-Brun/Obelisk/blob/v0.4.0/README.md"
 bug-reports: "https://github.com/Lelio-Brun/Obelisk/issues"
 license: "MIT"
 dev-repo: "git+https://github.com/Lelio-Brun/Obelisk.git"

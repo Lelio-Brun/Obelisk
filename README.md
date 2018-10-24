@@ -3,8 +3,6 @@
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
 
-The code is [documented][doc].
-
 ## Table of Contents
 * [Installation](#installation)
   + [Dependencies](#dependencies)
@@ -25,9 +23,9 @@ The code is [documented][doc].
 
 ## Installation
 ### Dependencies
-- OCaml
-- OCamlbuild
-- Menhir
+- [OCaml] >= 4.03
+- [Dune] >= 1.4.0
+- [Menhir]
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
@@ -219,6 +217,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ![HTML](misc/html.png)
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
+[Dune]: https://github.com/ocaml/dune/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
 [ocamlyacc]: https://caml.inria.fr/pub/docs/manual-ocaml/lexyacc.html#sec307
 [OCaml]: http://ocaml.org/
@@ -228,4 +227,3 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 [tabu]: https://www.ctan.org/pkg/tabu
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
-[doc]: https://lelio-brun.github.io/Obelisk/
