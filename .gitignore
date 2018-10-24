@@ -11,6 +11,8 @@
 
 _build/
 
+*.install
+
 # latex
 *.tex
 *.aux
