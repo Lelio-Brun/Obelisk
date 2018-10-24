@@ -1,5 +1,4 @@
 language: c
-dist: trusty
 sudo: required
 
 addons:
@@ -17,3 +16,4 @@ env:
   - OCAML_VERSION=4.04 PACKAGE=obelisk
   - OCAML_VERSION=4.05 PACKAGE=obelisk
   - OCAML_VERSION=4.06 PACKAGE=obelisk
+  - OCAML_VERSION=4.07 PACKAGE=obelisk
