@@ -24,7 +24,7 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 ## Installation
 ### Dependencies
 - [OCaml] >= 4.03
-- [Dune] >= 1.4.0
+- [Dune] >= 1.1.0
 - [Menhir]
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
