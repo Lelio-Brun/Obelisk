@@ -94,7 +94,7 @@ let html () = test Html
 
 let () =
   exe := Sys.argv.(1);
-  mlys := String.split_on_char ' ' Sys.argv.(2);
+  mlys := Str.split (Str.regexp " ") Sys.argv.(2);
   default ();
   latex ();
   html ();
