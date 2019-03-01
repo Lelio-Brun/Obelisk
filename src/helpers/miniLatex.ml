@@ -95,11 +95,11 @@ let begin_document misc symbols =
   let pre = pre () in
   print_fmt_package
     "\\newcommand\\%sgramopt[1]{[#1]}@;\
-     \\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\
-     \\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\
-     \\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
-     \\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
-     \\newcommand\\%sparen[1]{(#1)}@;\
+     \\newcommand\\%sgramplus[1]{\\textnormal{#1}\\ensuremath{^+}}@;\
+     \\newcommand\\%sgramstar[1]{\\textnormal{#1}\\ensuremath{^*}}@;\
+     \\newcommand\\%sgramseplist[2]{\\textnormal{#2}\\ensuremath{_{\\textnormal{#1}}^*}}@;\
+     \\newcommand\\%sgramsepnelist[2]{\\textnormal{#2}\\ensuremath{_{\\textnormal{#1}}^+}}@;\
+     \\newcommand\\%sparen[1]{\\ensuremath{\\left(\\textnormal{#1}\\right)}}@;\
      \\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sgramopt{#1}}@;\
      \\WithSuffix\\newcommand\\%sgramplus*[1]{\\%sgramplus{\\%sparen{#1}}}@;\
      \\WithSuffix\\newcommand\\%sgramstar*[1]{\\%sgramstar{\\%sparen{#1}}}@;\
