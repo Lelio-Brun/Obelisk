@@ -16,7 +16,7 @@ PREFIX=my
 OPAMIN=opam.in
 OPAM=$(EXE).opam
 
-.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish travis
+.PHONY: all latex html default reco readme doc tests clean cleandoc install travis
 
 all: $(OPAM) travis
 	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
