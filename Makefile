@@ -54,17 +54,15 @@ doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
 	@cp $(EXE).docdir/*.html $(DOC)
 	@rm -f $(EXE).docdir
 
-opam: Makefile opam.in
+opam: $(INFOS) opam.in
 	@sed -e "s|%%VERSION%%|$(VERSION)|"\
        -e "s|%%AUTHOR%%|$(AUTHOR)|"\
        -e "s|%%MAIL%%|$(MAIL)|"\
        -e "s|%%URL%%|$(URL)|"\
        -e "s|%%NAME%%|$(EXE)|" < $@.in > $@
 
-travis: Makefile travis.in
+travis: $(INFOS) travis.in
 	@sed -e "s|%%NAME%%|$(EXE)|" < $@.in > .$@.yml
-
-Makefile: $(INFOS)
 
 tests: all
 	@$(MAKE) -C $@
