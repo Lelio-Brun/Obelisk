@@ -87,9 +87,9 @@ let production_end () =
 let print_symbol symbols =
   print_symbol_aux "<span class=\"nonterminal\">" "</span>" symbols
 
-let opt e print =
+let opt _ print =
   print_string "<span class=\"option\">";
-  par e print;
+  print ();
   print_string "</span>"
 
 let plus e print =
