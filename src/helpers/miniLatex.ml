@@ -92,6 +92,7 @@ let begin_document misc symbols =
    print_string_package "@;"
   in
   commands symbols;
+  let pre = pre () in
   print_fmt_package
     "\\newcommand\\%sgramopt[1]{[#1]}@;\
      \\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\
@@ -99,14 +100,15 @@ let begin_document misc symbols =
      \\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
      \\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
      \\newcommand\\%sparen[1]{(#1)}@;\
-     \\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\
-     \\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\
-     \\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\
-     \\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\
-     \\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"
-    (pre ()) (pre ()) (pre ()) (pre ()) (pre ()) (pre ())
-    (pre ()) (pre ()) (pre ()) (pre ()) (pre ())
-    (pre ()) (pre ()) (pre ()) (pre ()) (pre ());
+     \\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sparen{\\%sgramopt{#1}}}@;\
+     \\WithSuffix\\newcommand\\%sgramplus*[1]{\\%sparen{\\%sgramplus{#1}}}@;\
+     \\WithSuffix\\newcommand\\%sgramstar*[1]{\\%sparen{\\%sgramstar{#1}}}@;\
+     \\WithSuffix\\newcommand\\%sgramseplist*[2]{\\%sparen{\\%sgramseplist{#1}{#2}}}@;\
+     \\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\%sparen{\\%sgramsepnelist{#1}{#2}}}"
+    pre pre pre pre pre pre
+    pre pre pre pre pre
+    pre pre pre pre pre
+    pre pre pre pre pre;
   print_fmt "%s%s\\begin{%s}@;"
     (if use () then "" else "\n\n\\begin{document}\n\n")
     (if misc = "" then "" else misc ^ "\n")
