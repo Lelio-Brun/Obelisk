@@ -34,7 +34,7 @@ latex: all $(IMAGES:%=%.png)
 
 html: all
 	@./$(EXE) html $(PARSER) -o test.html
-	@wkhtmltoimage -f png --width 800 test.html $(MISC)/html.png
+	@wkhtmltoimage --log-level none --transparent -f png --width 800 test.html $(MISC)/html.png
 	@rm -f test.html
 
 default:
