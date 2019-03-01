@@ -13,10 +13,12 @@ PARSER=$(SRC)/parser.mly
 RECO=$(MISC)/reco.mly
 IMAGES=tabular syntax backnaur
 PREFIX=my
+OPAMIN=opam.in
+OPAM=$(EXE).opam
 
 .PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish travis
 
-all: opam
+all: $(OPAM) travis
 	@$(CC) $(FLAGS) $(SRC)/$(MAIN)
 	@mv $(MAIN) $(EXE)
 
@@ -54,12 +56,13 @@ doc: cleandoc $(DOC)/$(EXE).odocl $(DOC)/doc.css
 	@cp $(EXE).docdir/*.html $(DOC)
 	@rm -f $(EXE).docdir
 
-opam: $(INFOS) opam.in
+$(OPAM): $(INFOS) $(OPAMIN)
 	@sed -e "s|%%VERSION%%|$(VERSION)|"\
        -e "s|%%AUTHOR%%|$(AUTHOR)|"\
        -e "s|%%MAIL%%|$(MAIL)|"\
        -e "s|%%URL%%|$(URL)|"\
-       -e "s|%%NAME%%|$(EXE)|" < $@.in > $@
+       -e "s|%%NAME%%|$(EXE)|" < $(OPAMIN) > $@
+	@opam lint
 
 travis: $(INFOS) travis.in
 	@sed -e "s|%%NAME%%|$(EXE)|" < $@.in > .$@.yml
