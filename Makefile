@@ -27,7 +27,7 @@ all: opam
 	@pdflatex -interaction batchmode $<
 
 %.png: %.pdf
-	@convert -density 150 $< -format png $(MISC)/$@
+	@convert -quiet -density 150 $< -format png $(MISC)/$@
 	@rm -f $*.tex $< $*.aux $*.log
 
 latex: all $(IMAGES:%=%.png)
