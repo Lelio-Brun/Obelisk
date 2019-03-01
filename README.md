@@ -31,6 +31,14 @@ The code is [documented][doc].
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
+In addition to the package [suffix], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
+
+- `-tabular` :
+  + [tabu]
+  + [longtable] as a dependency of [tabu] to use the environment `longtabu` 
+- `-syntax` : [syntax] from the bundle [mdwtools] 
+- `-backnaur` : [backnaur]
+
 ### OPAM
 If you use [OPAM], just type:
 ```
@@ -228,4 +236,8 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 [tabu]: https://www.ctan.org/pkg/tabu
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur
+[suffix]: https://ctan.org/pkg/suffix
+[tabu]: https://www.ctan.org/pkg/tabu
+[longtable]: https://www.ctan.org/pkg/longtable
+[mdwtools]: https://www.ctan.org/pkg/mdwtools
 [doc]: https://lelio-brun.github.io/Obelisk/
