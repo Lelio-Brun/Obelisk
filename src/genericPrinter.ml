@@ -36,10 +36,18 @@ module Make (H : HELPER) : PRINTER = struct
       H.print_string cl
 
   (** [print_sep print sep xs] prints the elements of [xs] with
-      the printer [print], separated by [sep].
-  *)
+      the printer [print], separated by [sep]. *)
   let print_sep print sep =
     print_sep_encl print sep "" ""
+
+  (** [is_not_atom a] decides if the actual [a] has to be parenthesized. *)
+  let is_not_atom = function
+    | Symbol _
+    | Modifier _
+    | Pattern (Option _)
+    | Pattern (List _)
+    | Pattern (NEList _) -> false
+    | _ -> true
 
   (** Print a production by first calling {!val:Helper.production_begin}
       then printing the actuals and
@@ -53,20 +61,20 @@ module Make (H : HELPER) : PRINTER = struct
       If the list is [nil], then the empty word {!val:Helper.eps} is printed. *)
   and print_actuals symbols = function
     | [] -> H.print_string (H.eps ()); print_space ()
-    | xs -> print_sep (print_actual symbols false) (H.space ()) xs
+    | xs -> print_sep (print_actual symbols) (H.space ()) xs
 
-  (** Print a possibly parenthesized actual. *)
-  and print_actual symbols e = function
+  (** Print an actual. *)
+  and print_actual symbols = function
     | Symbol (x, ps) ->
-      print_symbol symbols e x ps
+      print_symbol symbols x ps
     | Pattern p ->
-      print_pattern symbols e p
+      print_pattern symbols p
     | Modifier (a, m) ->
-      print_modifier m e (fun () -> print_actual symbols true a)
+      print_modifier m (is_not_atom a) (fun () -> print_actual symbols a)
     | Anonymous ps ->
       print_sep (print_actuals symbols) (H.bar ()) ps
 
-  (** Print a possibly parenthesized "modified" actual.
+  (** Print a "modified" actual.
       Modular: see {!val:Helper.opt}, {!val:Helper.plus}
       and {!val:Helper.star}. *)
   and print_modifier = function
@@ -74,7 +82,7 @@ module Make (H : HELPER) : PRINTER = struct
     | Plus -> H.plus
     | Star -> H.star
 
-  (** Print a possibly parenthesized pattern.
+  (** Print a pattern.
       - [option(x)] is printed as [x] with the optional modifier ([[x]])
       - [pair(x, y)] is printed as [x y]
       - [separated_pair(x, sep, y)] is printed as [x sep y]
@@ -86,43 +94,39 @@ module Make (H : HELPER) : PRINTER = struct
         ([x+])
       - [separated_list(sep, x)] and [separated_nonempty_list(sep, x)] are
         modularly printed, see {!val:Helper.print_sep_list} *)
-  and print_pattern symbols e =
-    let print' = print_actual symbols false in
+  and print_pattern symbols =
+    let print' = print_actual symbols in
     let print'' x () = print' x in
     function
     | Option x ->
-      H.opt e (print'' x)
+      H.opt (is_not_atom x) (print'' x)
     | Pair (x, y) ->
-      H.par e (fun () -> print' x; print_space (); print' y)
+      print' x; print_space (); print' y
     | SepPair (x, sep, y) ->
-      H.par e (fun () ->
-          print' x; print_space (); print' sep; print_space (); print' y)
+      print' x; print_space (); print' sep; print_space (); print' y
     | Preceded (o, x) ->
-      H.par e (fun () -> print' o; print_space (); print' x)
+      print' o; print_space (); print' x
     | Terminated (x, c) ->
-      H.par e (fun () -> print' x; print_space (); print' c)
+      print' x; print_space (); print' c
     | Delimited (o, x, c) ->
-      H.par e (fun () ->
-          print' o; print_space (); print' x; print_space (); print' c)
+      print' o; print_space (); print' x; print_space (); print' c
     | List x ->
-      H.star e (print'' x)
+      H.star (is_not_atom x) (print'' x)
     | NEList x ->
-      H.plus e (print'' x)
+      H.plus (is_not_atom x) (print'' x)
     | SepList (sep, x) ->
-      H.print_sep_list e false (print'' sep) (print'' x)
+      H.print_sep_list (is_not_atom x) false (print'' sep) (print'' x)
     | SepNEList (sep, x) ->
-      H.print_sep_list e true (print'' sep) (print'' x)
+      H.print_sep_list (is_not_atom x) true (print'' sep) (print'' x)
 
-  (** [print_symbols symbols e s xs] modularly prints the symbol [s] and
-      its parameters [xs]. The output is parenthesized if [e] is [true] AND
-      the symbol is functional (ie. [xs <> nil]).
+  (** [print_symbols symbols s xs] modularly prints the symbol [s] and its
+      parameters [xs].
       See {!val:Helper.print_symbol}. *)
-  and print_symbol symbols e s xs =
-    H.par (e && xs <> []) (fun () ->
-        H.print_symbol symbols s
-          (fun () ->
-             print_sep_encl (print_actual symbols e)
-               ("," ^ (H.space ())) "(" ")" xs))
+  and print_symbol symbols s xs =
+    H.print_symbol symbols s
+      (fun () ->
+         print_sep_encl (print_actual symbols)
+           ("," ^ (H.space ())) "(" ")" xs)
 
   (** Print a rule:
       + calls {!val:Helper.rule_begin}
@@ -131,8 +135,7 @@ module Make (H : HELPER) : PRINTER = struct
       + prints the definition symbol {!val:Helper.def}
       + prints the productions, separated by a line break {!val:Helper.break}
         and a bar {!val:Helper.prod_bar}
-      + calls {!val:Helper.rule_end}
-  *)
+      + calls {!val:Helper.rule_end} *)
   let print_rule symbols {name; params; prods} =
     H.rule_begin ();
     let print_params =

@@ -62,8 +62,8 @@ val prod_bar: unit -> string
 (** The bar for the anonymous rules. *)
 val bar: unit -> string
 
-(** The optionally parenthesizing function. *)
-val par: bool -> (unit -> unit) -> unit
+(* (\** The optionally parenthesizing function. *\)
+ * val par: bool -> (unit -> unit) -> unit *)
 
 (** The space. *)
 val space: unit -> string
