@@ -41,7 +41,8 @@ module Make (H : HELPER) : PRINTER = struct
     print_sep_encl print sep "" ""
 
   (** [is_not_atom a] decides if the actual [a] has to be parenthesized. *)
-  let is_not_atom = function
+  let rec is_not_atom = function
+    | Anonymous [[a]] -> is_not_atom a
     | Symbol _
     | Modifier _
     | Pattern (Option _)
