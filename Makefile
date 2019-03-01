@@ -81,16 +81,3 @@ install: all
 	@echo $(BINDIR)
 	@mkdir -p $(BINDIR)
 	@install $(EXE) $(BINDIR)/$(EXE)
-
-uninstall:
-	@rm -f $(BINDIR)/$(EXE)
-
-prepare:
-	@opam-publish prepare $(URL)/archive/v$(VERSION).tar.gz
-	@printf "url file:\n"
-	@cat $(PACKAGE)/url
-	@printf "descr file:\n"
-	@cat $(PACKAGE)/descr
-
-publish: prepare
-	@opam-publish submit $(PACKAGE)
