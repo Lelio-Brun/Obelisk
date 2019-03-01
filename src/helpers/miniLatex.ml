@@ -100,12 +100,12 @@ let begin_document misc symbols =
      \\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\
      \\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\
      \\newcommand\\%sparen[1]{(#1)}@;\
-     \\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sgramopt{\\%sparen{#1}}}@;\
+     \\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sgramopt{#1}}@;\
      \\WithSuffix\\newcommand\\%sgramplus*[1]{\\%sgramplus{\\%sparen{#1}}}@;\
      \\WithSuffix\\newcommand\\%sgramstar*[1]{\\%sgramstar{\\%sparen{#1}}}@;\
      \\WithSuffix\\newcommand\\%sgramseplist*[2]{\\%sgramseplist{#1}{\\%sparen{#2}}}@;\
      \\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\%sgramsepnelist{#1}{\\%sparen{#2}}}"
-    pre pre pre pre pre pre
+    pre pre pre pre pre
     pre pre pre pre pre
     pre pre pre pre pre
     pre pre pre pre pre;
