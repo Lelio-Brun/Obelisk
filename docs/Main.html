@@ -52,14 +52,14 @@
 </div>
 <hr width="100%">
 
-<pre><span id="VALget"><span class="keyword">val</span> <a href="code_VALMain.get.html">get</a></span> : <code class="type">unit -><br>       (string * Lexing.lexbuf) list *<br>       (<a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEspec">ExtendedAst.spec</a> -> unit) * (unit -> unit)</code></pre><div class="info ">
+<pre><span id="VALget"><span class="keyword">val</span> <a href="code_VALMain.get.html">get</a></span> : <code class="type">unit -><br>       (string * Stdlib.Lexing.lexbuf) list *<br>       (<a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEspec">ExtendedAst.spec</a> -> unit) * (unit -> unit)</code></pre><div class="info ">
 <ul class="info-attributes">
 <li><b>Returns</b> the lexer buffers, a printer chosen from the according passed
     options and a function to finally close the input and output channels.</li>
 </ul>
 </div>
 
-<pre><span id="VALparse"><span class="keyword">val</span> <a href="code_VALMain.parse.html">parse</a></span> : <code class="type">string * Lexing.lexbuf -> <a href="Ast.html#TYPEspec">Ast.spec</a></code></pre><div class="info ">
+<pre><span id="VALparse"><span class="keyword">val</span> <a href="code_VALMain.parse.html">parse</a></span> : <code class="type">string * Stdlib.Lexing.lexbuf -> <a href="Ast.html#TYPEspec">Ast.spec</a></code></pre><div class="info ">
 <ul class="info-attributes">
 <li><b>Returns</b> the obtained grammars per input file / lexer buffer.</li>
 </ul>

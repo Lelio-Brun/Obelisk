@@ -123,11 +123,13 @@
 &nbsp;&nbsp;&nbsp;print_string_package&nbsp;<span class="string">"@;"</span><br>
 &nbsp;&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;commands&nbsp;symbols;<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;pre&nbsp;=&nbsp;pre&nbsp;()&nbsp;<span class="keyword">in</span><br>
 &nbsp;&nbsp;print_fmt_package<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{#1\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{#1\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{#2\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{#2\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{(#1)}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\paren{\\%sgramopt{#1}}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\paren{\\%sgramplus{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\paren{\\%sgramstar{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\paren{\\%sgramseplist{#1}{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\paren{\\%sgramsepnelist{#1}{#2}}}"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;())&nbsp;(pre&nbsp;());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"\\newcommand\\%sgramopt[1]{[#1]}@;\\newcommand\\%sgramplus[1]{\\textnormal{#1}\\ensuremath{^+}}@;\\newcommand\\%sgramstar[1]{\\textnormal{#1}\\ensuremath{^*}}@;\\newcommand\\%sgramseplist[2]{\\textnormal{#2}\\ensuremath{_{\\textnormal{#1}}^*}}@;\\newcommand\\%sgramsepnelist[2]{\\textnormal{#2}\\ensuremath{_{\\textnormal{#1}}^+}}@;\\newcommand\\%sparen[1]{\\ensuremath{\\left(\\textnormal{#1}\\right)}}@;\\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sgramopt{#1}}@;\\WithSuffix\\newcommand\\%sgramplus*[1]{\\%sgramplus{\\%sparen{#1}}}@;\\WithSuffix\\newcommand\\%sgramstar*[1]{\\%sgramstar{\\%sparen{#1}}}@;\\WithSuffix\\newcommand\\%sgramseplist*[2]{\\%sgramseplist{#1}{\\%sparen{#2}}}@;\\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\%sgramsepnelist{#1}{\\%sparen{#2}}}"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre&nbsp;pre;<br>
 &nbsp;&nbsp;print_fmt&nbsp;<span class="string">"%s%s\\begin{%s}@;"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;use&nbsp;()&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">"\n\n\\begin{document}\n\n"</span>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;misc&nbsp;=&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">""</span>&nbsp;<span class="keyword">else</span>&nbsp;misc&nbsp;^&nbsp;<span class="string">"\n"</span>)<br>

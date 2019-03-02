@@ -65,7 +65,13 @@
 </div>
 </div>
 
-<pre><span id="VALprint_production"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_production.html">print_production</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALis_not_atom"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.is_not_atom.html">is_not_atom</a></span> : <code class="type"><a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_not_atom&nbsp;a</code> decides if the actual <code class="code">a</code> has to be parenthesized.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_production"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_production.html">print_production</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print a production by first calling <a href="Helper.html#VALproduction_begin"><code class="code"><span class="constructor">Helper</span>.production_begin</code></a>
       then printing the actuals and
@@ -73,30 +79,30 @@
 </div>
 </div>
 
-<pre><span id="VALprint_actuals"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actuals.html">print_actuals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEproduction">ExtendedAst.production</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_actuals"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actuals.html">print_actuals</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print a list of actuals.
       If the list is <code class="code">nil</code>, then the empty word <a href="Helper.html#VALeps"><code class="code"><span class="constructor">Helper</span>.eps</code></a> is printed.</p>
 </div>
 </div>
 
-<pre><span id="VALprint_actual"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actual.html">print_actual</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_actual"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_actual.html">print_actual</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a possibly parenthesized actual.</p>
+<p>Print an actual.</p>
 </div>
 </div>
 
 <pre><span id="VALprint_modifier"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_modifier.html">print_modifier</a></span> : <code class="type"><a href="ExtendedAst.html#TYPEmodifier">ExtendedAst.modifier</a> -> bool -> (unit -> unit) -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a possibly parenthesized "modified" actual.
+<p>Print a "modified" actual.
       Modular: see <a href="Helper.html#VALopt"><code class="code"><span class="constructor">Helper</span>.opt</code></a>, <a href="Helper.html#VALplus"><code class="code"><span class="constructor">Helper</span>.plus</code></a>
       and <a href="Helper.html#VALstar"><code class="code"><span class="constructor">Helper</span>.star</code></a>.</p>
 </div>
 </div>
 
-<pre><span id="VALprint_pattern"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_pattern.html">print_pattern</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_pattern"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_pattern.html">print_pattern</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPEpattern">ExtendedAst.pattern</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a possibly parenthesized pattern.</p>
+<p>Print a pattern.</p>
 <ul>
 <li><code class="code">option(x)</code> is printed as <code class="code">x</code> with the optional modifier (<code class="code">[x]</code>)</li>
 <li><code class="code">pair(x,&nbsp;y)</code> is printed as <code class="code">x&nbsp;y</code></li>
@@ -113,11 +119,10 @@
 </div>
 </div>
 
-<pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> bool -> string -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_symbol"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_symbol.html">print_symbol</a></span> : <code class="type"><a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> string -> <a href="ExtendedAst.html#TYPEactual">ExtendedAst.actual</a> list -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">print_symbols&nbsp;symbols&nbsp;e&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and
-      its parameters <code class="code">xs</code>. The output is parenthesized if <code class="code">e</code> is <code class="code"><span class="keyword">true</span></code> AND
-      the symbol is functional (ie. <code class="code">xs&nbsp;&lt;&gt;&nbsp;nil</code>).
+<p><code class="code">print_symbols&nbsp;symbols&nbsp;s&nbsp;xs</code> modularly prints the symbol <code class="code">s</code> and its
+      parameters <code class="code">xs</code>.
       See <a href="Helper.html#VALprint_symbol"><code class="code"><span class="constructor">Helper</span>.print_symbol</code></a>.</p>
 </div>
 </div>
@@ -137,7 +142,7 @@
 </div>
 </div>
 
-<pre><span id="VALprint_spec"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_spec.html">print_spec</a></span> : <code class="type">Format.formatter -> <a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_spec"><span class="keyword">val</span> <a href="code_VALGenericPrinter.Make.print_spec.html">print_spec</a></span> : <code class="type">Stdlib.Format.formatter -> <a href="Common.Symbols.html#TYPEt">Common.Symbols.t</a> -> <a href="ExtendedAst.html#TYPErule">ExtendedAst.rule</a> list -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print the grammar by first calling <a href="Helper.html#VALprint_header"><code class="code"><span class="constructor">Helper</span>.print_header</code></a>,
       then printing the rules and finally calling <a href="Helper.html#VALprint_footer"><code class="code"><span class="constructor">Helper</span>.print_footer</code></a>.</p>

@@ -61,9 +61,9 @@
 <span class="keyword">let</span>&nbsp;print_symbol&nbsp;symbols&nbsp;=<br>
 &nbsp;&nbsp;print_symbol_aux&nbsp;<span class="string">"&lt;span&nbsp;class=\"nonterminal\"&gt;"</span>&nbsp;<span class="string">"&lt;/span&gt;"</span>&nbsp;symbols<br>
 <br>
-<span class="keyword">let</span>&nbsp;opt&nbsp;e&nbsp;print&nbsp;=<br>
+<span class="keyword">let</span>&nbsp;opt&nbsp;_&nbsp;print&nbsp;=<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"&lt;span&nbsp;class=\"option\"&gt;"</span>;<br>
-&nbsp;&nbsp;par&nbsp;e&nbsp;print;<br>
+&nbsp;&nbsp;print&nbsp;();<br>
 &nbsp;&nbsp;print_string&nbsp;<span class="string">"&lt;/span&gt;"</span><br>
 <br>
 <span class="keyword">let</span>&nbsp;plus&nbsp;e&nbsp;print&nbsp;=<br>

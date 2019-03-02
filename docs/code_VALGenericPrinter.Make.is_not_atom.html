@@ -26,9 +26,14 @@
 <link title="Html" rel="Chapter" href="Html.html">
 <link title="Printers" rel="Chapter" href="Printers.html">
 <link title="Position" rel="Chapter" href="Position.html">
-<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : Common.Symbols.functionals</title>
+<link title="Main" rel="Chapter" href="Main.html"><title>Obelisk code documentation : GenericPrinter.Make.is_not_atom</title>
 </head>
 <body>
-<code class="code"><span class="keyword">let</span> functionals m =
-    fst <span class="constructor">List</span>.(split (filter (<span class="keyword">function</span> _, <span class="constructor">Fun</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">false</span>)
-        (<span class="constructor">M</span>.bindings m)))</code></body></html>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> is_not_atom = <span class="keyword">function</span>
+    <span class="keywordsign">|</span> <span class="constructor">Anonymous</span> [[a]] <span class="keywordsign">-&gt;</span> is_not_atom a
+    <span class="keywordsign">|</span> <span class="constructor">Symbol</span> _
+    <span class="keywordsign">|</span> <span class="constructor">Modifier</span> _
+    <span class="keywordsign">|</span> <span class="constructor">Pattern</span> (<span class="constructor">Option</span> _)
+    <span class="keywordsign">|</span> <span class="constructor">Pattern</span> (<span class="constructor">List</span> _)
+    <span class="keywordsign">|</span> <span class="constructor">Pattern</span> (<span class="constructor">NEList</span> _) <span class="keywordsign">-&gt;</span> <span class="keyword">false</span>
+    <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span></code></body></html>

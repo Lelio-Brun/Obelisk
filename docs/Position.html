@@ -52,7 +52,7 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTposition.start_p">start_p</span>&nbsp;: <code class="type">Lexing.position</code>;</code></td>
+<code><span id="TYPEELTposition.start_p">start_p</span>&nbsp;: <code class="type">Stdlib.Lexing.position</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 <div class="info-desc">
 <p>The start position.</p>
@@ -64,7 +64,7 @@
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTposition.end_p">end_p</span>&nbsp;: <code class="type">Lexing.position</code>;</code></td>
+<code><span id="TYPEELTposition.end_p">end_p</span>&nbsp;: <code class="type">Stdlib.Lexing.position</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 <div class="info-desc">
 <p>The end position.</p>
@@ -87,7 +87,7 @@
 </div>
 </div>
 
-<pre><span id="VALfrom"><span class="keyword">val</span> <a href="code_VALPosition.from.html">from</a></span> : <code class="type">Lexing.position -> Lexing.position -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
+<pre><span id="VALfrom"><span class="keyword">val</span> <a href="code_VALPosition.from.html">from</a></span> : <code class="type">Stdlib.Lexing.position -> Stdlib.Lexing.position -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Build an error location from the start and end positions.</p>
 </div>
@@ -99,13 +99,13 @@
 </div>
 </div>
 
-<pre><span id="VALget_pos"><span class="keyword">val</span> <a href="code_VALPosition.get_pos.html">get_pos</a></span> : <code class="type">Lexing.lexbuf -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
+<pre><span id="VALget_pos"><span class="keyword">val</span> <a href="code_VALPosition.get_pos.html">get_pos</a></span> : <code class="type">Stdlib.Lexing.lexbuf -> <a href="Position.html#TYPEposition">position</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Build an error location from the lexer buffer.</p>
 </div>
 </div>
 
-<pre><span id="VALerr_loc_lexbuf"><span class="keyword">val</span> <a href="code_VALPosition.err_loc_lexbuf.html">err_loc_lexbuf</a></span> : <code class="type">string * Lexing.lexbuf -> string -> unit</code></pre><div class="info ">
+<pre><span id="VALerr_loc_lexbuf"><span class="keyword">val</span> <a href="code_VALPosition.err_loc_lexbuf.html">err_loc_lexbuf</a></span> : <code class="type">string * Stdlib.Lexing.lexbuf -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print an error message located with the lexer buffer.</p>
 </div>
