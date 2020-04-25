@@ -50,7 +50,7 @@ module Make (H : HELPER) : PRINTER = struct
   (** Print a list of actuals.
       If the list is [nil], then the empty word {!val:Helper.eps} is printed. *)
   and print_actuals symbols = function
-    | [] -> H.print_string (H.eps ()); print_space ()
+    | [] -> H.print_string (H.eps ())
     | xs -> print_sep (print_actual symbols false) (H.space ()) xs
 
   (** Print a possibly parenthesized actual. *)

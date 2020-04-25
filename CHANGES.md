@@ -1,8 +1,12 @@
-# Changes
-
-## Unreleased
+## unreleased
 - Drop `ocamlbuild` and `make` in favor of `dune`.
 - Drop API-doc style documentation (irrelevant)
+- Fix break hints after epsilons 
+- use `\lit` command for literals in `syntax` mode
+- change the name of the grammar environment to `obeliskgrammar` in LaTeX modes
+
+## 0.4.0 - 2019-03-01
+This version fixes issue [#8](https://github.com/Lelio-Brun/Obelisk/issues/7), corrects some parentheses related additional bugs and uses the new OPAM 2.0 format.
 
 ## 0.3.2 - 2018-04-25
 This patch is a minor fix to 0.3.1: tests in LaTeX mode are now conditionally guarded on the presence of `pdflatex`` in the PATH.

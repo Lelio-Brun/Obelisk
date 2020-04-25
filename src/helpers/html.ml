@@ -21,13 +21,13 @@ let print_header _ =
      white-space: nowrap;\
      @]@;}@;\
      @[<v 4>.specification th::after {@;\
-     content: \"\\\\a0::=\\\\a0\";\
+     content: \"\\a0::=\\a0\";\
      @]@;}@;\
      @[<v 4>.specification th.bar {@;\
      text-align: right;\
      @]@;}@;\
      @[<v 4>.specification th.bar::after {@;\
-     content: \"|\\\\a0\";\
+     content: \"|\\a0\";\
      @]@;}@;\
      @[<v 4>.rule th, td {@;\
      padding-top: .5em;\

@@ -3,7 +3,8 @@ let mlys = ref []
 let tmp = "tmp"
 let prefix = "my_prefix42"
 let verbose = ref false
-let has_pdflatex = Sys.command "command -v pdflatex" = 0
+let command cmd = Sys.command cmd = 0
+let has_pdflatex = command "command -v pdflatex"
 let pkg = "pkg"
 let tmppkg = "tmppkg"
 let main = "main"
@@ -31,16 +32,22 @@ let of_mode with_pkg = function
 
 let is_latex = function Latex _ -> true | _ -> false
 
+let ok = "\x1b[32mok\x1b[0m"
+let ko = "\x1b[1;31mko\x1b[0m"
+
 let exec mode with_pkg f =
   let cmd = Format.sprintf "%s %s -o %s %s"
       !exe (of_mode with_pkg mode) (if with_pkg then tmppkg ^ ".tex" else tmp) f in
-  Sys.command cmd |> ignore;
-  if is_latex mode then begin
-    let pdflatexmode = if !verbose then "-halt-on-error" else "-interaction batchmode" in
-    let pdflatex = Format.sprintf "pdflatex %s %s" pdflatexmode (if with_pkg then main else tmp) in
-    Sys.command pdflatex |> ignore
-  end;
-  Format.printf "\tTesting %s%s\tok@." f (if with_pkg then " (package mode)" else "")
+  Format.printf "\tTesting %s%s\t%s@." f (if with_pkg then " (package mode)" else "")
+    (if command cmd then
+       if is_latex mode then
+         let pdflatexmode = if !verbose then "-halt-on-error" else "-interaction batchmode" in
+         let pdflatex = Format.sprintf "pdflatex %s %s" pdflatexmode (if with_pkg then main else tmp) in
+         if command pdflatex then
+           ok
+         else ko
+       else ok
+     else ko)
 
 let of_mode'= function
   | Default -> "Default"

@@ -8,7 +8,7 @@ addons:
       - texlive-math-extra
       - texlive-latex-extra
 
-before_script: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
+install: test -e .travis.opam.sh || wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
 script: bash -ex .travis-opam.sh
 
 env:
@@ -17,3 +17,10 @@ env:
   - OCAML_VERSION=4.05 PACKAGE=obelisk
   - OCAML_VERSION=4.06 PACKAGE=obelisk
   - OCAML_VERSION=4.07 PACKAGE=obelisk
+  - OCAML_VERSION=4.08 PACKAGE=obelisk
+  - OCAML_VERSION=4.09 PACKAGE=obelisk
+  - OCAML_VERSION=4.10 PACKAGE=obelisk
+
+os:
+  - linux
+  - osx

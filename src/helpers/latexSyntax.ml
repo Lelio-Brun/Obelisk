@@ -19,35 +19,35 @@ let print_header symbols =
       | Some xs -> max ^ params xs
       | None -> assert false
     in
-    String.escaped (Str.global_replace (Str.regexp "_") "\\_" max)
+    Str.global_replace (Str.regexp "_") "\\_" max
   in
   documentclass
     (usepackage "" "syntax" ^ "@;" ^
      (if pre () = "" then ""
      else
-       "\\\\newenvironment{" ^ command "grammar" ^
-       "}{\\\\begin{grammar}}{\\\\end{grammar}}@;@;") ^
-     newcommand "gramterm" 1 None "#1" ^
-     newcommand "gramnonterm" 1 None "\\\\synt{#1}" ^
-     newcommand "gramfunc" 1 None "\\\\synt{#1}" ^
+       "\\newenvironment{" ^ grammarname ^
+       "}{\\begin{grammar}}{\\end{grammar}}@;@;") ^
+     newcommand "gramterm" 1 None "\\lit{#1}" ^
+     newcommand "gramnonterm" 1 None "\\synt{#1}" ^
+     newcommand "gramfunc" 1 None "\\synt{#1}" ^
      newcommand "gramdef" 0 None "::=" ^
-     newcommand "grambar" 0 None "\\\\alt" ^
-     newcommand "grameps" 0 None "\\\\ensuremath{\\\\epsilon}" ^
-     "\\\\newlength{\\\\" ^ command "grammaxindent" ^
+     newcommand "grambar" 0 None "\\alt" ^
+     newcommand "grameps" 0 None "\\ensuremath{\\epsilon}" ^
+     "\\newlength{\\" ^ command "grammaxindent" ^
      "}@;\
-      \\\\settowidth{\\\\" ^ command "grammaxindent" ^
-     "}{\\\\synt{" ^ max ^ "} \\\\" ^
+      \\settowidth{\\" ^ command "grammaxindent" ^
+     "}{\\synt{" ^ max ^ "} \\" ^
      command "gramdef" ^ "{} }@;@;");
   begin_document
     ("\\setlength{\\grammarindent}{\\" ^ command "grammaxindent" ^ "}")
     symbols
 
-let def () = " \\\\" ^ command "gramdef" ^ "{} "
-let prod_bar () = "\\\\" ^ command "grambar" ^ " "
-let bar () = "@ \\\\" ^ command "grambar" ^ "@ "
+let def () = " \\" ^ command "gramdef" ^ "{} "
+let prod_bar () = "\\" ^ command "grambar" ^ " "
+let bar () = "@ \\" ^ command "grambar" ^ "@ "
 let space () = "@ "
 let break () = "@;"
-let eps () = "\\\\" ^ command "grameps"
+let eps () = "\\" ^ command "grameps"
 
 let print_rule_name name print_params =
   print_string "<";

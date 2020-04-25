@@ -1,3 +1,25 @@
-(lang dune 1.1)
+(lang dune 2.0)
 (name obelisk)
 (using menhir 2.0)
+
+(version 0.5.0)
+
+(generate_opam_files true)
+
+(source (github Lelio-Brun/obelisk))
+(homepage https://github.com/Lelio-Brun/Obelisk)
+(documentation https://github.com/Lelio-Brun/Obelisk)
+(license MIT)
+(authors "Lélio Brun")
+(maintainers "Lélio Brun <lelio.brun@inria.fr>")
+
+(package
+ (name obelisk)
+ (synopsis "Pretty-printing for Menhir files")
+ (description "Obelisk is a simple tool which produces pretty-printed output from a Menhir parser file (.mly).\n\
+               It is inspired from yacc2latex and is also written in OCaml, but is aimed at supporting features from Menhir instead of only those of ocamlyacc.")
+ (depends
+  (ocaml (>= 4.03))
+  (dune (>= 1.1.0))
+  (menhir :build)
+  (ocamlfind :build)))

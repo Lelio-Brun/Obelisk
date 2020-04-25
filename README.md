@@ -214,7 +214,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ![Backnaur](misc/backnaur.png)
 
 #### HTML
-![HTML](misc/html.png)
+![HTML](misc/html.png) 
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [Dune]: https://github.com/ocaml/dune/

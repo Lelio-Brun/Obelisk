@@ -1,8 +1,5 @@
-(executable
+(test
   (name test)
-  (libraries str))
-
-(alias
- (name runtest)
- (deps (glob_files *.mly))
- (action (run ./test.exe %{bin:obelisk} "%{deps}")))
+  (libraries str)
+  (deps (glob_files *.mly))
+  (action (run %{test} %{bin:obelisk} "%{deps}")))

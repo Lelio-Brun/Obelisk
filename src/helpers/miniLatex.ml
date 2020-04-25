@@ -10,7 +10,7 @@ let print_fmt_package s =
   Format.fprintf !formatter_package s
 
 let usepackage opts s =
-  Format.sprintf "\\\\%s%s{%s}@;"
+  Format.sprintf "\\%s%s{%s}@;"
     (if use () then "RequirePackage" else "usepackage") opts s
 
 let documentclass header =
@@ -19,7 +19,7 @@ let documentclass header =
   then print_fmt_package
       "\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"
       !pfile
-  else print_string "\\\\documentclass[preview]{standalone}@;@;";
+  else print_string "\\documentclass[preview]{standalone}@;@;";
   print_string_package (usepackage "" "suffix" ^ header)
 
 let to_roman i =
@@ -67,6 +67,8 @@ let command x =
 
 let pre () = valid !prefix
 
+let grammarname = command "obeliskgrammar"
+
 let begin_document misc symbols =
   let commands symbols =
     let escape = Str.global_replace (Str.regexp "_") "\\_" in
@@ -110,10 +112,10 @@ let begin_document misc symbols =
   print_fmt "%s%s\\begin{%s}@;"
     (if use () then "" else "\n\n\\begin{document}\n\n")
     (if misc = "" then "" else misc ^ "\n")
-    (command "grammar")
+    grammarname
 
 let newcommand x n o cmd =
-  "\\\\newcommand\\\\" ^ pre () ^ x ^
+  "\\newcommand\\" ^ pre () ^ x ^
   begin match n with
   | 0 -> ""
   | _ -> "[" ^ string_of_int n ^ "]"
@@ -126,7 +128,7 @@ let newcommand x n o cmd =
 
 let end_document () =
   print_fmt "\\end{%s}%s@]@."
-    (command "grammar")
+    grammarname
     (if use () then "" else "\n\n\\end{document}")
 
 let print_footer = end_document
