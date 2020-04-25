@@ -19,7 +19,7 @@ let print_header symbols =
       | Some xs -> max ^ params xs
       | None -> assert false
     in
-    Str.global_replace (Str.regexp "_") "\\_" max
+    Re.Str.global_replace (Re.Str.regexp "_") "\\_" max
   in
   documentclass
     (usepackage "" "syntax" ^ "@;" ^

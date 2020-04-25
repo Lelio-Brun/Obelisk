@@ -1,9 +1,10 @@
 ## unreleased
-- Drop `ocamlbuild` and `make` in favor of `dune`.
-- Drop API-doc style documentation (irrelevant)
-- Fix break hints after epsilons 
+- drop `ocamlbuild` and `make` in favor of `dune`
+- drop API-doc style documentation (irrelevant)
+- fix break hints after epsilons 
 - use `\lit` command for literals in `syntax` mode
 - change the name of the grammar environment to `obeliskgrammar` in LaTeX modes
+- use `re` library instead of `str`
 
 ## 0.4.0 - 2019-03-01
 This version fixes issue [#8](https://github.com/Lelio-Brun/Obelisk/issues/7), corrects some parentheses related additional bugs and uses the new OPAM 2.0 format.

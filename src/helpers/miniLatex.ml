@@ -49,15 +49,15 @@ let to_roman i =
 
 let valid x =
   let roman =
-    Str.global_substitute (Str.regexp "[0-9]+")
-      (fun s -> Str.matched_string s |> to_roman)
+    Re.Str.global_substitute (Re.Str.regexp "[0-9]+")
+      (fun s -> Re.Str.matched_string s |> to_roman)
   in
   let clear_underscore =
-    Str.global_replace (Str.regexp "_") ""
+    Re.Str.global_replace (Re.Str.regexp "_") ""
   in
   let forbid_end x =
     if !prefix = ""
-    then Str.global_replace (Str.regexp_case_fold "end") "zzz\\0" x
+    then Re.Str.global_replace (Re.Str.regexp_case_fold "end") "zzz\\0" x
     else x
   in
   x |> roman |> clear_underscore |> forbid_end
@@ -71,7 +71,7 @@ let grammarname = command "obeliskgrammar"
 
 let begin_document misc symbols =
   let commands symbols =
-    let escape = Str.global_replace (Str.regexp "_") "\\_" in
+    let escape = Re.Str.global_replace (Re.Str.regexp "_") "\\_" in
     List.iter (fun x ->
         print_fmt_package "\\newcommand\\%s{%s}@;"
           (command x) (escape x))
@@ -165,7 +165,7 @@ let print_fun f print_params =
   print_string "}"
 
 let print_undef u =
-  print_fmt "%s" (Str.global_replace (Str.regexp "_") "\\_" u)
+  print_fmt "%s" (Re.Str.global_replace (Re.Str.regexp "_") "\\_" u)
 
 let print_symbol_aux term non_term func undef symbols s print_params =
   let open Common.Symbols in

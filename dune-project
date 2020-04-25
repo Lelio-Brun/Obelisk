@@ -19,7 +19,6 @@
  (description "Obelisk is a simple tool which produces pretty-printed output from a Menhir parser file (.mly).\n\
                It is inspired from yacc2latex and is also written in OCaml, but is aimed at supporting features from Menhir instead of only those of ocamlyacc.")
  (depends
-  (ocaml (>= 4.03))
-  (dune (>= 1.1.0))
-  (menhir :build)
-  (ocamlfind :build)))
+  (ocaml (>= 4.08))
+  (dune (>= 2.2.0))
+  re menhir ocamlfind))
