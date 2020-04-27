@@ -1,4 +1,4 @@
-# Obelisk [![Build Status](https://travis-ci.org/Lelio-Brun/Obelisk.svg?branch=master)](https://travis-ci.org/Lelio-Brun/Obelisk) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
+# Obelisk [![Build Status](https://travis-ci.org/Lelio-Brun/Obelisk.svg?branch=dev)](https://travis-ci.org/Lelio-Brun/Obelisk) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
 **Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
@@ -23,9 +23,10 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 
 ## Installation
 ### Dependencies
-- [OCaml] >= 4.03
-- [Dune] >= 1.1.0
+- [OCaml] >= 4.08
+- [Dune] >= 2.2.0
 - [Menhir]
+- [Re]
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
@@ -251,6 +252,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ![HTML](misc/html.png) 
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
+[Re]: https://github.com/ocaml/ocaml-re/
 [Dune]: https://github.com/ocaml/dune/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
 [ocamlyacc]: https://caml.inria.fr/pub/docs/manual-ocaml/lexyacc.html#sec307
