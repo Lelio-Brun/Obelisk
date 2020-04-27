@@ -125,6 +125,8 @@ And with the `-i` switch:
 By default the output format is a simple text format close to the BNF syntax.
 You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
 
+In default and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
+
 #### LaTeX
 Use the following options to tweak the LaTeX:
 - `-tabular`: a *tabular*-based format from the [tabu] package (default)
@@ -167,8 +169,11 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ```
 <specification> ::= <rule>* EOF
 
-<rule> ::= [<flags>] <ident> ATTRIBUTE* <parameters(<ident>)> COLON
-           <optional_bar> <group> (BAR <group>)*
+<rule> ::= <old_rule>
+         | <new_rule>
+
+<old_rule> ::= [<flags>] <ident> ATTRIBUTE* <parameters(<ident>)> COLON
+               <optional_bar> <group> (BAR <group>)* SEMICOLON*
 
 <flags> ::= PUBLIC
           | INLINE
@@ -181,7 +186,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <production> ::= <producer>* [<precedence>]
 
-<producer> ::= [LID EQ] <actual> ATTRIBUTE*
+<producer> ::= [LID EQ] <actual> ATTRIBUTE* SEMICOLON*
 
 <generic_actual(A, B)> ::= <ident> <parameters(A)>
                          | B <modifier>
@@ -190,6 +195,34 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <lax_actual> ::= <generic_actual(<lax_actual>, <actual>)>
                | <group> (BAR <group>)*
+
+<new_rule> ::= [PUBLIC] LET LID ATTRIBUTE* <parameters(<ident>)> <binder>
+               <expression>
+
+<binder> ::= COLONEQ
+           | EQEQ
+
+<expression> ::= <optional_bar> <seq_expression> (BAR <seq_expression>)*
+
+<seq_expression> ::= [<pattern> EQ] <symbol_expression> SEMICOLON
+                     <seq_expression>
+                   | <symbol_expression>
+                   | <action_expression>
+
+<symbol_expression> ::= <ident> <parameters(<expression>)>
+                      | <symbol_expression> <modifier>
+
+<action_expression> ::= <action>
+                      | <action> <precedence>
+                      | <precedence> <action>
+
+<action> ::= ACTION
+           | POINTFREEACTION
+
+<pattern> ::= LID
+            | UNDERSCORE
+            | TILDE
+            | LPAR [<pattern> (COMMA <pattern>)*] RPAR
 
 <modifier> ::= OPT
              | PLUS
@@ -201,6 +234,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <ident> ::= UID
           | LID
+          | QID
 ```
 
 #### LaTeX

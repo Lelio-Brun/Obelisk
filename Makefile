@@ -7,7 +7,7 @@ PREFIX=my
 MAIN=main
 EXE=dune exec $(SRC)/main.exe --
 
-.PHONY: all latex html default reco readme doc tests clean cleandoc install uninstall publish travis
+.PHONY: all latex html default reco readme tests clean
 
 all:
 	@dune build

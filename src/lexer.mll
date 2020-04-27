@@ -102,9 +102,9 @@ and ocaml_string = parse
 and pointfree_action = parse
   | whitespace* (lowercase | uppercase | '`') (identchar | '.')* whitespace* ">"
   | whitespace* '(' op ')' whitespace* ">"
-  | ">"    { POINTFREEACTION }
-  | eof    { error "Point-free action not terminated"}
-  | _ as c { error (sprintf "illegal character %C" c) }
+  | whitespace* ">" { POINTFREEACTION }
+  | eof             { error "Point-free action not terminated"}
+  | _ as c          { error (sprintf "illegal character %C" c) }
 
 and c_comment = parse
   | newline { newline lexbuf c_comment  }
