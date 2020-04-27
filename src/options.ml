@@ -33,10 +33,14 @@ let mode = ref Default
 (** Do we inline inferred patterns ? [false] by default. *)
 let inline = ref false
 
+(** Do we substitute token aliases? [false] by default. *)
+let no_aliases = ref false
+
 (** Default common command-line options. *)
 let options = ref (Arg.align [
-    "-o", Arg.Set_string ofile, " Set the output filename";
-    "-i", Arg.Set inline, " Inline recognized patterns"
+    "-o",         Arg.Set_string ofile, " Set the output filename";
+    "-i",         Arg.Set inline,       " Inline recognized patterns";
+    "-noaliases", Arg.Set no_aliases,   " Do not substitute token aliases. Has no effect in LaTeX modes."
   ])
 
 (** Specify the LaTeX sub-mode to use. *)
@@ -45,11 +49,11 @@ let set_latexmode lm () =
 
 (** LaTeX mode specific options. *)
 let latex_opt = [
-  "-tabular", Arg.Unit (set_latexmode Tabular), " Use tabular environment (default)";
-  "-syntax", Arg.Unit (set_latexmode Syntax), " Use `syntax` package";
+  "-tabular",  Arg.Unit (set_latexmode Tabular),  " Use tabular environment (default)";
+  "-syntax",   Arg.Unit (set_latexmode Syntax),   " Use `syntax` package";
   "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
-  "-package", Arg.Set_string pfile, " Set the package name, without extension. Use with `-o`";
-  "-prefix", Arg.Set_string prefix, " Set the LaTeX commands (macros) prefix"
+  "-package",  Arg.Set_string pfile,              " Set the package name, without extension. Use with `-o`";
+  "-prefix",   Arg.Set_string prefix,             " Set the LaTeX commands (macros) prefix"
 ]
 
 (** Usage message. *)
@@ -63,9 +67,11 @@ let parse_cmd =
   let cpt = ref 0 in
   function
   | "latex" when !cpt < 1 ->
+    incr cpt;
     mode := Latex Tabular;
     options := Arg.align (!options @ latex_opt)
   | "html" when !cpt < 1 ->
+    incr cpt;
     mode := Html;
     options := Arg.align !options
 

@@ -135,7 +135,7 @@ module Make (H : HELPER) : PRINTER = struct
     H.rule_begin ();
     let print_params =
       if params <> []
-      then Some (fun () -> print_sep_encl H.print_string ", " "(" ")" params)
+      then Some (fun () -> print_sep_encl H.print_param ", " "(" ")" params)
       else None
     in
     H.print_rule_name name print_params;

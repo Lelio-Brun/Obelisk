@@ -1,11 +1,12 @@
 %{ open Ast %}
 
-%token PUBLIC INLINE PREC
-%token LPAR RPAR BAR COLON EQ COMMA
+%token PUBLIC INLINE PREC LET
+%token LPAR RPAR BAR COLON EQ COLONEQ EQEQ SEMICOLON COMMA
 %token OPT PLUS STAR
+%token TILDE UNDERSCORE
 
-%token ACTION ATTRIBUTE
-%token <string> LID UID
+%token ACTION POINTFREEACTION ATTRIBUTE
+%token <string> LID UID QID
 
 %token EOF
 
@@ -27,8 +28,12 @@ specification:
   rules=rule* EOF { rules }
 
 rule:
+  | r=old_rule { r }
+  | r=new_rule { r }
+
+old_rule:
   flags? name=ident ATTRIBUTE* params=parameters(ident) COLON
-  optional_bar groups=separated_nonempty_list(BAR, group)
+  optional_bar groups=separated_nonempty_list(BAR, group) SEMICOLON*
   { { name; params; groups } }
 
 flags:
@@ -62,7 +67,7 @@ production:
 /* cf fancy-parser.mly of Menhir */
 
 producer:
-  ioption(terminated(LID, EQ)) actual=actual ATTRIBUTE* { actual }
+  ioption(terminated(LID, EQ)) actual=actual ATTRIBUTE* SEMICOLON* { actual }
 
 /* ------------------------------------------------------------------------- */
 /* The ideal syntax of actual parameters includes:
@@ -100,13 +105,45 @@ lax_actual:
   (* 3- *)
   | gs=separated_nonempty_list(BAR, group)                    { Anonymous gs }
 
+
+let new_rule :=
+  PUBLIC?; LET; name=LID; ATTRIBUTE*; params=parameters(ident);
+  binder; es=expression;
+  { { name; params; groups = [es] } }
+
+let binder == COLONEQ | EQEQ
+
+let expression := optional_bar; ~=separated_nonempty_list(BAR, seq_expression); < >
+
+let seq_expression :=
+  | ioption(terminated(pattern, EQ)); ~=symbol_expression; SEMICOLON; ~=seq_expression; < (::) >
+  | e=symbol_expression;                                                                { [e] }
+  | action_expression;                                                                  { [] }
+
+let symbol_expression :=
+  | id=ident; ps=parameters(expression); { Symbol (id, List.map (fun g -> Anonymous [g]) ps) }
+  | ~=symbol_expression; ~=modifier;     < Modifier >
+
+let action_expression :=
+  | action
+  | action; precedence
+  | precedence; action
+
+let action := ACTION | POINTFREEACTION
+
+let pattern :=
+  | LID;                                                   { () }
+  | UNDERSCORE;                                            { () }
+  | TILDE;                                                 { () }
+  | delimited(LPAR, separated_list(COMMA, pattern), RPAR); { () }
+
 %inline modifier:
   | OPT  { Opt }
   | PLUS { Plus }
   | STAR { Star }
 
 %inline precedence:
-  PREC p=ident { p }
+  PREC ident { () }
 
 %inline parameters(X):
   ps=loption(delimited(LPAR, separated_list(COMMA, X), RPAR)) { ps }
@@ -114,3 +151,4 @@ lax_actual:
 %inline ident:
   | id=UID { id }
   | id=LID { id }
+  | id=QID { id }

@@ -11,7 +11,7 @@ let break () = "@;"
 let eps () = "epsilon"
 
 let print_rule_name =
-  print_rule "<" ">"
+  print_rule_name_with "<" ">"
 
 let rule_begin () = ()
 let rule_end () =

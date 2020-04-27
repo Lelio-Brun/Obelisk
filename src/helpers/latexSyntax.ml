@@ -5,7 +5,7 @@ include MiniLatex
 let print_header symbols =
   let max =
     let compare_length s1 s2 = compare (String.length s2) (String.length s1) in
-    let max = List.(hd (sort compare_length (Symbols.defined symbols))) in
+    let max = try List.(hd (sort compare_length (Symbols.defined symbols))) with _ -> " " in
     let params =
       let rec aux = function
         | [] -> ""
@@ -17,7 +17,7 @@ let print_header symbols =
     in
     let max = match Common.Symbols.is_defined max symbols with
       | Some xs -> max ^ params xs
-      | None -> assert false
+      | None -> max
     in
     Re.Str.global_replace (Re.Str.regexp "_") "\\_" max
   in
@@ -32,6 +32,7 @@ let print_header symbols =
      newcommand "gramfunc" 1 None "\\synt{#1}" ^
      newcommand "gramdef" 0 None "::=" ^
      newcommand "grambar" 0 None "\\alt" ^
+     newcommand "grambaranon" 0 None "\\ensuremath{|}" ^
      newcommand "grameps" 0 None "\\ensuremath{\\epsilon}" ^
      "\\newlength{\\" ^ command "grammaxindent" ^
      "}@;\
@@ -44,14 +45,14 @@ let print_header symbols =
 
 let def () = " \\" ^ command "gramdef" ^ "{} "
 let prod_bar () = "\\" ^ command "grambar" ^ " "
-let bar () = "@ \\" ^ command "grambar" ^ "@ "
+let bar () = "@ \\" ^ command "grambaranon{}" ^ "@ "
 let space () = "@ "
 let break () = "@;"
 let eps () = "\\" ^ command "grameps"
 
 let print_rule_name name print_params =
   print_string "<";
-  print_rule name print_params;
+  print_rule_name_raw name print_params;
   print_string ">"
 let rule_begin () =
   print_string "@[<v 2>"

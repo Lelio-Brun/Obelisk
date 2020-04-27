@@ -73,7 +73,7 @@ let break () = "@;"
 let eps () = "epsilon"
 
 let print_rule_name =
-  print_rule "<th><span class=\"nonterminal\">" "</span>"
+  print_rule_name_with "<th><span class=\"nonterminal\">" "</span>"
 
 let rule_begin () =
   print_string "@[<v 2><tr class=\"rule\">@;"
