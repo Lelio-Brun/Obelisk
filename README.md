@@ -47,7 +47,7 @@ opam install obelisk
 ### Manual installation
 Just `git clone` to clone the **Obelisk** repository, then type:
 ```
-make
+dune build
 ```
 
 This will provide you with an executable which you can feed _.mly_ files with: `dune exec src/main.exe -- <options> <file.mly>`.
