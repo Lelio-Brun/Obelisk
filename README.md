@@ -50,11 +50,11 @@ Just `git clone` to clone the **Obelisk** repository, then type:
 make
 ```
 
-This will provide you with a **obelisk** executable which you can feed _.mly_ files with.
+This will provide you with an executable which you can feed _.mly_ files with: `dune exec src/main.exe -- <options> <file.mly>`.
 
 If you want to install obelisk, you can type:
 ```
-make install BINDIR=<the destination directory>
+dune install [--prefix <the destination directory>]
 ```
 
 ## Usage
