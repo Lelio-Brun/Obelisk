@@ -1,0 +1,13 @@
+(executable
+  (name main)
+  (public_name obelisk)
+  (package obelisk)
+  (modules_without_implementation ast extendedAst helper printer)
+  (libraries re))
+
+(include_subdirs unqualified)
+
+(ocamllex lexer)
+
+(menhir
+  (modules parser))

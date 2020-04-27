@@ -3,8 +3,6 @@
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
 
-The code is [documented][doc].
-
 ## Table of Contents
 * [Installation](#installation)
   + [Dependencies](#dependencies)
@@ -25,9 +23,10 @@ The code is [documented][doc].
 
 ## Installation
 ### Dependencies
-- OCaml
-- OCamlbuild
-- Menhir
+- [OCaml] >= 4.08
+- [Dune] >= 2.2.0
+- [Menhir]
+- [Re]
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
@@ -135,6 +134,8 @@ And with the `-i` switch:
 By default the output format is a simple text format close to the BNF syntax.
 You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
 
+In default and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
+
 #### LaTeX
 Use the following options to tweak the LaTeX:
 - `-tabular`: a *tabular*-based format from the [tabu] package (default)
@@ -177,8 +178,11 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ```
 <specification> ::= <rule>* EOF
 
-<rule> ::= [<flags>] <ident> ATTRIBUTE* <parameters(<ident>)> COLON
-           <optional_bar> <group> (BAR <group>)*
+<rule> ::= <old_rule>
+         | <new_rule>
+
+<old_rule> ::= [<flags>] <ident> ATTRIBUTE* <parameters(<ident>)> COLON
+               <optional_bar> <group> (BAR <group>)* SEMICOLON*
 
 <flags> ::= PUBLIC
           | INLINE
@@ -191,7 +195,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <production> ::= <producer>* [<precedence>]
 
-<producer> ::= [LID EQ] <actual> ATTRIBUTE*
+<producer> ::= [LID EQ] <actual> ATTRIBUTE* SEMICOLON*
 
 <generic_actual(A, B)> ::= <ident> <parameters(A)>
                          | B <modifier>
@@ -200,6 +204,34 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <lax_actual> ::= <generic_actual(<lax_actual>, <actual>)>
                | <group> (BAR <group>)*
+
+<new_rule> ::= [PUBLIC] LET LID ATTRIBUTE* <parameters(<ident>)> <binder>
+               <expression>
+
+<binder> ::= COLONEQ
+           | EQEQ
+
+<expression> ::= <optional_bar> <seq_expression> (BAR <seq_expression>)*
+
+<seq_expression> ::= [<pattern> EQ] <symbol_expression> SEMICOLON
+                     <seq_expression>
+                   | <symbol_expression>
+                   | <action_expression>
+
+<symbol_expression> ::= <ident> <parameters(<expression>)>
+                      | <symbol_expression> <modifier>
+
+<action_expression> ::= <action>
+                      | <action> <precedence>
+                      | <precedence> <action>
+
+<action> ::= ACTION
+           | POINTFREEACTION
+
+<pattern> ::= LID
+            | UNDERSCORE
+            | TILDE
+            | LPAR [<pattern> (COMMA <pattern>)*] RPAR
 
 <modifier> ::= OPT
              | PLUS
@@ -211,6 +243,7 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 
 <ident> ::= UID
           | LID
+          | QID
 ```
 
 #### LaTeX
@@ -224,20 +257,20 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ![Backnaur](misc/backnaur.png)
 
 #### HTML
-![HTML](misc/html.png)
+![HTML](misc/html.png) 
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
+[Re]: https://github.com/ocaml/ocaml-re/
+[Dune]: https://github.com/ocaml/dune/
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
 [ocamlyacc]: https://caml.inria.fr/pub/docs/manual-ocaml/lexyacc.html#sec307
 [OCaml]: http://ocaml.org/
 [OPAM]: http://opam.ocaml.org/
 [wkhtmltopdf]: https://wkhtmltopdf.org/
 [imagemagick]: http://www.imagemagick.org/script/index.php
-[tabu]: https://www.ctan.org/pkg/tabu
-[syntax]: https://www.ctan.org/pkg/syntax-mdw
-[backnaur]: https://www.ctan.org/pkg/backnaur
 [suffix]: https://ctan.org/pkg/suffix
 [tabu]: https://www.ctan.org/pkg/tabu
 [longtable]: https://www.ctan.org/pkg/longtable
 [mdwtools]: https://www.ctan.org/pkg/mdwtools
-[doc]: https://lelio-brun.github.io/Obelisk/
+[syntax]: https://www.ctan.org/pkg/syntax-mdw
+[backnaur]: https://www.ctan.org/pkg/backnaur

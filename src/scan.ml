@@ -8,7 +8,7 @@ open List
     (left-hand side) as a non terminal (see {!Common.Symbols.def_non_term})
     if the rule has no parameter or as a functional non terminal along with
     its parameters (see {!Common.Symbols.def_fun}) otherwise. *)
-let add_defined symbols {name; params} =
+let add_defined symbols {name; params; _} =
   match params with
    | [] -> Symbols.def_non_term name symbols
    | _ -> Symbols.def_fun name params symbols
@@ -17,12 +17,12 @@ let add_defined symbols {name; params} =
     the symbols which are not already "defined" in [symbols]
     (see {!Common.Symbols.is_defined}) neither parameters as terminals
     (see {!Common.Symbols.def_term}). *)
-let add_terminal symbols {params; groups} =
+let add_terminal symbols {params; groups; _} =
   let rec add_terminal_actual symbols = function
     | Symbol (s, ps) ->
       let symbols = fold_left add_terminal_actual symbols ps in
       if Symbols.is_defined s symbols = None
-      && String.uppercase_ascii s = s
+      && String.mapi (fun i c -> if i = 0 then Char.uppercase_ascii c else c) s = s
       && ps = []
       && not (List.mem s params)
       then Symbols.def_term s symbols else symbols

@@ -1,0 +1,5 @@
+(test
+  (name test)
+  (libraries re)
+  (deps (glob_files *.mly))
+  (action (run %{test} %{bin:obelisk} "%{deps}")))

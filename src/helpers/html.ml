@@ -21,13 +21,13 @@ let print_header _ =
      white-space: nowrap;\
      @]@;}@;\
      @[<v 4>.specification th::after {@;\
-     content: \"\\\\a0::=\\\\a0\";\
+     content: \"\\a0::=\\a0\";\
      @]@;}@;\
      @[<v 4>.specification th.bar {@;\
      text-align: right;\
      @]@;}@;\
      @[<v 4>.specification th.bar::after {@;\
-     content: \"|\\\\a0\";\
+     content: \"|\\a0\";\
      @]@;}@;\
      @[<v 4>.rule th, td {@;\
      padding-top: .5em;\
@@ -73,7 +73,7 @@ let break () = "@;"
 let eps () = "epsilon"
 
 let print_rule_name =
-  print_rule "<th><span class=\"nonterminal\">" "</span>"
+  print_rule_name_with "<th><span class=\"nonterminal\">" "</span>"
 
 let rule_begin () =
   print_string "@[<v 2><tr class=\"rule\">@;"

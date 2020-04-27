@@ -1,5 +1,3 @@
-open GenericPrinter
-
 include MiniHelper
 
 let print_header _ = ()
@@ -13,7 +11,7 @@ let break () = "@;"
 let eps () = "epsilon"
 
 let print_rule_name =
-  print_rule "<" ">"
+  print_rule_name_with "<" ">"
 
 let rule_begin () = ()
 let rule_end () =
@@ -22,7 +20,7 @@ let rule_end () =
 let print_symbol symbols =
   print_symbol_aux "<" ">" symbols
 
-let opt e print = enclose print "[" "]"
+let opt _ print = enclose print "[" "]"
 let plus e print = par e print; print_string "+"
 let star e print = par e print; print_string "*"
 

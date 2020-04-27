@@ -1,8 +1,6 @@
 (** Provide a generic functor to build a specific printer. *)
 
 open ExtendedAst
-open Common
-open Format
 
 (** Alias for the {!Helper} signature. *)
 module type HELPER = module type of Helper
@@ -61,7 +59,7 @@ module Make (H : HELPER) : PRINTER = struct
   (** Print a list of actuals.
       If the list is [nil], then the empty word {!val:Helper.eps} is printed. *)
   and print_actuals symbols = function
-    | [] -> H.print_string (H.eps ()); print_space ()
+    | [] -> H.print_string (H.eps ())
     | xs -> print_sep (print_actual symbols) (H.space ()) xs
 
   (** Print an actual. *)
@@ -141,7 +139,7 @@ module Make (H : HELPER) : PRINTER = struct
     H.rule_begin ();
     let print_params =
       if params <> []
-      then Some (fun () -> print_sep_encl H.print_string ", " "(" ")" params)
+      then Some (fun () -> print_sep_encl H.print_param ", " "(" ")" params)
       else None
     in
     H.print_rule_name name print_params;

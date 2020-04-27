@@ -1,6 +1,5 @@
 (** The generic signature for the printer helpers.  *)
 
-open ExtendedAst
 open Common
 
 (** A reference to the used formatter. *)
@@ -19,6 +18,9 @@ val print_string: string -> unit
     [x] is the name of the defined non terminal and [print_params] the function
     to print the optional parameters. *)
 val print_rule_name: string -> (unit -> unit) option -> unit
+
+(** Print a rule parmater. *)
+val print_param: string -> unit
 
 (** Printed at the beginning of each rule. *)
 val rule_begin: unit -> unit
