@@ -39,7 +39,7 @@ and transform_symbol symbols s xs =
         Pattern (Delimited (o, x, c))
       | "list", [x] ->
         Pattern (List x)
-      | "nonemptylist", [x] ->
+      | "nonempty_list", [x] ->
         Pattern (NEList x)
       | "separated_list", [sep; x] ->
         Pattern (SepList (sep, x))
