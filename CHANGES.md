@@ -1,3 +1,6 @@
+## v0.5.2 - 2020-05-30 
+This patch fixes a mismatch in version number.
+
 ## v0.5.1 - 2020-05-30 
 This patch fixes [#10](https://github.com/Lelio-Brun/Obelisk/issues/10) (`noempty_list` was not recognized) and [#12](https://github.com/Lelio-Brun/Obelisk/issues/12), thanks to the contribution of @zapashcanon (add a switch to disable the use of CSS content properties in HTML mode, to make e.g., content copy-pastable).
 

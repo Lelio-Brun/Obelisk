@@ -2,13 +2,13 @@
 (name obelisk)
 (using menhir 2.0)
 
-(version 0.5.0)
+(version 0.5.2)
 
 (generate_opam_files true)
 
 (source (github Lelio-Brun/obelisk))
 (homepage https://github.com/Lelio-Brun/Obelisk)
-(documentation https://github.com/Lelio-Brun/Obelisk)
+(documentation https://github.com/Lelio-Brun/Obelisk/blob/master/README.md)
 (license MIT)
 (authors "Lélio Brun")
 (maintainers "Lélio Brun <lelio.brun@inria.fr>")
