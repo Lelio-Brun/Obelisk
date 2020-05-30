@@ -7,7 +7,7 @@ PREFIX=my
 MAIN=main
 EXE=dune exec $(SRC)/main.exe --
 
-.PHONY: all latex html default reco readme tests clean
+.PHONY: all latex htmlcss html default reco readme tests clean
 
 all:
 	@dune build
@@ -24,8 +24,13 @@ all:
 
 latex: $(IMAGES:%=%.png)
 
-html:
+htmlcss:
 	@$(EXE) html $(PARSER) -o test.html
+	@wkhtmltoimage -f png --width 800 test.html $(MISC)/htmlcss.png
+	@rm -f test.html
+
+html:
+	@$(EXE) html -nocss $(PARSER) -o test.html
 	@wkhtmltoimage -f png --width 800 test.html $(MISC)/html.png
 	@rm -f test.html
 
@@ -39,7 +44,7 @@ reco:
 	@printf "Default output on $(RECO) with '-i' switch:\n"
 	@$(EXE) -i $(RECO)
 
-readme: latex html default reco
+readme: latex htmlcss html default reco
 
 tests:
 	@dune test

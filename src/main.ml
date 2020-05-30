@@ -33,7 +33,8 @@ let get () =
       | Latex Tabular -> (module Printers.LatexTabular)
       | Latex Syntax -> (module Printers.LatexSyntax)
       | Latex Backnaur -> (module Printers.LatexBacknaur)
-      | Html -> (module Printers.Html)
+      | Html CSS -> (module Printers.HtmlCss)
+      | Html NoCSS -> (module Printers.Html)
     in
     let module P = (val p: GenericPrinter.PRINTER) in
     let print = P.print_spec formatter in

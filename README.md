@@ -20,6 +20,8 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
       * [Syntax](#syntax)
       * [Backnaur](#backnaur)
     - [HTML](#html-1)
+      * [With CSS content properties](#with-css-content-properties)
+      * [Without CSS content properties](#without-css-content-properties)
 
 ## Installation
 ### Dependencies
@@ -170,6 +172,8 @@ As `end`-beginning commands are forbidden in LaTeX, commands creating from rules
 
 #### HTML
 The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than in the `latex` mode).
+The stylesheet uses `content` properties for some parts of the grammar by default (`-css` option), to make it modular and easily modifiable, but then some symbols are not treated as content and, for example, are not copy-pastable. 
+Use the `-nocss` option to disable the use of such properties.
 
 ### Example
 Here are the different formats output obtained by **Obelisk** from its own [parser](src/parser.mly).
@@ -257,7 +261,11 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 ![Backnaur](misc/backnaur.png)
 
 #### HTML
-![HTML](misc/html.png) 
+##### With CSS content properties
+![HTMLCSS](misc/htmlcss.png) 
+
+##### Without CSS content properties
+![HTMLNOCSS](misc/html.png) 
 
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [Re]: https://github.com/ocaml/ocaml-re/

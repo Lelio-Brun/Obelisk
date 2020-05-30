@@ -14,5 +14,8 @@ module LatexSyntax = Make(LatexSyntax)
 (** The LaTeX "backnaur" package based printer. *)
 module LatexBacknaur = Make(LatexBacknaur)
 
-(** The HTML printer.  *)
+(** The HTML printer with CSS content properties. *)
+module HtmlCss = Make(HtmlCss)
+
+(** The HTML printer without CSS content properties. *)
 module Html = Make(Html)

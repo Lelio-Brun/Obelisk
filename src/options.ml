@@ -19,13 +19,18 @@ let formatter_package = ref Format.std_formatter
 type mode =
   | Default                     (** Standard plain text format. Default. *)
   | Latex of latexmode          (** LaTeX output. *)
-  | Html                        (** HTML output. *)
+  | Html of htmlmode            (** HTML output. *)
 
 (** The different LaTeX sub-modes *)
 and latexmode =
   | Tabular                     (** Table-based layout. Default. *)
   | Syntax                      (** Use the {{:https://www.ctan.org/pkg/syntax-mdw} syntax} package. *)
   | Backnaur                    (** Use the {{:https://www.ctan.org/pkg/backnaur} backnaur} package. *)
+
+(** The different HTML sub-modes *)
+and htmlmode =
+  | CSS
+  | NoCSS
 
 (** The chosen mode, default to {!mode.Default}. *)
 let mode = ref Default
@@ -44,8 +49,8 @@ let options = ref (Arg.align [
   ])
 
 (** Specify the LaTeX sub-mode to use. *)
-let set_latexmode lm () =
-  mode := Latex lm
+let set_latexmode m () =
+  mode := Latex m
 
 (** LaTeX mode specific options. *)
 let latex_opt = [
@@ -54,6 +59,16 @@ let latex_opt = [
   "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
   "-package",  Arg.Set_string pfile,              " Set the package name, without extension. Use with `-o`";
   "-prefix",   Arg.Set_string prefix,             " Set the LaTeX commands (macros) prefix"
+]
+
+(** Specify the HTML sub-mode to use. *)
+let set_htmlmode m () =
+  mode := Html m
+
+(** HTML mode specific options. *)
+let html_opt = [
+  "-css",   Arg.Unit (set_htmlmode CSS),   " Use CSS content properties (default)";
+  "-nocss", Arg.Unit (set_htmlmode NoCSS), " Do not us CSS content properties"
 ]
 
 (** Usage message. *)
@@ -68,12 +83,12 @@ let parse_cmd =
   function
   | "latex" when !cpt < 1 ->
     incr cpt;
-    mode := Latex Tabular;
+    set_latexmode Tabular ();
     options := Arg.align (!options @ latex_opt)
   | "html" when !cpt < 1 ->
     incr cpt;
-    mode := Html;
-    options := Arg.align !options
+    set_htmlmode CSS ();
+    options := Arg.align (!options @ html_opt)
 
   | f ->
     ifiles := f :: !ifiles

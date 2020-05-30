@@ -5,8 +5,9 @@ let amount = ref 0
 let tmp = "tmp"
 let prefix = "my_prefix42"
 let verbose = ref false
-let command cmd = Sys.command (cmd ^ "> /dev/null 2>&1") = 0
+let command cmd = Sys.command (cmd ^ if !verbose then "" else "> /dev/null 2>&1") = 0
 let has_pdflatex = command "command -v pdflatex"
+let has_tidy = command "command -v tidy"
 let pkg = "pkg"
 let tmppkg = "tmppkg"
 let main = "main"
@@ -37,12 +38,16 @@ let too_larges_for_backnaur = ["sysver.mly"]
 type mode =
   | Default
   | Latex of latexmode
-  | Html
+  | Html of htmlmode
 
 and latexmode =
   | Tabular
   | Syntax
   | Backnaur
+
+and htmlmode =
+  | CSS
+  | NoCSS
 
 let flags_of_mode with_pkg = function
   | Default -> ""
@@ -53,9 +58,15 @@ let flags_of_mode with_pkg = function
         | Syntax -> "syntax"
         | Backnaur -> "backnaur"
       end prefix (if with_pkg then Format.sprintf "-package %s" pkg else "")
-  | Html -> "html"
+  | Html m ->
+    Format.sprintf "html -%s"
+      begin match m with
+        | CSS -> "css"
+        | NoCSS -> "nocss"
+      end
 
 let is_latex = function Latex _ -> true | _ -> false
+let is_html = function Html _ -> true | _ -> false
 
 let ok = "\x1b[32mok\x1b[0m"
 let ko = "\x1b[1;31mko\x1b[0m"
@@ -73,10 +84,13 @@ let exec mode with_pkg f =
   let cmd = Format.sprintf "%s %s -o %s %s"
       !exe (flags_of_mode with_pkg mode) (if with_pkg then tmppkg ^ ".tex" else tmp) f in
   if command cmd then
-    begin if is_latex mode then
+    begin if is_latex mode && has_pdflatex then
         let pdflatexmode = if !verbose then "-halt-on-error" else "-interaction batchmode" in
         let pdflatex = Format.sprintf "pdflatex %s %s" pdflatexmode (if with_pkg then main else tmp) in
-        if not (command pdflatex) then error ()
+        begin if not (command pdflatex) then error () end
+      else if is_html mode && has_tidy then
+        let tidy = Format.sprintf "tidy -e -quiet %s" tmp in
+        begin if not (command tidy) then error () end
     end
   else error ()
      
@@ -89,21 +103,15 @@ let name_of_mode = function
         | Syntax -> "syntax"
         | Backnaur -> "backnaur"
       end
-  | Html -> "HTML"
+  | Html m ->
+    Format.sprintf "HTML %s"
+      begin match m with
+        | CSS -> "with CSS content properties"
+        | NoCSS -> "without CSS content properties"
+      end
 
 let enter_mode mode =
   Format.printf "@;\x1b[1m%s mode.\x1b[0m@." (name_of_mode mode)
-
-let name_of_mode = function
-  | Default -> "Default"
-  | Latex m ->
-    Format.sprintf "LaTeX %s"
-      begin match m with
-        | Tabular -> "tabular"
-        | Syntax -> "syntax"
-        | Backnaur -> "backnaur"
-      end
-  | Html -> "HTML"
 
 let exec_mode mode with_pkg too_larges =
   local_fail := 0;
@@ -118,16 +126,13 @@ let test mode =
   exec_mode mode false []
 
 let too_larges_of_mode = function
-  | Latex m ->
-      begin match m with
-        | Tabular -> too_larges_for_tabular
-        | Syntax -> too_larges_for_syntax
-        | Backnaur -> too_larges_for_backnaur
-      end
-  | _ -> []
+  | Tabular -> too_larges_for_tabular
+  | Syntax -> too_larges_for_syntax
+  | Backnaur -> too_larges_for_backnaur
 
-let test_latex mode =
-  let too_larges = too_larges_of_mode mode in
+let test_latex m =
+  let too_larges = too_larges_of_mode m in
+  let mode = Latex m in
   enter_mode mode;
   exec_mode mode false too_larges;
   exec_mode mode true too_larges;
@@ -140,9 +145,9 @@ let test_latex mode =
 
 let default () = test Default
 
-let tabular () = test_latex (Latex Tabular)
-let syntax () = test_latex (Latex Syntax)
-let backnaur () = test_latex (Latex Backnaur)
+let tabular () = test_latex Tabular
+let syntax () = test_latex Syntax
+let backnaur () = test_latex Backnaur
 
 let write_main () =
   let oc = open_out main in
@@ -157,14 +162,14 @@ let write_main () =
   close_out oc
 
 let latex () =
-  if has_pdflatex then begin
-    write_main ();
-    tabular ();
-    syntax ();
-    backnaur ()
-  end
+  write_main ();
+  tabular ();
+  syntax ();
+  backnaur ()
 
-let html () = test Html
+let html () =
+  test (Html CSS);
+  test (Html NoCSS)
 
 let () =
   exe := Sys.argv.(1);
