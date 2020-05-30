@@ -7,7 +7,12 @@ let prefix = "my_prefix42"
 let verbose = ref false
 let command cmd = Sys.command (cmd ^ if !verbose then "" else "> /dev/null 2>&1") = 0
 let has_pdflatex = command "command -v pdflatex"
-let has_tidy = command "command -v tidy"
+let is_on_mac =
+  let ic = Unix.open_process_in "uname" in
+  let uname = input_line ic in
+  let () = close_in ic in
+  uname = "Darwin"
+let has_tidy = command "command -v tidy" && not is_on_mac
 let pkg = "pkg"
 let tmppkg = "tmppkg"
 let main = "main"
