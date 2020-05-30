@@ -1,17 +1,6 @@
-*.annot
-*.cmo
-*.cma
-*.cmi
-*.a
-*.o
-*.cmx
-*.cmxs
-*.cmxa
-*.merlin
-
 _build/
-
 *.install
+*.merlin
 
 # latex
 *.tex
