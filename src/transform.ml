@@ -25,8 +25,12 @@ and transform_symbol symbols s xs =
   | Some _ -> Symbol (s, xs)
   | None ->
     begin match s, xs with
+      | ("endrule" | "midrule"), [x] ->
+        x
+
       | ("option" | "ioption" | "boption" | "loption"), [x] ->
         Pattern (Option x)
+
       | "pair", [x; y] ->
         Pattern (Pair (x, y))
       | "separated_pair", [x; sep; y] ->
@@ -37,6 +41,7 @@ and transform_symbol symbols s xs =
         Pattern (Terminated (x, c))
       | "delimited", [o; x; c] ->
         Pattern (Delimited (o, x, c))
+
       | "list", [x] ->
         Pattern (List x)
       | "nonempty_list", [x] ->
@@ -45,6 +50,12 @@ and transform_symbol symbols s xs =
         Pattern (SepList (sep, x))
       | "separated_nonempty_list", [sep; x] ->
         Pattern (SepNEList (sep, x))
+
+      | ("rev" | "flatten"), [x] ->
+        x
+      | "append", [x; y] ->
+        Pattern (Pair (x, y))
+
       | _, _ ->
         Symbol (s, xs)
     end

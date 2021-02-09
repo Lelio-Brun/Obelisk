@@ -1,3 +1,6 @@
+## v0.6.0 - 2021-02-09
+This version adds support for the Menhir standard rules `endrule`, `midrule`, `rev`, `flatten` and `append`.
+
 ## v0.5.2 - 2020-05-30 
 This patch fixes a mismatch in version number.
 

@@ -1,9 +1,9 @@
 (lang dune 2.0)
+
 (name obelisk)
+(version 0.6.0)
+
 (using menhir 2.0)
-
-(version 0.5.2)
-
 (generate_opam_files true)
 
 (source (github Lelio-Brun/obelisk))
