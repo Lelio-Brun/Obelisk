@@ -7,7 +7,7 @@ PREFIX=my
 MAIN=main
 EXE=dune exec $(SRC)/main.exe --
 
-.PHONY: all latex htmlcss html default reco readme tests clean
+.PHONY: all latex htmlcss html default ebnf reco readme tests clean
 
 all:
 	@dune build
@@ -16,7 +16,7 @@ all:
 	@$(EXE) latex -prefix $(PREFIX) -$* $(PARSER) -o $@
 
 %.pdf: %.tex
-	@pdflatex -interaction batchmode $<
+	pdflatex -interaction batchmode $<
 
 %.png: %.pdf
 	@convert -quiet -density 150 $< -format png $(MISC)/$@
@@ -38,13 +38,21 @@ default:
 	@printf "\nDefault output on $(PARSER):\n"
 	@$(EXE) $(PARSER)
 
+ebnf:
+	@printf "\nEBNF output on $(PARSER):\n"
+	@$(EXE) ebnf $(PARSER)
+
 reco:
 	@printf "Default output on $(RECO):\n"
 	@$(EXE) $(RECO)
 	@printf "Default output on $(RECO) with '-i' switch:\n"
 	@$(EXE) -i $(RECO)
+	@printf "EBNF output on $(RECO):\n"
+	@$(EXE) ebnf $(RECO)
+	@printf "EBNF output on $(RECO) with '-i' switch:\n"
+	@$(EXE) ebnf -i $(RECO)
 
-readme: latex htmlcss html default reco
+readme: latex htmlcss html default ebnf reco
 
 tests:
 	@dune test

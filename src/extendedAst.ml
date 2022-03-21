@@ -42,3 +42,46 @@ and pattern =
   | NEList of actual                      (** [nonempty_list(x)] *)
   | SepList of actual * actual            (** [separated_list(x)] *)
   | SepNEList of actual * actual          (** [separated_nonempty_list(sep, x)] *)
+
+let fold_map_pattern f acc = function
+  | Option x ->
+    let acc, x = f acc x in
+    acc, Option x
+  | Pair (x, y) ->
+    let acc, x = f acc x in
+    let acc, y = f acc y in
+    acc, Pair (x, y)
+  | SepPair (x, sep, y) ->
+    let acc, x = f acc x in
+    let acc, sep = f acc sep in
+    let acc, y = f acc y in
+    acc, SepPair (x, sep, y)
+  | Preceded (o, x) ->
+    let acc, o = f acc o in
+    let acc, x = f acc x in
+    acc, Preceded (o, x)
+  | Terminated (x, c) ->
+    let acc, x = f acc x in
+    let acc, c = f acc c in
+    acc, Terminated (x, c)
+  | Delimited (o, x, c) ->
+    let acc, o = f acc o in
+    let acc, x = f acc x in
+    let acc, c = f acc c in
+    acc, Delimited (o, x, c)
+  | List x ->
+    let acc, x = f acc x in
+    acc, List x
+  | NEList x ->
+    let acc, x = f acc x in
+    acc, NEList x
+  | SepList (sep, x) ->
+    let acc, sep = f acc sep in
+    let acc, x = f acc x in
+    acc, SepList (sep, x)
+  | SepNEList (sep, x) ->
+    let acc, sep = f acc sep in
+    let acc, x = f acc x in
+    acc, SepNEList (sep, x)
+
+let map_pattern f p = fold_map_pattern (fun o p -> o, f p) None p |> snd

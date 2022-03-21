@@ -5,6 +5,9 @@ open GenericPrinter
 (** The default plain text printer. *)
 module Default = Make(Default)
 
+(** The EBNF plain text printer. *)
+module Ebnf = Make(Ebnf)
+
 (** The LaTeX default table-based printer. *)
 module LatexTabular = Make(LatexTabular)
 

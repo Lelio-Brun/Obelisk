@@ -15,6 +15,7 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
     - [HTML](#html)
   + [Example](#example)
     - [Default](#default)
+    - [EBNF](#ebnf-1)
     - [LaTeX](#latex-1)
       * [Tabular](#tabular)
       * [Syntax](#syntax)
@@ -61,7 +62,7 @@ dune install [--prefix <the destination directory>]
 
 ## Usage
 ```
-obelisk [latex|html] [options] <files>
+obelisk [ebnf|latex|html] [options] <files>
 ```
 
 If multiple files are specified, **Obelisk** will output a concatenated result, without consistency checks, so the user is responsible for avoiding eg. name clashes between the several files.
@@ -98,14 +99,14 @@ my_separated_list(X,S):
   |                                 {}
   | my_separated_nonempty_list(X,S) {}
 
-my_rule(E,F,S1,S2):
+my_rule:
   | my_option(E, F)                    {}
   | my_list(E)                         {}
   | my_nonempty_list(F)                {}
   | my_separated_nonempty_list(E,S1)   {}
   | my_separated_list(F,S2)            {}
 ```
-**Obelisk** outputs:
+**Obelisk** (`obelisk misc/reco.mly`) outputs:
 ```
 <my_option(X, Y)> ::= [Y X]
 
@@ -117,26 +118,59 @@ my_rule(E,F,S1,S2):
 
 <my_separated_list(X, S)> ::= [X (S X)*]
 
-<my_rule(E, F, S1, S2)> ::= <my_option(E, F)>
-                          | <my_list(E)>
-                          | <my_nonempty_list(F)>
-                          | <my_separated_nonempty_list(E, S1)>
-                          | <my_separated_list(F, S2)>
+<my_rule> ::= <my_option(E, F)>
+            | <my_list(E)>
+            | <my_nonempty_list(F)>
+            | <my_separated_nonempty_list(E, S1)>
+            | <my_separated_list(F, S2)>
 ```
-And with the `-i` switch:
+And with the `-i` switch (`obelisk -i misc/reco.mly`):
 ```
-<my_rule(E, F, S1, S2)> ::= [F E]
-                          | E*
-                          | F+
-                          | E (S1 E)*
-                          | [F (S2 F)*]
+<my_rule> ::= [F E]  
+            | E*
+            | F+
+            | E (S1 E)*
+            | [F (S2 F)*]
 ```
 
 ### Multi-format output
 By default the output format is a simple text format close to the BNF syntax.
-You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
+You can use the subcommands `ebnf`, `latex` or `html` to get respectively an EBNF text output,  LaTeX output or HTML output.
 
-In default and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
+In default, EBNF and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
+
+### EBNF 
+In EBNF mode, parameterized rules are specialized into dedicated regular rules. 
+On the example above (`obelisk ebnf misc/reco.mly`):
+
+```
+my_rule ::= my_option_0
+          | my_list_0
+          | my_nonempty_list_0
+          | my_separated_nonempty_list_0
+          | my_separated_list_0
+
+my_option_0 ::= (F E)?
+
+my_nonempty_list_0 ::= F+
+
+my_separated_nonempty_list_1 ::= F (S2 F)*
+
+my_separated_list_0 ::= (F (S2 F)*)?
+
+my_separated_nonempty_list_0 ::= E (S1 E)*
+
+my_list_0 ::= E*
+```
+And with the `-i` switch (`obelisk ebnf -i misc/reco.mly`):
+
+```
+my_rule ::= (F E)?   
+          | E*
+          | F+
+          | E (S1 E)*
+          | (F (S2 F)*)?
+```
 
 #### LaTeX
 Use the following options to tweak the LaTeX:
@@ -248,6 +282,81 @@ Here are the different formats output obtained by **Obelisk** from its own [pars
 <ident> ::= UID
           | LID
           | QID
+```
+
+#### EBNF 
+
+```
+specification ::= rule* EOF
+
+rule ::= old_rule
+       | new_rule
+
+old_rule ::= flags? ident ATTRIBUTE* parameters_0 COLON optional_bar group
+             (BAR group)* SEMICOLON*
+
+flags ::= PUBLIC
+        | INLINE
+        | PUBLIC INLINE
+        | INLINE PUBLIC
+
+optional_bar ::= BAR?
+
+group ::= production (BAR production)* ACTION precedence?
+
+production ::= producer* precedence?
+
+producer ::= (LID EQ)? actual ATTRIBUTE* SEMICOLON*
+
+actual ::= generic_actual_0
+
+lax_actual ::= generic_actual_0
+             | group (BAR group)*
+
+new_rule ::= PUBLIC? LET LID ATTRIBUTE* parameters_0 binder expression
+
+binder ::= COLONEQ
+         | EQEQ
+
+expression ::= optional_bar seq_expression (BAR seq_expression)*
+
+seq_expression ::= (pattern EQ)? symbol_expression SEMICOLON seq_expression
+                 | symbol_expression
+                 | action_expression
+
+symbol_expression ::= ident parameters_2
+                    | symbol_expression modifier
+
+action_expression ::= action
+                    | action precedence
+                    | precedence action
+
+action ::= ACTION
+         | POINTFREEACTION
+
+pattern ::= LID
+          | UNDERSCORE
+          | TILDE
+          | LPAR (pattern (COMMA pattern)*)? RPAR
+
+modifier ::= OPT
+           | PLUS
+           | STAR
+
+precedence ::= PREC ident
+
+ident ::= UID
+        | LID
+        | QID
+
+generic_actual_0 ::= ident parameters_1
+                   | actual modifier
+
+parameters_1 ::= (LPAR (lax_actual (COMMA lax_actual)*)? RPAR)?
+
+parameters_0 ::= (LPAR (ident (COMMA ident)*)? RPAR)?
+
+parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 ```
 
 #### LaTeX

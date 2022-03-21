@@ -1,5 +1,10 @@
 (** Some common facilities.  *)
 
+(** Find a rule by its left-hand side (name) in the grammar. *)
+let find_rule r rules =
+  let open ExtendedAst in
+  List.find_opt (fun { name; _ } -> name = r) rules
+
 (** The signature for the set of symbols appearing in a grammar. *)
 module type SYMBOLS = sig
   (** The set of symbols. *)

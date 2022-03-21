@@ -1,8 +1,9 @@
 open Common
+open Format
 
 include MiniLatex
 
-let print_header symbols =
+let print_header symbols _fmt =
   let max =
     let compare_length s1 s2 = compare (String.length s2) (String.length s1) in
     let max = try List.(hd (sort compare_length (Symbols.defined symbols))) with _ -> " " in
@@ -10,10 +11,10 @@ let print_header symbols =
       let rec aux = function
         | [] -> ""
         | [x] -> x
-        | x :: xs -> x ^ ", " ^ aux xs
+        | x :: xs -> sprintf "%s, %s" x (aux xs)
       in function
         | [] -> ""
-        | xs -> "(" ^ aux xs ^ ")"
+        | xs -> sprintf "(%s)" (aux xs)
     in
     let max = match Common.Symbols.is_defined max symbols with
       | Some xs -> max ^ params xs
@@ -22,37 +23,44 @@ let print_header symbols =
     Re.Str.global_replace (Re.Str.regexp "_") "\\_" max
   in
   documentclass
-    (usepackage "" "syntax" ^ "@;" ^
-     "\\newenvironment{" ^ grammarname ^
-     "}{\\begin{grammar}}{\\end{grammar}}@;@;" ^
-     newcommand "gramterm" 1 None "\\lit{#1}" ^
-     newcommand "gramnonterm" 1 None "\\synt{#1}" ^
-     newcommand "gramfunc" 1 None "\\synt{#1}" ^
-     newcommand "gramdef" 0 None "::=" ^
-     newcommand "grambar" 0 None "\\alt" ^
-     newcommand "grambaranon" 0 None "\\ensuremath{|}" ^
-     newcommand "grameps" 0 None "\\ensuremath{\\epsilon}" ^
-     "\\newlength{\\" ^ command "grammaxindent" ^
-     "}@;\
-      \\settowidth{\\" ^ command "grammaxindent" ^
-     "}{\\synt{" ^ max ^ "} \\" ^
-     command "gramdef" ^ "{} }@;@;");
-  begin_document
-    ("\\setlength{\\grammarindent}{\\" ^ command "grammaxindent" ^ "}")
-    symbols
+    (fun fmt -> fprintf fmt
+        "%a@;\
+        \\newenvironment{%s}{\\begin{grammar}}{\\end{grammar}}@;@;\
+        %a%a%a%a%a%a%a\
+        \\newlength{\\%s}@;\
+        \\settowidth{\\%s}{\\synt{%s} \\%s{} }@;@;\
+        %a"
+        usepackage ("", "syntax")
+        grammarname
+        newcommand ("gramterm", 1, None, print_string' "\\lit{#1}")
+        newcommand ("gramnonterm", 1, None, print_string' "\\synt{#1}")
+        newcommand ("gramfunc", 1, None, print_string' "\\synt{#1}")
+        newcommand ("gramdef", 0, None, print_string' "::=")
+        newcommand ("grambar", 0, None, print_string' "\\alt")
+        newcommand ("grambaranon", 0, None, print_string' "\\ensuremath{|}")
+        newcommand ("grameps", 0, None, print_string' "\\ensuremath{\\epsilon}")
+        (command "grammaxindent")
+        (command "grammaxindent")
+        max
+        (command "gramdef")
+        (begin_document (fun fmt -> fprintf fmt
+                            "\\setlength{\\grammarindent}{\\%s}"
+                            (command "grammaxindent")))
+        symbols)
 
-let def () = " \\" ^ command "gramdef" ^ "{} "
-let prod_bar () = "\\" ^ command "grambar" ^ " "
-let bar () = "@ \\" ^ command "grambaranon{}" ^ "@ "
-let space () = "@ "
-let break () = "@;"
-let eps () = "\\" ^ command "grameps"
+let def fmt = fprintf fmt " \\%s{} " (command "gramdef")
+let prod_bar fmt = fprintf fmt "\\%s " (command "grambar")
+let bar fmt = fprintf fmt "@ \\%s@ " (command "grambaranon{}")
+let space fmt = fprintf fmt "@ "
+let break fmt = fprintf fmt "@;"
+let eps fmt = fprintf fmt "\\%s" (command "grameps")
 
-let print_rule_name name print_params =
-  print_string "<";
-  print_rule_name_raw name print_params;
-  print_string ">"
-let rule_begin () =
-  print_string "@[<v 2>"
-let rule_end () =
-  print_string "@]@;@;"
+let print_rule_name print_params fmt name =
+  fprintf fmt "%a%a%a"
+    print_string "<"
+    (print_rule_name_raw print_params) name
+    print_string ">"
+let rule_begin fmt =
+  fprintf fmt "@[<v 2>"
+let rule_end fmt =
+  fprintf fmt "@]@;"

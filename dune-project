@@ -1,7 +1,7 @@
 (lang dune 2.0)
 
 (name obelisk)
-(version 0.6.0)
+(version 0.7.0)
 
 (using menhir 2.0)
 (generate_opam_files true)
@@ -11,7 +11,7 @@
 (documentation https://github.com/Lelio-Brun/Obelisk/blob/master/README.md)
 (license MIT)
 (authors "Lélio Brun")
-(maintainers "Lélio Brun <lelio.brun@inria.fr>")
+(maintainers "Lélio Brun <lb@leliobrun.net>")
 
 (package
  (name obelisk)

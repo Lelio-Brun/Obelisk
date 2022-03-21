@@ -14,7 +14,9 @@ let rec transform_actual symbols = function
     transform_modifier symbols x m
   | Ast.Anonymous gs ->
     let gs = map (transform_group symbols) gs in
-    Anonymous gs
+    match gs with
+    | [[ a ]] -> a
+    | _ -> Anonymous gs
 
 (** Transform all non defined symbols (see {!Common.Symbols.is_defined})
     corresponding to Menhir standard library symbols ([list], [pair], [option],
