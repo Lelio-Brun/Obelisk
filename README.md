@@ -11,6 +11,7 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 * [Usage](#usage)
   + [Pattern recognition](#pattern-recognition)
   + [Multi-format output](#multi-format-output)
+    - [EBNF](#ebnf)
     - [LaTeX](#latex)
     - [HTML](#html)
   + [Example](#example)
@@ -139,7 +140,7 @@ You can use the subcommands `ebnf`, `latex` or `html` to get respectively an EBN
 
 In default, EBNF and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
 
-### EBNF 
+#### EBNF 
 In EBNF mode, parameterized rules are specialized into dedicated regular rules. 
 On the example above (`obelisk ebnf misc/reco.mly`):
 
