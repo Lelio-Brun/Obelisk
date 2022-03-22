@@ -13,7 +13,7 @@ all:
 	@dune build
 
 %.tex:
-	@$(EXE) latex -prefix $(PREFIX) -$* $(PARSER) -o $@
+	@$(EXE) latex --prefix $(PREFIX) --mode $* $(PARSER) --output $@
 
 %.pdf: %.tex
 	pdflatex -interaction batchmode $<
@@ -30,7 +30,7 @@ htmlcss:
 	@rm -f test.html
 
 html:
-	@$(EXE) html -nocss $(PARSER) -o test.html
+	@$(EXE) html --no-css $(PARSER) -o test.html
 	@wkhtmltoimage -f png --width 800 test.html $(MISC)/html.png
 	@rm -f test.html
 
@@ -46,11 +46,11 @@ reco:
 	@printf "Default output on $(RECO):\n"
 	@$(EXE) $(RECO)
 	@printf "Default output on $(RECO) with '-i' switch:\n"
-	@$(EXE) -i $(RECO)
+	@$(EXE) --inline $(RECO)
 	@printf "EBNF output on $(RECO):\n"
 	@$(EXE) ebnf $(RECO)
 	@printf "EBNF output on $(RECO) with '-i' switch:\n"
-	@$(EXE) ebnf -i $(RECO)
+	@$(EXE) ebnf --inline $(RECO)
 
 readme: latex htmlcss html default ebnf reco
 

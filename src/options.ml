@@ -1,5 +1,7 @@
 (** The command-line options.  *)
 
+open Cmdliner
+
 (** The input files.*)
 let ifiles = ref []
 
@@ -15,11 +17,14 @@ let prefix = ref ""
 (** The formatter for package output. *)
 let formatter_package = ref Format.std_formatter
 
+(** Do we use CSS? [true] by default (used only in HTML mode). *)
+let css = ref true
+
 (** The different output modes. *)
 type mode =
   | Plain of plainmode          (** Standard plain text format. Default. *)
   | Latex of latexmode          (** LaTeX output. *)
-  | Html of htmlmode            (** HTML output. *)
+  | Html                        (** HTML output. *)
 
 (** The different plain text sub-modes *)
 and plainmode =
@@ -32,11 +37,6 @@ and latexmode =
   | Syntax                      (** Use the {{:https://www.ctan.org/pkg/syntax-mdw} syntax} package. *)
   | Backnaur                    (** Use the {{:https://www.ctan.org/pkg/backnaur} backnaur} package. *)
 
-(** The different HTML sub-modes *)
-and htmlmode =
-  | CSS
-  | NoCSS
-
 (** The chosen mode, default to {!mode.Plain !plainmode.Default}. *)
 let mode = ref (Plain Default)
 
@@ -46,68 +46,177 @@ let inline = ref false
 (** Do we substitute token aliases? [false] by default. *)
 let no_aliases = ref false
 
-(** Default common command-line options. *)
-let options = ref (Arg.align [
-    "-o",         Arg.Set_string ofile, " Set the output filename";
-    "-i",         Arg.Set inline,       " Inline recognized patterns";
-    "-noaliases", Arg.Set no_aliases,   " Do not substitute token aliases. Has no effect in LaTeX modes."
-  ])
 
-(** Specify the plain sub-mode to use. *)
-let set_plainmode m () =
-  mode := Plain m
+(** Default args *)
 
-(** Specify the LaTeX sub-mode to use. *)
-let set_latexmode m () =
-  mode := Latex m
+let parse_default ofile_arg inline_arg no_aliases_arg files_arg =
+  mode := Plain Default;
+  ofile := ofile_arg;
+  inline := inline_arg;
+  no_aliases := no_aliases_arg;
+  ifiles := files_arg
 
-(** LaTeX mode specific options. *)
-let latex_opt = [
-  "-tabular",  Arg.Unit (set_latexmode Tabular),  " Use tabular environment (default)";
-  "-syntax",   Arg.Unit (set_latexmode Syntax),   " Use `syntax` package";
-  "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
-  "-package",  Arg.Set_string pfile,              " Set the package name, without extension. Use with `-o`";
-  "-prefix",   Arg.Set_string prefix,             " Set the LaTeX commands (macros) prefix"
-]
+let ofile_arg =
+  let open Arg in
+  let info = info
+      ~docs:Manpage.s_common_options
+      ~docv:"FILE"
+      ~doc:"Set the output filename $(docv)."
+      [ "o"; "output" ]
+  in
+  value & opt string "" & info
 
-(** Specify the HTML sub-mode to use. *)
-let set_htmlmode m () =
-  mode := Html m
+let inline_arg =
+  let open Arg in
+  let info = info
+      ~docs:Manpage.s_common_options
+      ~doc:"Inline recognized patterns."
+      [ "i"; "inline" ]
+  in
+  value & flag & info
 
-(** HTML mode specific options. *)
-let html_opt = [
-  "-css",   Arg.Unit (set_htmlmode CSS),   " Use CSS content properties (default)";
-  "-nocss", Arg.Unit (set_htmlmode NoCSS), " Do not us CSS content properties"
-]
+let no_aliases_arg =
+  let open Arg in
+  let info = info
+      ~docs:Manpage.s_common_options
+      ~doc:"Do not substitute token aliases. \
+            Has no effect in LaTeX modes."
+      [ "n"; "no-aliases" ]
+  in
+  value & flag & info
 
-(** Usage message. *)
-let msg = "Obelisk version %%VERSION_NUM%%\n\
-           Usage: obelisk [latex|html] [options] <source>\n       \
-           obelisk <mode> -help for <mode>-specific help."
+let files_arg =
+  let open Arg in
+  let info = info
+      ~docv:"FILES"
+      ~doc:"Input `.mly` Menhir grammar files."
+      []
+  in
+  non_empty & pos_all file [] & info
 
-(** Function called on anonymous arguments.
-    It is used to trigger the LaTeX and HTML modes and to get the input file. *)
-let parse_cmd =
-  let cpt = ref 0 in
-  function
-  | "ebnf" when !cpt < 1 ->
-    incr cpt;
-    set_plainmode EBNF ();
-    options := Arg.align (!options @ latex_opt)
-  | "latex" when !cpt < 1 ->
-    incr cpt;
-    set_latexmode Tabular ();
-    options := Arg.align (!options @ latex_opt)
-  | "html" when !cpt < 1 ->
-    incr cpt;
-    set_htmlmode CSS ();
-    options := Arg.align (!options @ html_opt)
+let default_t =
+  Term.(const parse_default
+        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg)
 
-  | f ->
-    ifiles := f :: !ifiles
+(** EBNF args *)
 
-let error () =
-  Arg.usage !options msg; exit 1
+let parse_ebnf ofile_arg inline_arg no_aliases_arg files_arg =
+  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+  mode := Plain EBNF
+
+let ebnf_t =
+  Term.(const parse_ebnf
+        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg)
+
+let ebnf_cmd =
+  let doc = "EBNF mode" in
+  let info = Cmd.info "ebnf" ~doc in
+  Cmd.v info ebnf_t
+
+(** LaTeX args *)
+
+let parse_latex
+    ofile_arg inline_arg no_aliases_arg files_arg
+    mode_arg package_arg prefix_arg =
+  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+  mode := Latex mode_arg;
+  pfile := package_arg;
+  prefix := prefix_arg
+
+let mode_conv =
+  let parse = function
+    | "tabular" -> Ok Tabular
+    | "syntax" -> Ok Syntax
+    | "backnaur" -> Ok Backnaur
+    | s -> Error (`Msg ("unrecognized LaTeX mode " ^ s))
+  in
+  let print fmt m =
+    Format.pp_print_string fmt (match m with
+        | Tabular -> "tabular"
+        | Syntax -> "syntax"
+        | Backnaur -> "backnaur")
+  in
+  Arg.conv (parse, print)
+
+let mode_arg =
+  let open Arg in
+  let info = info
+      ~docv:"MODE"
+      ~doc:"Set the LaTeX package used to format the grammar. \
+            Choose $(docv) between $(b,tabular), $(b,syntax), $(b,backnaur)."
+      [ "m"; "mode" ]
+  in
+  value & opt mode_conv Tabular & info
+
+let package_arg =
+  let open Arg in
+  let info = info
+      ~docv:"PACKAGE"
+      ~doc:"Set the LaTeX `.sty` package name $(docv), without extension. \
+            Use with $(b,-o)."
+      [ "p"; "package" ]
+  in
+  value & opt string "" & info
+
+let prefix_arg =
+  let open Arg in
+  let info = info
+      ~docv:"PREFIX"
+      ~doc:"Set the LaTeX commands (macros) prefix $(docv)."
+      [ "x"; "prefix" ]
+  in
+  value & opt string "" & info
+
+let latex_t =
+  Term.(const parse_latex
+        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg
+        $ mode_arg $ package_arg $ prefix_arg)
+
+let latex_cmd =
+  let doc = "LaTeX mode" in
+  let info = Cmd.info "latex" ~doc in
+  Cmd.v info latex_t
+
+(** HTML args *)
+
+let parse_html
+    ofile_arg inline_arg no_aliases_arg files_arg
+    no_css_arg =
+  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+  mode := Html;
+  css := not no_css_arg
+
+let no_css_arg =
+  let open Arg in
+  let info = info
+      ~doc:"Do not use CSS to format the grammar."
+      [ "c"; "no-css" ]
+  in
+  value & flag & info
+
+let html_t =
+  Term.(const parse_html
+        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg
+        $ no_css_arg)
+
+let html_cmd =
+  let doc = "HTML mode" in
+  let info = Cmd.info "html" ~doc in
+  Cmd.v info html_t
+
+(** Main command args *)
+
+let main_cmd =
+  let man = [
+    `S Manpage.s_authors;
+    `Pre "%%PKG_AUTHORS%%\nMaintainer: %%PKG_MAINTAINER%%";
+    `S Manpage.s_bugs;
+    `P "<%%PKG_ISSUES%%>"
+  ]
+  in
+  let doc = "Pretty-printing for Menhir files." in
+  let info = Cmd.info "%%NAME%%" ~version:"%%VERSION%%" ~man ~doc in
+  Cmd.group ~default:default_t info [ (* ebnf_cmd; latex_cmd; html_cmd *) ]
 
 let parse_opt () =
-  Arg.parse_dynamic options parse_cmd msg
+  Cmd.eval main_cmd

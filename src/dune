@@ -3,7 +3,7 @@
   (public_name obelisk)
   (package obelisk)
   (modules_without_implementation ast helper printer)
-  (libraries re))
+  (libraries re cmdliner))
 
 (include_subdirs unqualified)
 

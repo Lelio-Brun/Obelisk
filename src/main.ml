@@ -15,27 +15,36 @@ open Options
 (** @return the lexer buffers, a printer chosen from the according passed
     options and a function to finally close the input and output channels.*)
 let get () =
-  parse_opt ();
+  let c = parse_opt () in
   try
-    if !ifiles = [] then error ();
     let outf = if !ofile = "" then stdout else open_out !ofile in
     let formatter = formatter_of_out_channel outf in
     let formatter', close_package = match !pfile with
       | "" -> formatter, fun () -> ()
       | pkg ->
-        if !ofile = "" then error ();
+        if !ofile = "" then begin
+          eprintf
+            "Option `-p (--package)` must be used in conjunction with option \
+             `-o (--output)`.";
+          exit 1
+        end;
         let f = open_out (pkg ^ ".sty") in
         formatter_of_out_channel f, fun () -> close_out f
     in
     formatter_package := formatter';
     let p = match !mode with
-      | Plain Default -> (module Printers.Default : GenericPrinter.PRINTER)
-      | Plain EBNF -> (module Printers.Ebnf)
-      | Latex Tabular -> (module Printers.LatexTabular)
-      | Latex Syntax -> (module Printers.LatexSyntax)
-      | Latex Backnaur -> (module Printers.LatexBacknaur)
-      | Html CSS -> (module Printers.HtmlCss)
-      | Html NoCSS -> (module Printers.Html)
+      | Plain Default ->
+        (module Printers.Default : GenericPrinter.PRINTER)
+      | Plain EBNF ->
+        (module Printers.Ebnf)
+      | Latex Tabular ->
+        (module Printers.LatexTabular)
+      | Latex Syntax ->
+        (module Printers.LatexSyntax)
+      | Latex Backnaur ->
+        (module Printers.LatexBacknaur)
+      | Html ->
+        if !css then (module Printers.HtmlCss) else (module Printers.Html)
     in
     let module P = (val p: GenericPrinter.PRINTER) in
     let print symbols = P.print_spec symbols formatter in
@@ -43,7 +52,7 @@ let get () =
     let infs = map open_in files in
     let lexbufs = map Lexing.from_channel infs in
     let close () = iter close_in infs; close_out outf; close_package () in
-    combine files lexbufs, print, close
+    c, combine files lexbufs, print, close
   with Sys_error s ->
     eprintf "System Error: %s@." s;
     exit 1
@@ -62,7 +71,7 @@ let parse (_, lexbuf as fl) =
     exit 1
 
 let () =
-  let lexbufs, print, close = get () in
+  let c, lexbufs, print, close = get () in
   try
     let s = map parse lexbufs |> concat in
     let symbols = Scan.scan s in
@@ -72,7 +81,8 @@ let () =
     |> (if !mode = Plain EBNF then Specialize.specialize symbols else fun s -> s)
     |> Reduce.reduce !inline
     |> print symbols;
-    close ()
+    close ();
+    exit c
   with
   | Sys_error s ->
     eprintf "System Error: %s@." s;
