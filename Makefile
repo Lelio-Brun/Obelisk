@@ -36,7 +36,7 @@ html:
 
 default:
 	@printf "\nDefault output on $(PARSER):\n"
-	@$(EXE) $(PARSER)
+	@$(EXE) default $(PARSER)
 
 ebnf:
 	@printf "\nEBNF output on $(PARSER):\n"
@@ -44,9 +44,9 @@ ebnf:
 
 reco:
 	@printf "Default output on $(RECO):\n"
-	@$(EXE) $(RECO)
+	@$(EXE) default $(RECO)
 	@printf "Default output on $(RECO) with '-i' switch:\n"
-	@$(EXE) --inline $(RECO)
+	@$(EXE) default --inline $(RECO)
 	@printf "EBNF output on $(RECO):\n"
 	@$(EXE) ebnf $(RECO)
 	@printf "EBNF output on $(RECO) with '-i' switch:\n"
