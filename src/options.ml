@@ -164,10 +164,10 @@ let mode_conv =
 let mode_arg =
   let open Arg in
   let info = info
-      ~docv:"MODE"
+      ~docv:"STYLE"
       ~doc:"Set the LaTeX package used to format the grammar. \
             Choose $(docv) between $(b,tabular), $(b,syntax) and $(b,backnaur)."
-      [ "m"; "mode" ]
+      [ "s"; "style" ]
   in
   value & opt mode_conv Tabular & info
 
@@ -197,8 +197,8 @@ let latex_cmd =
   let doc = "LaTeX mode." in
   let man = [
     `S Manpage.s_description;
-    `P "Use the $(b,--mode)=$(i,MODE) option to tweak the LaTeX, where \
-        $(i,Mode) is among:"; `Noblank;
+    `P "Use the $(b,--style)=$(i,STYLE) option to tweak the LaTeX, where \
+        $(i,STYLE) is among:"; `Noblank;
     `I ("$(b,tabular)",
         "a tabular-based format from the tabu package (default).");
     `I ("$(b,syntax)",

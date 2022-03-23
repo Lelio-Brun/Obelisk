@@ -42,6 +42,7 @@ let too_larges_for_backnaur = ["sysver.mly"]
 
 type mode =
   | Default
+  | EBNF
   | Latex of latexmode
   | Html of htmlmode
 
@@ -55,19 +56,20 @@ and htmlmode =
   | NoCSS
 
 let flags_of_mode with_pkg = function
-  | Default -> ""
+  | Default -> "default"
+  | EBNF -> "ebnf"
   | Latex m ->
-    Format.sprintf "latex -%s -prefix %s %s"
+    Format.sprintf "latex --style %s --prefix %s %s"
       begin match m with
         | Tabular -> "tabular"
         | Syntax -> "syntax"
         | Backnaur -> "backnaur"
-      end prefix (if with_pkg then Format.sprintf "-package %s" pkg else "")
+      end prefix (if with_pkg then Format.sprintf "--package %s" pkg else "")
   | Html m ->
-    Format.sprintf "html -%s"
+    Format.sprintf "html %s"
       begin match m with
-        | CSS -> "css"
-        | NoCSS -> "nocss"
+        | CSS -> ""
+        | NoCSS -> "--no-css"
       end
 
 let is_latex = function Latex _ -> true | _ -> false
@@ -101,6 +103,7 @@ let exec mode with_pkg f =
      
 let name_of_mode = function
   | Default -> "Default"
+  | EBNF -> "EBNF"
   | Latex m ->
     Format.sprintf "LaTeX %s"
       begin match m with
@@ -149,6 +152,7 @@ let test_latex m =
          Format.pp_print_string) mlys
 
 let default () = test Default
+let ebnf () = test EBNF
 
 let tabular () = test_latex Tabular
 let syntax () = test_latex Syntax
@@ -182,6 +186,7 @@ let () =
   width := List.fold_left (fun w s -> max w (String.length s)) 0 !mlys;
   amount := List.length !mlys;
   default ();
+  ebnf ();
   html ();
   latex ();
   if !fail then exit 1

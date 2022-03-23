@@ -13,7 +13,7 @@ all:
 	@dune build
 
 %.tex:
-	@$(EXE) latex --prefix $(PREFIX) --mode $* $(PARSER) --output $@
+	@$(EXE) latex --prefix $(PREFIX) --style $* $(PARSER) --output $@
 
 %.pdf: %.tex
 	pdflatex -interaction batchmode $<
@@ -55,7 +55,7 @@ reco:
 readme: latex htmlcss html default ebnf reco
 
 tests:
-	@dune test
+	@dune test --no-buffer
 
 clean:
 	@dune clean

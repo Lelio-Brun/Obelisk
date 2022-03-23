@@ -176,7 +176,7 @@ my_rule ::= (F E)?
 ```
 
 #### LaTeX
-Use the `-m <mode>` option to tweak the LaTeX, where `<mode>` is among:
+Use the `-s <style>` option to tweak the LaTeX, where `<style>` is among:
 - `tabular`: a *tabular*-based format from the [tabu] package (default)
 - `syntax`: use the [syntax] package
 - `backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
