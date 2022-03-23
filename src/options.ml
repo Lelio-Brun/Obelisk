@@ -49,76 +49,89 @@ let no_aliases = ref false
 
 (** Default args *)
 
-let parse_default ofile_arg inline_arg no_aliases_arg files_arg =
+type common_options = {
+  ofile: string;
+  inline: bool;
+  no_aliases: bool;
+  files: string list;
+}
+
+let c_opts ofile inline no_aliases files =
+  { ofile; inline; no_aliases; files }
+
+let parse_default c_opts =
   mode := Plain Default;
-  ofile := ofile_arg;
-  inline := inline_arg;
-  no_aliases := no_aliases_arg;
-  ifiles := files_arg
+  ofile := c_opts.ofile;
+  inline := c_opts.inline;
+  no_aliases := c_opts.no_aliases;
+  ifiles := c_opts.files
 
-let ofile_arg =
+let c_opts_arg =
   let open Arg in
-  let info = info
-      ~docs:Manpage.s_common_options
-      ~docv:"FILE"
-      ~doc:"Set the output filename $(docv)."
-      [ "o"; "output" ]
+  let ofile_arg =
+    let info = info
+        ~docs:Manpage.s_common_options
+        ~docv:"FILE"
+        ~doc:"Set the output filename $(docv)."
+        [ "o"; "output" ]
+    in
+    value & opt string "" & info
   in
-  value & opt string "" & info
-
-let inline_arg =
-  let open Arg in
-  let info = info
-      ~docs:Manpage.s_common_options
-      ~doc:"Inline recognized patterns."
-      [ "i"; "inline" ]
+  let inline_arg =
+    let info = info
+        ~docs:Manpage.s_common_options
+        ~doc:"Inline recognized patterns."
+        [ "i"; "inline" ]
+    in
+    value & flag & info
   in
-  value & flag & info
-
-let no_aliases_arg =
-  let open Arg in
-  let info = info
-      ~docs:Manpage.s_common_options
-      ~doc:"Do not substitute token aliases. \
-            Has no effect in LaTeX modes."
-      [ "n"; "no-aliases" ]
+  let no_aliases_arg =
+    let info = info
+        ~docs:Manpage.s_common_options
+        ~doc:"Do not substitute token aliases. \
+              Has no effect in LaTeX modes."
+        [ "n"; "no-aliases" ]
+    in
+    value & flag & info
   in
-  value & flag & info
-
-let files_arg =
-  let open Arg in
-  let info = info
-      ~docv:"FILES"
-      ~doc:"Input `.mly` Menhir grammar files."
-      []
+  let files_arg =
+    let info = info
+        ~docv:"FILES"
+        ~doc:"Input `.mly` Menhir grammar files."
+        []
+    in
+    non_empty & pos_all file [] & info
   in
-  non_empty & pos_all file [] & info
+  Term.(const c_opts $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg)
 
-let default_t =
-  Term.(const parse_default
-        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg)
+(** Plain args *)
+
+let parse_plain = parse_default
+
+let plain_t = Term.(const parse_plain $ c_opts_arg)
+
+let plain_cmd =
+  let doc = "Default plain mode" in
+  let info = Cmd.info "default" ~doc in
+  Cmd.v info plain_t
 
 (** EBNF args *)
 
-let parse_ebnf ofile_arg inline_arg no_aliases_arg files_arg =
-  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+let parse_ebnf c_opts =
+  parse_default c_opts;
   mode := Plain EBNF
 
-let ebnf_t =
-  Term.(const parse_ebnf
-        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg)
+let ebnf_t = Term.(const parse_ebnf $ c_opts_arg)
 
 let ebnf_cmd =
-  let doc = "EBNF mode" in
+  let doc = "EBNF plain mode" in
   let info = Cmd.info "ebnf" ~doc in
   Cmd.v info ebnf_t
 
 (** LaTeX args *)
 
-let parse_latex
-    ofile_arg inline_arg no_aliases_arg files_arg
-    mode_arg package_arg prefix_arg =
-  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+let parse_latex c_opts mode_arg package_arg prefix_arg =
+  parse_default c_opts;
   mode := Latex mode_arg;
   pfile := package_arg;
   prefix := prefix_arg
@@ -168,9 +181,7 @@ let prefix_arg =
   value & opt string "" & info
 
 let latex_t =
-  Term.(const parse_latex
-        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg
-        $ mode_arg $ package_arg $ prefix_arg)
+  Term.(const parse_latex $ c_opts_arg $ mode_arg $ package_arg $ prefix_arg)
 
 let latex_cmd =
   let doc = "LaTeX mode" in
@@ -179,10 +190,8 @@ let latex_cmd =
 
 (** HTML args *)
 
-let parse_html
-    ofile_arg inline_arg no_aliases_arg files_arg
-    no_css_arg =
-  parse_default ofile_arg inline_arg no_aliases_arg files_arg;
+let parse_html c_opts no_css_arg =
+  parse_default c_opts;
   mode := Html;
   css := not no_css_arg
 
@@ -194,10 +203,7 @@ let no_css_arg =
   in
   value & flag & info
 
-let html_t =
-  Term.(const parse_html
-        $ ofile_arg $ inline_arg $ no_aliases_arg $ files_arg
-        $ no_css_arg)
+let html_t = Term.(const parse_html $ c_opts_arg $ no_css_arg)
 
 let html_cmd =
   let doc = "HTML mode" in
@@ -216,7 +222,14 @@ let main_cmd =
   in
   let doc = "Pretty-printing for Menhir files." in
   let info = Cmd.info "%%NAME%%" ~version:"%%VERSION%%" ~man ~doc in
-  Cmd.group ~default:default_t info [ (* ebnf_cmd; latex_cmd; html_cmd *) ]
+  let default = Term.(ret (const (fun _ ->
+      `Error (true,
+              Format.sprintf "Missing command among '%s', '%s', '%s' or '%s'."
+                (Cmd.name plain_cmd) (Cmd.name ebnf_cmd)
+                (Cmd.name html_cmd) (Cmd.name latex_cmd)))
+                           $ c_opts_arg))
+  in
+  Cmd.group ~default info [ plain_cmd; ebnf_cmd; latex_cmd; html_cmd ]
 
 let parse_opt () =
   Cmd.eval main_cmd
