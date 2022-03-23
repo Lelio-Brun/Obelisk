@@ -35,9 +35,6 @@ let rec specialize_actual symbols spec new_rules_map =
         begin match Common.find_rule f spec with
           | Some r ->
             let name = fresh f in
-            let new_rules_map, xs = specialize_actuals symbols spec
-                new_rules_map xs
-            in
             let s = Subst.make_subst r.params xs in
             let prods = map (map (Subst.subst_actual s)) r.prods in
             let r = { name; prods; params = [] } in

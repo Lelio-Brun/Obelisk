@@ -8,4 +8,3 @@ open ExtendedAst
     the specified formatter [fmt]. *)
 val print_spec: Symbols.t -> formatter -> spec -> unit
 
-val print_actual: Symbols.t -> formatter -> actual -> unit
