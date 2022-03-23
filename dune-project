@@ -21,4 +21,6 @@
  (depends
   (ocaml (>= 4.08))
   (dune (>= 2.2.0))
-  re menhir))
+  (cmdliner (>= 1.1.0))
+  re
+  menhir))
