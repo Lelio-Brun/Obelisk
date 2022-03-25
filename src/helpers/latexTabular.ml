@@ -2,7 +2,7 @@ open Format
 
 include MiniLatex
 
-let print_header symbols _fmt =
+let print_header symbols fmt =
   documentclass
     (fun fmt -> fprintf fmt
         "%a%a@;\
@@ -10,8 +10,7 @@ let print_header symbols _fmt =
         \\begin{longtabu}{r%@{}c%@{}X%@{}}@;\
         }{@;<0 2>\
         \\end{longtabu}@;}@;@;\
-        %a%a%a%a%a%a%a%a@;\
-        %a"
+        %a%a%a%a%a%a%a%a@;"
         usepackage ("", "longtable")
         usepackage ("", "tabu")
         grammarname
@@ -24,8 +23,8 @@ let print_header symbols _fmt =
         newcommand ("grameps", 0, None, print_string' "\\ensuremath{\\epsilon}")
         newcommand ("gramnonterm", 1, None, print_string' "\\ensuremath{\\langle\\textnormal{#1}\\rangle}")
         newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
-        newcommand ("gramterm", 1, None, print_string' "#1")
-        (begin_document (fun _ -> ())) symbols)
+        newcommand ("gramterm", 1, None, print_string' "#1"));
+  begin_document (fun _ -> ()) fmt symbols
 
 let def fmt = fprintf fmt "& \\%s & " (command "gramdef")
 let prod_bar fmt = fprintf fmt "& \\%s &" (command "grambar")
