@@ -3,7 +3,7 @@ open Format
 
 include MiniLatex
 
-let print_header symbols _fmt =
+let print_header symbols fmt =
   let max =
     let compare_length s1 s2 = compare (String.length s2) (String.length s1) in
     let max = try List.(hd (sort compare_length (Symbols.defined symbols))) with _ -> " " in
@@ -28,8 +28,7 @@ let print_header symbols _fmt =
         \\newenvironment{%s}{\\begin{grammar}}{\\end{grammar}}@;@;\
         %a%a%a%a%a%a%a\
         \\newlength{\\%s}@;\
-        \\settowidth{\\%s}{\\synt{%s} \\%s{} }@;@;\
-        %a"
+        \\settowidth{\\%s}{\\synt{%s} \\%s{} }@;@;"
         usepackage ("", "syntax")
         grammarname
         newcommand ("gramterm", 1, None, print_string' "\\lit{#1}")
@@ -42,11 +41,11 @@ let print_header symbols _fmt =
         (command "grammaxindent")
         (command "grammaxindent")
         max
-        (command "gramdef")
-        (begin_document (fun fmt -> fprintf fmt
-                            "\\setlength{\\grammarindent}{\\%s}"
-                            (command "grammaxindent")))
-        symbols)
+        (command "gramdef"));
+  begin_document (fun fmt -> fprintf fmt
+                     "\\setlength{\\grammarindent}{\\%s}"
+                     (command "grammaxindent"))
+    fmt symbols
 
 let def fmt = fprintf fmt " \\%s{} " (command "gramdef")
 let prod_bar fmt = fprintf fmt "\\%s " (command "grambar")

@@ -146,7 +146,7 @@ let newcommand fmt (x, n, o, cmd) =
     cmd
 
 let end_document fmt =
-  fprintf fmt "@;\\end{%s}%s@]@."
+  fprintf fmt "\\end{%s}%s@]@."
     grammarname
     (if use () then "" else "\n\n\\end{document}")
 

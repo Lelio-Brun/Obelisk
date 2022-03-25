@@ -159,9 +159,10 @@ module Make (H : HELPER) : PRINTER = struct
   (** Print the grammar by first calling {!val:Helper.print_header},
       then printing the rules and finally calling {!val:Helper.print_footer}. *)
   let print_spec symbols fmt s =
-    fprintf fmt "%t@[<v 0>%a@]%t"
+    fprintf fmt "%t@[<v 0>%a@]%s%t"
       (H.print_header symbols)
       (pp_print_list (print_rule symbols)) s
+      (if s = [] then "" else "\n")
       H.print_footer
 
 end

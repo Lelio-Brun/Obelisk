@@ -2,13 +2,12 @@ open Format
 
 include MiniLatex
 
-let print_header symbols _fmt =
+let print_header symbols fmt =
   documentclass
     (fun fmt -> fprintf fmt
         "%a@;\
          \\newenvironment{%s}{\\begin{bnf*}}{\\end{bnf*}}@;@;\
-         %a%a%a%a%a%a%a%a@;\
-         %a"
+         %a%a%a%a%a%a%a%a@;"
         usepackage ("[epsilon]", "backnaur")
         grammarname
         newcommand ("gramsp", 0, None, print_string' "\\ensuremath{\\bnfsp}")
@@ -23,8 +22,8 @@ let print_header symbols _fmt =
                          $#3$@;<0 2>\
                          \\end{minipage}}")
         newcommand ("grambar", 0, None, print_string' "\\hspace*{-2.5em}\\bnfor\\hspace*{1.2em}")
-        newcommand ("grambaranon", 0, None, print_string' "\\ensuremath{\\bnfor}")
-        (begin_document (fun _ -> ())) symbols)
+        newcommand ("grambaranon", 0, None, print_string' "\\ensuremath{\\bnfor}"));
+      begin_document (fun _ -> ()) fmt symbols
 
 let def fmt = print_string fmt "}{"
 let prod_bar fmt = fprintf fmt "\\%s " (command "grambar")
