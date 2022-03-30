@@ -10,13 +10,20 @@ let hash = Hashtbl.hash
 
 let fresh =
   let h = Hashtbl.create 32 in
-  fun f ->
-    let n = match Hashtbl.find_opt h f with
-      | Some n -> n + 1
-      | None -> 0
+  fun symbols f ->
+    let n, fn = match Hashtbl.find_opt h f with
+      | Some n ->
+        let rec next n =
+          let n = n + 1 in
+          let fn = Format.sprintf "%s_%d" f n in
+          if Common.Symbols.is_symbol fn symbols then next (n + 1) else n, fn
+        in
+        next n
+      | None ->
+        0, Format.sprintf "%s_0" f
     in
     Hashtbl.replace h f n;
-    Format.sprintf "%s_%d" f n
+    fn
 
 (** Specialize an actual.
     If a symbol is functional, we introduce a new corresponding specialized
@@ -34,7 +41,7 @@ let rec specialize_actual symbols spec new_rules_map =
       | None ->
         begin match Common.find_rule f spec with
           | Some r ->
-            let name = fresh f in
+            let name = fresh symbols f in
             let s = Subst.make_subst r.params xs in
             let prods = map (map (Subst.subst_actual s)) r.prods in
             let r = { name; prods; params = [] } in

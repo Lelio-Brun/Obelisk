@@ -46,6 +46,9 @@ module type SYMBOLS = sig
       See {!defined}. *)
   val is_defined: string -> t -> string list option
 
+  (** Test if the given symbol actually appears as a symbol. *)
+  val is_symbol: string -> t -> bool
+
 end
 
 (** The actual implementation for the set of symbols, see {!SYMBOLS}.  *)
@@ -120,5 +123,9 @@ module Symbols : SYMBOLS = struct
       | _ -> None
     end
     with Not_found -> None
+
+  (** See {!SYMBOLS.is_symbol}. *)
+  let is_symbol x m =
+    M.mem x m
 
 end
