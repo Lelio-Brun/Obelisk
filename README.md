@@ -1,7 +1,9 @@
 # Obelisk [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
-**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
+**Obelisk** is a simple tool which produces pretty-printed output from a
+[Menhir] parser file (_.mly_).
 
-It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
+It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
+supporting features from Menhir instead of only those of [ocamlyacc].
 
 ## Table of Contents
 * [Installation](#installation)
@@ -27,18 +29,21 @@ It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at
 
 ## Installation
 ### Dependencies
-- [OCaml] >= 4.08
-- [Dune] >= 2.2.0
+- [OCaml] ≥ 4.08
+- [Dune] ≥ 2.2.0
+- [Cmdliner] ≥ 1.1.0 
 - [Menhir]
 - [Re]
 
-The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
+The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation
+images.
 
-In addition to the package [suffix], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
+In addition to the package [suffix], which is used to define starred commands,
+here is a summary of package dependencies for the different LaTeX modes:
 
 - `-tabular` :
   + [tabu]
-  + [longtable] as a dependency of [tabu] to use the environment `longtabu` 
+  + [longtable] as a dependency of [tabu] to use the environment `longtabu`
 - `-syntax` : [syntax] from the bundle [mdwtools] 
 - `-backnaur` : [backnaur]
 
@@ -54,7 +59,8 @@ Just `git clone` to clone the **Obelisk** repository, then type:
 dune build
 ```
 
-This will provide you with an executable which you can feed _.mly_ files with: `dune exec src/main.exe -- <command> [options] <files.mly>`.
+This will provide you with an executable which you can feed _.mly_ files with:
+`dune exec src/main.exe -- <command> [options] <files.mly>`.
 
 If you want to install obelisk, you can type:
 ```
@@ -66,9 +72,12 @@ dune install [--prefix <the destination directory>]
 obelisk <default|ebnf|latex|html> [options] <files>
 ```
 
-If multiple files are specified, **Obelisk** will output a concatenated result, without consistency checks, so the user is responsible for avoiding eg. name clashes between the several files.
+If multiple files are specified, **Obelisk** will output a concatenated result,
+without consistency checks, so the user is responsible for avoiding eg. name
+clashes between the several files.
 
-By default **Obelisk** defaults to standard output, use `-o <file>` to specify an output file.
+By default **Obelisk** defaults to standard output, use `-o <file>` to specify
+an output file.
 
 ### Pattern recognition
 **Obelisk** can infer some common patterns (possibly parameterized):
@@ -76,8 +85,10 @@ By default **Obelisk** defaults to standard output, use `-o <file>` to specify a
 - lists and non-empty lists
 - separated lists and non-empty separated lists
 
-Once recognized, if the `-i` flag is specified the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*). 
-Without the `-i` flag, only the productions of the recognized rules are replaced, the total amount of rules remaining the same.
+Once recognized, if the `-i` flag is specified the rules are deleted and their
+instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*).
+Without the `-i` flag, only the productions of the recognized rules are
+replaced, the total amount of rules remaining the same.
 
 For example, on these simple rules (from this [file](misc/reco.mly)):
 ```
@@ -136,11 +147,13 @@ And with the `-i` flag (`obelisk default -i misc/reco.mly`):
 ```
 
 ### Multi-format output
-The output format is specified by subcommands among `default`, `ebnf`, `latex` or `html`.
-With `default` mode, the output format is a simple text format close to the BNF syntax.
-Use `ebnf`, `latex` or `html` to get respectively an EBNF text output, LaTeX output or HTML output.
+The output format is specified by subcommands among `default`, `ebnf`, `latex`
+or `html`. With `default` mode, the output format is a simple text format close
+to the BNF syntax. Use `ebnf`, `latex` or `html` to get respectively an EBNF
+text output, LaTeX output or HTML output.
 
-In default, EBNF and HTML mode, the flag `--no-aliases` avoid printing token aliases in the output.
+In default, EBNF and HTML mode, the flag `--no-aliases` avoid printing token
+aliases in the output.
 
 #### EBNF 
 In EBNF mode, parameterized rules are specialized into dedicated regular rules. 
@@ -179,17 +192,26 @@ my_rule ::= (F E)?
 Use the `-s <style>` option to tweak the LaTeX, where `<style>` is among:
 - `tabular`: a *tabular*-based format from the [tabu] package (default)
 - `syntax`: use the [syntax] package
-- `backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
+- `backnaur`: use the [backnaur] package (not recommended: manual line-wrapping
+  through this [trick](https://tex.stackexchange.com/a/308753))
 
-In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
-The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form.
+In either cases, the output may be customized *via* the use of LaTeX commands
+that you can redefine to fit your needs. The commands names are auto-generated
+from the terminal names, and because of LaTeX limitations, underscore are
+removed and numbers are converted into their roman form.
 
-By default in LaTeX mode, the `-o <grammar.tex>` option will produce the standalone LaTeX file _<grammar.tex>_ which you can directly compile (eg. with _pdflatex_).
-But in conjunction with `-o <grammar.tex>`, you can use `-p <definitions>` to output two files:
+By default in LaTeX mode, the `-o <grammar.tex>` option will produce the
+standalone LaTeX file _<grammar.tex>_ which you can directly compile (eg. with
+_pdflatex_). But in conjunction with `-o <grammar.tex>`, you can use `-p
+<definitions>` to output two files:
 1. a LaTeX file _<grammar.tex>_ containing only the grammar contents ;
-2. a package file _<definitions.sty>_ (the _.sty_ extension is added automatically) containing the necessary extra packages requirements and command definitions.
+2. a package file _<definitions.sty>_ (the _.sty_ extension is added
+   automatically) containing the necessary extra packages requirements and
+   command definitions.
 
-These two files are then intended to be included in a non-supplied main LaTeX file following this example skeleton:
+These two files are then intended to be included in a non-supplied main LaTeX
+file following this example skeleton:
+
 ```latex
 \documentclass[preview]{standalone}
 
@@ -202,17 +224,26 @@ These two files are then intended to be included in a non-supplied main LaTeX fi
 \end{document}
 ```
 
-To avoid name clashes, in particular when using the `-p` option and eg. importing multiple grammars with the same LaTeX commands names, or in the case where one of the syntax construction name matches one already defined LaTeX macro, you can specify a common prefix for the commands with the option `-x <myprefix>`.
+To avoid name clashes, in particular when using the `-p` option and eg.
+importing multiple grammars with the same LaTeX commands names, or in the case
+where one of the syntax construction name matches one already defined LaTeX
+macro, you can specify a common prefix for the commands with the option `-x
+<myprefix>`.
 
-As `end`-beginning commands are forbidden in LaTeX, commands created from rules with names beginning with `end` are automatically prefixed with `zzz`.
+As `end`-beginning commands are forbidden in LaTeX, commands created from rules
+with names beginning with `end` are automatically prefixed with `zzz`.
 
 #### HTML
-The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than in the `latex` mode).
-The stylesheet uses `content` properties for some parts of the grammar by default, to make it modular and easily modifiable, but then some symbols are not treated as content and, for example, are not copy-pastable. 
-Use the `-s` flag to disable the use of such properties.
+The HTML file uses internal CSS stylesheet which allows one to customize the
+output (in a poorer way than in the `latex` mode). The stylesheet uses `content`
+properties for some parts of the grammar by default, to make it modular and
+easily modifiable, but then some symbols are not treated as content and, for
+example, are not copy-pastable. Use the `-s` flag to disable the use of such
+properties.
 
 ### Example
-Here are the different formats output obtained by **Obelisk** from its own [parser](src/parser.mly).
+Here are the different formats output obtained by **Obelisk** from its own
+[parser](src/parser.mly).
 
 #### Default
 ```
@@ -381,6 +412,7 @@ parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 [Menhir]: http://gallium.inria.fr/~fpottier/menhir/
 [Re]: https://github.com/ocaml/ocaml-re/
 [Dune]: https://github.com/ocaml/dune/
+[Cmdliner]: https://erratique.ch/logiciel/cmdliner/ 
 [yacc2latex]: http://www-verimag.imag.fr/~raymond/index.php/yacc2latex/
 [ocamlyacc]: https://caml.inria.fr/pub/docs/manual-ocaml/lexyacc.html#sec307
 [OCaml]: http://ocaml.org/
