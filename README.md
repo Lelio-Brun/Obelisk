@@ -1,4 +1,4 @@
-# Obelisk [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
+# Obelisk [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml) ![workflow badge](https://github.com/Lelio-Brun/Obelisk/actions/workflows/workflow.yml/badge.svg?branch=dev)
 **Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
