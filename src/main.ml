@@ -29,7 +29,8 @@ let get () =
     in
     formatter_package := formatter';
     let p = match !mode with
-      | Default -> (module Printers.Default : GenericPrinter.PRINTER)
+      | Plain Default -> (module Printers.Default : GenericPrinter.PRINTER)
+      | Plain EBNF -> (module Printers.Ebnf)
       | Latex Tabular -> (module Printers.LatexTabular)
       | Latex Syntax -> (module Printers.LatexSyntax)
       | Latex Backnaur -> (module Printers.LatexBacknaur)
@@ -37,7 +38,7 @@ let get () =
       | Html NoCSS -> (module Printers.Html)
     in
     let module P = (val p: GenericPrinter.PRINTER) in
-    let print = P.print_spec formatter in
+    let print symbols = P.print_spec symbols formatter in
     let files = rev !ifiles in
     let infs = map open_in files in
     let lexbufs = map Lexing.from_channel infs in
@@ -68,6 +69,7 @@ let () =
     s
     |> Normalize.normalize
     |> Transform.transform symbols
+    |> (if !mode = Plain EBNF then Specialize.specialize symbols else fun s -> s)
     |> Reduce.reduce !inline
     |> print symbols;
     close ()

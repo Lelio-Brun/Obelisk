@@ -1,5 +1,10 @@
 (** Some common facilities.  *)
 
+(** Find a rule by its left-hand side (name) in the grammar. *)
+let find_rule r rules =
+  let open ExtendedAst in
+  List.find_opt (fun { name; _ } -> name = r) rules
+
 (** The signature for the set of symbols appearing in a grammar. *)
 module type SYMBOLS = sig
   (** The set of symbols. *)
@@ -40,6 +45,9 @@ module type SYMBOLS = sig
   (** Test if the given symbol is "defined" and returns its parameters.
       See {!defined}. *)
   val is_defined: string -> t -> string list option
+
+  (** Test if the given symbol actually appears as a symbol. *)
+  val is_symbol: string -> t -> bool
 
 end
 
@@ -115,5 +123,9 @@ module Symbols : SYMBOLS = struct
       | _ -> None
     end
     with Not_found -> None
+
+  (** See {!SYMBOLS.is_symbol}. *)
+  let is_symbol x m =
+    M.mem x m
 
 end

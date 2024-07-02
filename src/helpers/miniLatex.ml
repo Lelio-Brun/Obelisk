@@ -1,4 +1,5 @@
 open Options
+open Format
 
 include MiniHelper
 
@@ -9,23 +10,19 @@ let alias s =
 
 let use () = !pfile <> ""
 
-let print_string_package s =
-  Format.fprintf !formatter_package (Scanf.format_from_string s "")
-let print_fmt_package s =
-  Format.fprintf !formatter_package s
-
-let usepackage opts s =
-  Format.sprintf "\\%s%s{%s}@;"
+let usepackage fmt (opts, s) =
+  fprintf fmt "\\%s%s{%s}@;"
     (if use () then "RequirePackage" else "usepackage") opts s
 
 let documentclass header =
-  print_string_package "@[<v 0>";
-  if use ()
-  then print_fmt_package
-      "\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;"
-      !pfile
-  else print_string "\\documentclass[preview]{standalone}@;@;\\usepackage[T1]{fontenc}@;@;";
-  print_string_package (usepackage "" "suffix" ^ header)
+  fprintf !formatter_package "@[<v 0>%t%a%t"
+    (fun fmt ->
+       if use () then
+         fprintf fmt "\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;" !pfile
+       else
+         fprintf fmt "\\documentclass[preview]{standalone}@;@;\\usepackage[T1]{fontenc}@;@;")
+    usepackage ("", "suffix")
+    header
 
 let forall_str p s =
   let exception Exit in
@@ -82,7 +79,7 @@ let pre () = valid !prefix
 
 let grammarname = command "obeliskgrammar"
 
-let begin_document misc symbols =
+let begin_document misc fmt symbols =
   let commands symbols =
     let replace r by = Re.Str.global_replace (Re.Str.regexp r) by in
     let escape s =
@@ -96,30 +93,29 @@ let begin_document misc symbols =
       |> replace "}" "\\}"
       |> replace "\\$" "\\$"
     in
-    List.iter (fun x ->
-        print_fmt_package "\\newcommand\\%s{%s}@;"
-          (command (alias x)) (escape x))
-      (Common.Symbols.terminals symbols @ Common.Symbols.defined symbols);
-    List.iter (fun x ->
-        let cx = command (alias x) in
-        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-          cx (command "gramterm") cx)
-      (Common.Symbols.terminals symbols);
-    List.iter (fun x ->
-        let cx = command x in
-        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-          cx (command "gramnonterm") cx)
-      (Common.Symbols.non_terminals symbols);
-    List.iter (fun x ->
-        let cx = command x in
-        print_fmt_package "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-          cx (command "gramfunc") cx)
-      (Common.Symbols.functionals symbols);
-   print_string_package "@;"
+    fprintf !formatter_package "%a%a%a%a@;"
+      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
+           fprintf fmt "\\newcommand\\%s{%s}@;" (command (alias x)) (escape x)))
+      (Common.Symbols.terminals symbols @ Common.Symbols.defined symbols)
+      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
+           let cx = command (alias x) in
+           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+             cx (command "gramterm") cx))
+      (Common.Symbols.terminals symbols)
+      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
+           let cx = command x in
+           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+             cx (command "gramnonterm") cx))
+      (Common.Symbols.non_terminals symbols)
+      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
+           let cx = command x in
+           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
+             cx (command "gramfunc") cx))
+      (Common.Symbols.functionals symbols)
   in
   commands symbols;
   let pre = pre () in
-  print_fmt_package
+  fprintf !formatter_package
     "\\newcommand\\%sgramopt[1]{[#1]}@;\
      \\newcommand\\%sgramplus[1]{{#1}\\ensuremath{^+}}@;\
      \\newcommand\\%sgramstar[1]{{#1}\\ensuremath{^*}}@;\
@@ -134,82 +130,78 @@ let begin_document misc symbols =
     pre pre pre pre pre pre
     pre pre pre pre pre pre pre
     pre pre pre pre pre pre pre;
-  print_fmt "%s%s\\begin{%s}@;"
+  fprintf fmt "%s%t\\begin{%s}@;"
     (if use () then "" else "\n\n\\begin{document}\n\n")
-    (if misc = "" then "" else misc ^ "\n")
+    misc
     grammarname
 
-let newcommand x n o cmd =
-  "\\newcommand\\" ^ pre () ^ x ^
-  begin match n with
-  | 0 -> ""
-  | _ -> "[" ^ string_of_int n ^ "]"
-  end
-  ^ begin match o with
-    | None -> ""
-    | Some y -> "[" ^ y ^ "]"
-  end
-  ^ "{" ^ cmd ^ "}@;"
+let newcommand fmt (x, n, o, cmd) =
+  fprintf fmt "\\newcommand\\%s%s%a%a{%t}@;"
+    (pre ()) x
+    (fun fmt n -> match n with
+       | 0 -> ()
+       | _ -> fprintf fmt "[%d]" n)
+    n
+    (pp_print_option (fun fmt -> fprintf fmt "[%s]")) o
+    cmd
 
-let end_document () =
-  print_fmt "\\end{%s}%s@]@."
+let end_document fmt =
+  fprintf fmt "\\end{%s}%s@]@."
     grammarname
     (if use () then "" else "\n\n\\end{document}")
 
 let print_footer = end_document
 
 let opt, plus, star =
-  let cmd s e (print: unit -> unit) =
-    print_fmt "\\%s%s%s{" (pre ()) s (if e then "*" else "");
-    print ();
-    print_string "}"
+  let cmd s e print fmt =
+    fprintf fmt "\\%s%s%s{%t}" (pre ()) s (if e then "*" else "") print
   in
   cmd "gramopt", cmd "gramplus", cmd "gramstar"
 
-let print_sep_list e nonempty print_sep print_x =
-  print_fmt "\\%sgramsep%slist%s{"
+let print_sep_list e nonempty print_sep print_x fmt =
+  fprintf fmt "\\%sgramsep%slist%s{%t}{%t}"
     (pre ())
     (if nonempty then "ne" else "")
-    (if e then "*" else "");
-  print_sep ();
-  print_string "}{";
-  print_x ();
-  print_string "}"
+    (if e then "*" else "")
+    print_sep
+    print_x
 
-let print_comm star c =
-  print_fmt "\\%s%s{}" (command c) (if star then "*" else "")
+let print_comm star fmt c =
+  fprintf fmt "\\%s%s{}" (command c) (if star then "*" else "")
 
 let print_term = print_comm true
 
 let print_non_term = print_comm true
 
-let print_fun f print_params =
-  print_fmt "\\%s{" (command "gramfunc");
-  print_comm false f;
-  print_params ();
-  print_string "}"
+let print_fun print_params fmt f =
+  fprintf fmt "\\%s{%a%t}"
+    (command "gramfunc")
+    (print_comm false) f
+    print_params
 
-let print_undef u =
-  print_fmt "%s" (Re.Str.global_replace (Re.Str.regexp "_") "\\_" u)
+let print_undef fmt  u =
+  fprintf fmt "%s" (Re.Str.global_replace (Re.Str.regexp "_") "\\_" u)
 
 let print_param = print_undef
 
-let print_symbol_aux term non_term func undef symbols s print_params =
+let print_symbol_aux symbols term non_term func undef print_params fmt s =
   let open Common.Symbols in
   match is_defined s symbols with
-  | Some [] -> non_term s
-  | Some _ -> func s print_params
+  | Some [] ->
+    non_term fmt s
+  | Some _ ->
+    func print_params fmt s
   | None ->
-    if is_term s symbols then term (alias s) else undef s
+    if is_term s symbols then term fmt (alias s) else undef fmt s
 
 let print_symbol symbols =
-  print_symbol_aux
+  print_symbol_aux symbols
     print_term
     print_non_term
     print_fun
     print_undef
-    symbols
 
-let print_rule_name_raw name =
-  print_comm false name;
-  print_opt_params
+let print_rule_name_raw print_params fmt name =
+  fprintf fmt "%a%t"
+    (print_comm false) name
+    print_params

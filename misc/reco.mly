@@ -19,7 +19,7 @@ my_separated_list(X,S):
   |                                 {}
   | my_separated_nonempty_list(X,S) {}
 
-my_rule(E,F,S1,S2):
+my_rule:
   | my_option(E, F)                    {}
   | my_list(E)                         {}
   | my_nonempty_list(F)                {}
