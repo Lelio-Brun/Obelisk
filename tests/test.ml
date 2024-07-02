@@ -4,7 +4,7 @@ let width = ref 0
 let amount = ref 0
 let tmp = "tmp"
 let prefix = "my_prefix42"
-let verbose = ref true
+let verbose = ref false
 let command cmd = Sys.command (cmd ^ if !verbose then "" else "> /dev/null 2>&1") = 0
 let has_pdflatex = command "command -v pdflatex"
 let is_on_mac =
