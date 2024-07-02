@@ -9,10 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
         ocaml-compiler:
           - "5.2"
           - "5.1"
@@ -25,9 +21,14 @@ jobs:
           - "4.09"
           - "4.08"
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install texlive texlive-math-extra texlive-latex-extra
+
       - name: Checkout tree
         uses: actions/checkout@v4
 
