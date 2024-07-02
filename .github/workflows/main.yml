@@ -27,7 +27,7 @@ jobs:
       - name: Install LaTeX
         run: |
           sudo apt-get update
-          sudo apt-get install texlive texlive-latex-extra
+          sudo apt-get install texlive texlive-latex-extra texlive-science
 
       - name: Checkout tree
         uses: actions/checkout@v4

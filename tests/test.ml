@@ -4,7 +4,7 @@ let width = ref 0
 let amount = ref 0
 let tmp = "tmp"
 let prefix = "my_prefix42"
-let verbose = ref false
+let verbose = ref true
 let command cmd = Sys.command (cmd ^ if !verbose then "" else "> /dev/null 2>&1") = 0
 let has_pdflatex = command "command -v pdflatex"
 let is_on_mac =
@@ -18,15 +18,7 @@ let tmppkg = "tmppkg"
 let main = "main"
 
 let too_larges_for_tabular = [
-  "coccinelle.1.0.2-parser_cocci_menhir.mly";
-  "fsharp.mly";
-  "ocaml.mly";
-  "ocaml_parser_menhir.mly";
-  "parser_cocci_menhir.mly";
-  "parser_raw.mly";
-  "reason.3.3.7-reason_parser.mly";
-  "reason_parser.mly";
-  "verilog.mly";
+  "sysver.mly"
 ]
 let too_larges_for_syntax = [
   "coccinelle.1.0.2-parser_cocci_menhir.mly";
@@ -38,7 +30,9 @@ let too_larges_for_syntax = [
   "reason_parser.mly";
   "verilog.mly";
 ]
-let too_larges_for_backnaur = ["sysver.mly"]
+let too_larges_for_backnaur = [
+  "sysver.mly"
+]
 
 type mode =
   | Default
