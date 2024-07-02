@@ -19,7 +19,7 @@ all:
 	pdflatex -interaction batchmode $<
 
 %.png: %.pdf
-	@convert -quiet -density 150 $< -format png $(MISC)/$@
+	@magick convert -quiet -density 150 $< -format png $(MISC)/$@
 	@rm -f $*.tex $< $*.aux $*.log
 
 latex: $(IMAGES:%=%.png)

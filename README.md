@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 # Obelisk ![Build Status](https://github.com/Lelio-Brun/Obelisk/actions/workflows/main.yml/badge.svg?branch=master) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
 **Obelisk** is a simple tool that produces pretty-printed output from a [Menhir] parser file (_.mly_).
-=======
-# Obelisk [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml) ![workflow badge](https://github.com/Lelio-Brun/Obelisk/actions/workflows/workflow.yml/badge.svg?branch=dev)
-**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
->>>>>>> origin/dev
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
 
@@ -142,13 +137,7 @@ And with the `-i` switch (`obelisk -i misc/reco.mly`):
 ```
 
 ### Multi-format output
-<<<<<<< HEAD
 By default, the output format is a simple text format that is close to the BNF syntax.
-You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
-
-In default and HTML mode, the option `-noaliases` avoids printing token aliases in the output.
-=======
-By default the output format is a simple text format close to the BNF syntax.
 You can use the subcommands `ebnf`, `latex` or `html` to get respectively an EBNF text output,  LaTeX output or HTML output.
 
 In default, EBNF and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
@@ -185,7 +174,6 @@ my_rule ::= (F E)?
           | E (S1 E)*
           | (F (S2 F)*)?
 ```
->>>>>>> origin/dev
 
 #### LaTeX
 Use the following options to tweak the LaTeX:
@@ -302,7 +290,7 @@ Here are the outputs of the different formats obtained by **Obelisk** from its o
 #### EBNF 
 
 ```
-specification ::= rule* EOF
+specification ::= rule* EOF           
 
 rule ::= old_rule
        | new_rule
