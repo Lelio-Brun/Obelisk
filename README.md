@@ -1,5 +1,5 @@
 # Obelisk [![Build Status](https://travis-ci.org/Lelio-Brun/Obelisk.svg?branch=master)](https://travis-ci.org/Lelio-Brun/Obelisk) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
-**Obelisk** is a simple tool which produces pretty-printed output from a [Menhir] parser file (_.mly_).
+**Obelisk** is a simple tool that produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
 It is inspired from [yacc2latex] and is also written in [OCaml], but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
 
@@ -41,20 +41,20 @@ In addition to the package [suffix], which is used to define starred commands, h
 - `-backnaur` : [backnaur]
 
 ### OPAM
-If you use [OPAM], just type:
+If you use [OPAM], simply type:
 ```
 opam install obelisk
 ```
 
 ### Manual installation
-Just `git clone` to clone the **Obelisk** repository, then type:
+`git clone` to clone the **Obelisk** repository, then type:
 ```
 dune build
 ```
 
 This will provide you with an executable which you can feed _.mly_ files with: `dune exec src/main.exe -- <options> <file.mly>`.
 
-If you want to install obelisk, you can type:
+If you want to install Obelisk, you can type:
 ```
 dune install [--prefix <the destination directory>]
 ```
@@ -64,9 +64,10 @@ dune install [--prefix <the destination directory>]
 obelisk [latex|html] [options] <files>
 ```
 
-If multiple files are specified, **Obelisk** will output a concatenated result, without consistency checks, so the user is responsible for avoiding eg. name clashes between the several files.
+If multiple files are specified, **Obelisk** will output a concatenated result without consistency checks. 
+The user is responsible for avoiding, e.g. name clashes between the several files.
 
-By default **Obelisk** defaults to standard output, use `-o <file>` to specify an output file.
+By default, **Obelisk** defaults to standard output; use `-o <file>` to specify an output file.
 
 ### Pattern recognition
 **Obelisk** can infer some common patterns (possibly parameterized):
@@ -74,7 +75,8 @@ By default **Obelisk** defaults to standard output, use `-o <file>` to specify a
 - lists and non-empty lists
 - separated lists and non-empty separated lists
 
-Once recognized, if the `-i` switch is specified the rules are deleted and their instances are replaced with default constructions (eg. *\_\**, *\_+*, *[\_]*). Without the `-i` flag, only the productions of the recognized rules are replaced, the total amount of rules remaining the same.
+Once recognized, if the `-i` switch is specified, the rules are deleted, and their instances are replaced with default constructions (e.g. *\_\**, *\_+*, *[\_]*).
+Without the `-i` flag, only the productions of the recognized rules are replaced, and the total number of rules remains the same.
 
 For example, on these simple rules (from this [file](misc/reco.mly)):
 ```
@@ -133,10 +135,10 @@ And with the `-i` switch:
 ```
 
 ### Multi-format output
-By default the output format is a simple text format close to the BNF syntax.
+By default, the output format is a simple text format that is close to the BNF syntax.
 You can use the subcommands `latex` or `html` to get a LaTeX (resp. HTML) file.
 
-In default and HTML mode, the option `-noaliases` avoid printing token aliases in the output.
+In default and HTML mode, the option `-noaliases` avoids printing token aliases in the output.
 
 #### LaTeX
 Use the following options to tweak the LaTeX:
@@ -144,16 +146,16 @@ Use the following options to tweak the LaTeX:
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
-In either cases, the output may be customized *via* the use of LaTeX commands that you can redefine to fit your needs.
-The commands names are auto-generated from the terminal names, and because of LaTeX limitations, underscore are removed and numbers are converted into their roman form.
+Either way, the output may be customized using LaTeX commands that you can redefine to fit your needs.
+The command names are auto-generated from the terminal names, and because of LaTeX limitations, underscores are removed, and numbers are converted into their Roman form.
 
-By default in LaTeX mode, the `-o <grammar.tex>` switch will produce the standalone LaTeX file _<grammar.tex>_ which you can directly compile (eg. with _pdflatex_).
+By default, in LaTeX mode, the `-o <grammar.tex>` switch will produce the standalone LaTeX file _<grammar.tex>_ which you can directly compile (e.g. with _pdflatex_).
 
 But in conjunction with `-o <grammar.tex>`, you can use `-package <definitions>` to output two files:
 1. a LaTeX file _<grammar.tex>_ containing only the grammar contents ;
-2. a package file _<definitions.sty>_ (the _.sty_ extension is added automatically) containing the necessary extra packages requirements and command definitions.
+2. a package file _<definitions.sty>_ (the _.sty_ extension is added automatically) containing the necessary extra package requirements and command definitions.
 
-These two files are then intended to be included in a non-supplied main LaTeX file following this example skeleton:
+These two files are then intended to be included in a user-provided main LaTeX file following this example skeleton:
 ```latex
 \documentclass[preview]{standalone}
 
@@ -166,17 +168,17 @@ These two files are then intended to be included in a non-supplied main LaTeX fi
 \end{document}
 ```
 
-To avoid name clashes, in particular when using the `-package` option and eg. importing multiple grammars with the same LaTeX commands names, or in the case where one of the syntax construction name matches one already defined LaTeX macro, you can specify a common prefix for the commands with the option `-prefix <myprefix>`.
+To avoid name clashes, in particular when using the `-package` option and e.g. importing multiple grammars with the same LaTeX commands names, or in the case where one of the syntax construction names matches one already defined LaTeX macro, you can specify a common prefix for the commands with the option `-prefix <myprefix>`.
 
-As `end`-beginning commands are forbidden in LaTeX, commands creating from rules with names beginning with `end` are automatically prefixed with `zzz`.
+As `end`-beginning commands are forbidden in LaTeX, commands created from rules with names beginning with `end` are automatically prefixed with `zzz`.
 
 #### HTML
-The HTML file uses internal CSS stylesheet which allows one to customize the output (in a poorer way than in the `latex` mode).
-The stylesheet uses `content` properties for some parts of the grammar by default (`-css` option), to make it modular and easily modifiable, but then some symbols are not treated as content and, for example, are not copy-pastable. 
+The HTML file uses an internal CSS stylesheet that allows customizing the output (in a poorer way than in the `latex` mode).
+The stylesheet uses `content` properties for some parts of the grammar by default (`-css` option) to make it modular and easily modifiable, but then some symbols are not treated as content and, for example, are not copy-pastable. 
 Use the `-nocss` option to disable the use of such properties.
 
 ### Example
-Here are the different formats output obtained by **Obelisk** from its own [parser](src/parser.mly).
+Here are the outputs of the different formats obtained by **Obelisk** from its own [parser](src/parser. my).
 
 #### Default
 ```
