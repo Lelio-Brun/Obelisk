@@ -21,4 +21,5 @@
  (depends
   (ocaml (>= 4.08))
   (dune (>= 2.2.0))
-  re menhir))
+  (menhir (>= "20180528"))
+  re))
