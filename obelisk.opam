@@ -14,7 +14,7 @@ bug-reports: "https://github.com/Lelio-Brun/obelisk/issues"
 depends: [
   "ocaml" {>= "4.08"}
   "dune" {>= "2.2.0"}
-  "menhir" {>= "20180528"}
+  "menhir" {>= "20181113"}
   "re"
 ]
 build: [
