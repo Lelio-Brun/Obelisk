@@ -1,4 +1,7 @@
-## v0.7.0 - 2024=07-03
+## WIP
+- add lower bound for Menhir version
+
+## v0.7.0 - 2024-07-03
 - support for EBNF output ([#14](https://github.com/Lelio-Brun/Obelisk/issues/14)) 
 - rewriting of the printers
 - switch to Github Actions for CI
