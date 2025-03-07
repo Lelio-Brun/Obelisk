@@ -155,7 +155,8 @@ my_rule ::= (F E)?
 
 #### LaTeX
 Use the following options to tweak the LaTeX:
-- `-tabular`: a *tabular*-based format from the [tabu] package (default)
+- `-tabular`: a *tabular*-based format using the [tabularray] package (default)
+- `-simplebnf`: use the [simplebnf] package
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
 
