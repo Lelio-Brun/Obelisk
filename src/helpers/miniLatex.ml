@@ -96,7 +96,7 @@ let begin_document misc fmt symbols =
     fprintf !formatter_package "%a%a%a%a@;"
       (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
            fprintf fmt "\\newcommand\\%s{%s}@;" (command (alias x)) (escape x)))
-      (Common.Symbols.terminals symbols @ Common.Symbols.defined symbols)
+      (Common.Symbols.terminals symbols @ List.map fst (Common.Symbols.defined symbols))
       (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
            let cx = command (alias x) in
            fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
@@ -111,7 +111,7 @@ let begin_document misc fmt symbols =
            let cx = command x in
            fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
              cx (command "gramfunc") cx))
-      (Common.Symbols.functionals symbols)
+      (List.map fst (Common.Symbols.functionals symbols))
   in
   commands symbols;
   let pre = pre () in

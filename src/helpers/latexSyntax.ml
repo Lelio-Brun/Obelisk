@@ -5,8 +5,6 @@ include MiniLatex
 
 let print_header symbols fmt =
   let max =
-    let compare_length s1 s2 = compare (String.length s2) (String.length s1) in
-    let max = try List.(hd (sort compare_length (Symbols.defined symbols))) with _ -> " " in
     let params =
       let rec aux = function
         | [] -> ""
@@ -16,35 +14,44 @@ let print_header symbols fmt =
         | [] -> ""
         | xs -> sprintf "(%s)" (aux xs)
     in
-    let max = match Common.Symbols.is_defined max symbols with
-      | Some xs -> max ^ params xs
-      | None -> max
+    let compare_length (s1, xs1) (s2, xs2) =
+      compare
+        (String.length (s2 ^ params xs2))
+        (String.length (s1 ^ params xs1))
     in
+    let f, xs = try
+        List.(hd (sort compare_length (Symbols.defined symbols)))
+      with _ -> " ", []
+    in
+    let max = f ^ params xs in
     Re.Str.global_replace (Re.Str.regexp "_") "\\_" max
   in
-  documentclass
-    (fun fmt -> fprintf fmt
+  documentclass (fun fmt ->
+      fprintf fmt
         "%a@;\
-        \\newenvironment{%s}{\\begin{grammar}}{\\end{grammar}}@;@;\
-        %a%a%a%a%a%a%a\
-        \\newlength{\\%s}@;\
-        \\settowidth{\\%s}{\\synt{%s} \\%s{} }@;@;"
+         \\newenvironment{%s}{\\begin{grammar}}{\\end{grammar}}@;@;\
+         %a%a%a%a%a%a%a\
+         \\renewcommand\\grammarlabel[2]{\\%s{#1} #2}@;\
+         \\newlength{\\%s}@;\
+         \\settowidth{\\%s}{\\synt{%s} \\%s{} }@;@;"
         usepackage ("", "syntax")
         grammarname
         newcommand ("gramterm", 1, None, print_string' "\\lit{#1}")
-        newcommand ("gramnonterm", 1, None, print_string' "\\synt{#1}")
-        newcommand ("gramfunc", 1, None, print_string' "\\synt{#1}")
+        newcommand ("gramnonterm", 1, None, print_string' "\\def\\tmp{#1}\\ifx\\tmp\\empty\\else\\synt{#1}\\fi")
+        newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
         newcommand ("gramdef", 0, None, print_string' "::=")
         newcommand ("grambar", 0, None, print_string' "\\alt")
         newcommand ("grambaranon", 0, None, print_string' "\\ensuremath{|}")
         newcommand ("grameps", 0, None, print_string' "\\ensuremath{\\epsilon}")
+        (command "gramnonterm")
         (command "grammaxindent")
         (command "grammaxindent")
         max
-        (command "gramdef"));
+        (command "gramdef")
+    );
   begin_document (fun fmt -> fprintf fmt
-                     "\\setlength{\\grammarindent}{\\%s}"
-                     (command "grammaxindent"))
+                               "\\setlength{\\grammarindent}{\\%s}"
+                               (command "grammaxindent"))
     fmt symbols
 
 let def fmt = fprintf fmt " \\%s{} " (command "gramdef")
