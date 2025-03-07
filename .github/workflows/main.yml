@@ -1,0 +1,35 @@
+name: Build and test
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-compiler:
+          - "5"
+          - "4"
+          - "4.08"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install texlive texlive-latex-extra texlive-science
+
+      - name: Checkout tree
+        uses: actions/checkout@v4
+
+      - name: Set-up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - run: opam install . --deps-only --with-test
+      - run: opam exec -- dune build
+      - run: opam exec -- dune runtest

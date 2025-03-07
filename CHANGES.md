@@ -1,6 +1,10 @@
 ## WIP
-This version adds support for EBNF output ([#14](https://github.com/Lelio-Brun/Obelisk/issues/14)). 
-The printers were also rewritten. 
+- add lower bound for Menhir version
+
+## v0.7.0 - 2024-07-03
+- support for EBNF output ([#14](https://github.com/Lelio-Brun/Obelisk/issues/14)) 
+- rewriting of the printers
+- switch to Github Actions for CI
 
 ## v0.6.0 - 2021-02-09
 This version adds support for the Menhir standard rules `endrule`, `midrule`, `rev`, `flatten` and `append`.
