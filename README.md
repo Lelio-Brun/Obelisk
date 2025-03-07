@@ -15,10 +15,10 @@ The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation im
 
 In addition to the package [xparse], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
 
-- `-tabular` : [tabularray]
-- `-simplebnf` : [simplebnf]
-- `-syntax` : [syntax] from the bundle [mdwtools] 
-- `-backnaur` : [backnaur]
+- `-tabular`: [tabu]
+- `-simplebnf`: [simplebnf]
+- `-syntax`: [syntax] from the bundle [mdwtools] 
+- `-backnaur`: [backnaur]
 
 ### OPAM
 If you use [OPAM], simply type:
@@ -155,7 +155,7 @@ my_rule ::= (F E)?
 
 #### LaTeX
 Use the following options to tweak the LaTeX:
-- `-tabular`: a *tabular*-based format using the [tabularray] package (default)
+- `-tabular`: a *tabular*-based format using the [tabu] package (default)
 - `-simplebnf`: use the [simplebnf] package
 - `-syntax`: use the [syntax] package
 - `-backnaur`: use the [backnaur] package (not recommended: manual line-wrapping through this [trick](https://tex.stackexchange.com/a/308753))
@@ -373,7 +373,7 @@ parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 [wkhtmltopdf]: https://wkhtmltopdf.org/
 [imagemagick]: http://www.imagemagick.org/script/index.php
 [xparse]: https://ctan.org/pkg/xparse
-[tabularray]: https://www.ctan.org/pkg/tabularray
+[tabu]: https://www.ctan.org/pkg/tabu
 [mdwtools]: https://www.ctan.org/pkg/mdwtools
 [simplebnf]: https://www.ctan.org/pkg/simplebnf
 [syntax]: https://www.ctan.org/pkg/syntax-mdw

@@ -1,7 +1,6 @@
 ## WIP
 - add lower bound for Menhir version
 - update LaTeX backends 
-- LaTeX tabular mode now uses `tabularray`
 - add a new LaTeX mode using `simplebnf`
 - remove `suffix` dependency in favor of `xparse`
 
