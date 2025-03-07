@@ -1,4 +1,4 @@
-# Obelisk <span style="float: right">![Build Status](https://github.com/Lelio-Brun/Obelisk/actions/workflows/main.yml/badge.svg?branch=dev) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)</span>
+# Obelisk ![Build Status](https://github.com/Lelio-Brun/Obelisk/actions/workflows/main.yml/badge.svg?branch=dev) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
 
 Obelisk is a simple tool that produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
