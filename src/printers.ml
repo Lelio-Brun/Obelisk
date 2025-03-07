@@ -11,6 +11,9 @@ module Ebnf = Make(Ebnf)
 (** The LaTeX default table-based printer. *)
 module LatexTabular = Make(LatexTabular)
 
+(** The LaTeX "simplebnf" package based printer. *)
+module LatexSimplebnf = Make(LatexSimplebnf)
+
 (** The LaTeX "syntax" package based printer. *)
 module LatexSyntax = Make(LatexSyntax)
 

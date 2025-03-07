@@ -29,6 +29,7 @@ and plainmode =
 (** The different LaTeX sub-modes *)
 and latexmode =
   | Tabular                     (** Table-based layout. Default. *)
+  | Simplebnf                   (** Use the {{:https://www.ctan.org/pkg/simplebnf} simplebnf} package. *)
   | Syntax                      (** Use the {{:https://www.ctan.org/pkg/syntax-mdw} syntax} package. *)
   | Backnaur                    (** Use the {{:https://www.ctan.org/pkg/backnaur} backnaur} package. *)
 
@@ -63,11 +64,12 @@ let set_latexmode m () =
 
 (** LaTeX mode specific options. *)
 let latex_opt = [
-  "-tabular",  Arg.Unit (set_latexmode Tabular),  " Use tabular environment (default)";
-  "-syntax",   Arg.Unit (set_latexmode Syntax),   " Use `syntax` package";
-  "-backnaur", Arg.Unit (set_latexmode Backnaur), " Use `backnaur` package";
-  "-package",  Arg.Set_string pfile,              " Set the package name, without extension. Use with `-o`";
-  "-prefix",   Arg.Set_string prefix,             " Set the LaTeX commands (macros) prefix"
+  "-tabular",   Arg.Unit (set_latexmode Tabular),   " Use tabular environment (default)";
+  "-simplebnf", Arg.Unit (set_latexmode Simplebnf), " Use `simplebnf` package";
+  "-syntax",    Arg.Unit (set_latexmode Syntax),    " Use `syntax` package";
+  "-backnaur",  Arg.Unit (set_latexmode Backnaur),  " Use `backnaur` package";
+  "-package",   Arg.Set_string pfile,               " Set the package name, without extension. Use with `-o`";
+  "-prefix",    Arg.Set_string prefix,              " Set the LaTeX commands (macros) prefix"
 ]
 
 (** Specify the HTML sub-mode to use. *)

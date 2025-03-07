@@ -1,5 +1,8 @@
 ## WIP
 - add lower bound for Menhir version
+- update LaTeX backends 
+- LaTeX tabular mode now uses `tabularray`
+- add a new LaTeX mode using `simplebnf`
 
 ## v0.7.0 - 2024-07-03
 - support for EBNF output ([#14](https://github.com/Lelio-Brun/Obelisk/issues/14)) 

@@ -15,9 +15,8 @@ The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation im
 
 In addition to the package [suffix], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
 
-- `-tabular` :
-  + [tabu]
-  + [longtable] as a dependency of [tabu] to use the environment `longtabu` 
+- `-tabular` : [tabularray]
+- `-simplebnf` : [simplebnf]
 - `-syntax` : [syntax] from the bundle [mdwtools] 
 - `-backnaur` : [backnaur]
 
@@ -347,6 +346,9 @@ parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 ##### Tabular
 ![Tabular](misc/tabular.png)
 
+##### Simplebnf
+![Simplebnf](misc/simplebnf.png)
+
 ##### Syntax
 ![Syntax](misc/syntax.png)
 
@@ -370,8 +372,8 @@ parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 [wkhtmltopdf]: https://wkhtmltopdf.org/
 [imagemagick]: http://www.imagemagick.org/script/index.php
 [suffix]: https://ctan.org/pkg/suffix
-[tabu]: https://www.ctan.org/pkg/tabu
-[longtable]: https://www.ctan.org/pkg/longtable
+[tabularray]: https://www.ctan.org/pkg/tabularray
 [mdwtools]: https://www.ctan.org/pkg/mdwtools
+[simplebnf]: https://www.ctan.org/pkg/simplebnf
 [syntax]: https://www.ctan.org/pkg/syntax-mdw
 [backnaur]: https://www.ctan.org/pkg/backnaur

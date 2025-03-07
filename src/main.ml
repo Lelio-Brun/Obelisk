@@ -32,6 +32,7 @@ let get () =
       | Plain Default -> (module Printers.Default : GenericPrinter.PRINTER)
       | Plain EBNF -> (module Printers.Ebnf)
       | Latex Tabular -> (module Printers.LatexTabular)
+      | Latex Simplebnf -> (module Printers.LatexSimplebnf)
       | Latex Syntax -> (module Printers.LatexSyntax)
       | Latex Backnaur -> (module Printers.LatexBacknaur)
       | Html CSS -> (module Printers.HtmlCss)

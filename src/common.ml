@@ -30,11 +30,11 @@ module type SYMBOLS = sig
   val non_terminals: t -> string list
 
   (** Get the list of functional non terminals.  *)
-  val functionals: t -> string list
+  val functionals: t -> (string * string list) list
 
   (** Get the list of "defined" symbols, that is both non terminals and
       functional non terminals. *)
-  val defined: t -> string list
+  val defined: t -> (string * string list) list
 
   (** Test if the given symbol is a terminal. *)
   val is_term: string -> t -> bool
@@ -81,23 +81,26 @@ module Symbols : SYMBOLS = struct
 
   (** See {!SYMBOLS.terminals}. *)
   let terminals m =
-    fst List.(split (filter (function _, Terminal -> true | _ -> false)
-        (M.bindings m)))
+    List.(filter_map (function s, Terminal -> Some s | _ -> None)
+      (M.bindings m))
 
   (** See {!SYMBOLS.non_terminals}. *)
   let non_terminals m =
-    fst List.(split (filter (function _, NonTerminal -> true | _ -> false)
-        (M.bindings m)))
+    List.(filter_map (function s, NonTerminal -> Some s | _ -> None)
+      (M.bindings m))
 
  (** See {!SYMBOLS.functionals}. *)
   let functionals m =
-    fst List.(split (filter (function _, Fun _ -> true | _ -> false)
-        (M.bindings m)))
+    List.(filter_map (function s, Fun xs -> Some (s, xs) | _ -> None)
+        (M.bindings m))
 
   (** See {!SYMBOLS.defined}. *)
   let defined m =
-    fst List.(split (filter (function _, Terminal -> false | _ -> true)
-        (M.bindings m)))
+    List.(filter_map (function
+      | _, Terminal -> None
+      | s, NonTerminal -> Some (s, [])
+      | s, Fun xs -> Some (s, xs))
+    (M.bindings m))
 
   (** See {!SYMBOLS.is_term}. *)
   let is_term x m =
