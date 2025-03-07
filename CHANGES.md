@@ -1,4 +1,4 @@
-## WIP
+## v0.8.0 - 2025-03-08
 - add lower bound for Menhir version
 - update LaTeX backends 
 - add a new LaTeX mode using `simplebnf`
