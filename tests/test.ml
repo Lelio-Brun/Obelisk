@@ -18,8 +18,25 @@ let tmppkg = "tmppkg"
 let main = "main"
 
 let too_larges_for_tabular = [
-  "sysver.mly"
+  (* "fsharp.mly"; *)
+  "sysver.mly";
+  (* "ocaml.mly"; *)
+  (* "ocaml_parser_menhir.mly"; *)
+  (* "parser_raw.mly"; *)
+  (* "reason.3.3.7-reason_parser.mly"; *)
+  (* "reason_parser.mly"; *)
+  (* "verilog.mly"; *)
 ]
+let too_larges_for_simplebnf = [
+  "coccinelle.1.0.2-parser_cocci_menhir.mly";
+  "fsharp.mly";
+  "ocaml.mly";
+  "ocaml_parser_menhir.mly";
+  "parser_cocci_menhir.mly";
+  "reason_parser.mly";
+  "sysver.mly";
+  "verilog.mly";
+  ]
 let too_larges_for_syntax = [
   "coccinelle.1.0.2-parser_cocci_menhir.mly";
   "fsharp.mly";
@@ -41,6 +58,7 @@ type mode =
 
 and latexmode =
   | Tabular
+  | Simplebnf
   | Syntax
   | Backnaur
 
@@ -54,6 +72,7 @@ let flags_of_mode with_pkg = function
     Format.sprintf "latex -%s -prefix %s %s"
       begin match m with
         | Tabular -> "tabular"
+        | Simplebnf -> "simplebnf"
         | Syntax -> "syntax"
         | Backnaur -> "backnaur"
       end prefix (if with_pkg then Format.sprintf "-package %s" pkg else "")
@@ -99,6 +118,7 @@ let name_of_mode = function
     Format.sprintf "LaTeX %s"
       begin match m with
         | Tabular -> "tabular"
+        | Simplebnf -> "simplebnf"
         | Syntax -> "syntax"
         | Backnaur -> "backnaur"
       end
@@ -126,6 +146,7 @@ let test mode =
 
 let too_larges_of_mode = function
   | Tabular -> too_larges_for_tabular
+  | Simplebnf -> too_larges_for_simplebnf
   | Syntax -> too_larges_for_syntax
   | Backnaur -> too_larges_for_backnaur
 
@@ -145,6 +166,7 @@ let test_latex m =
 let default () = test Default
 
 let tabular () = test_latex Tabular
+let simplebnf () = test_latex Simplebnf
 let syntax () = test_latex Syntax
 let backnaur () = test_latex Backnaur
 
@@ -163,6 +185,7 @@ let write_main () =
 let latex () =
   write_main ();
   tabular ();
+  simplebnf ();
   syntax ();
   backnaur ()
 

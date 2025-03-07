@@ -121,16 +121,20 @@ let begin_document misc fmt symbols =
      \\IfBooleanTF#1{\\tmp}{\\tmp}}@;\
      \\NewDocumentCommand\\%sgramplus{sm}{\
      \\def\\tmp{#2}\
-     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{^+}}@;\
+     {\\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}}\
+     \\ensuremath{^+}}@;\
      \\NewDocumentCommand\\%sgramstar{sm}{\
      \\def\\tmp{#2}\
-     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{^*}}@;\
+     {\\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}}\
+     \\ensuremath{^*}}@;\
      \\NewDocumentCommand\\%sgramseplist{smm}{\
      \\def\\tmp{#3}\
-     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{_{\\textnormal{#2}}^*}}@;\
+     {\\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}}\
+     \\ensuremath{_{\\textnormal{#2}}^*}}@;\
      \\NewDocumentCommand\\%sgramsepnelist{smm}{\
      \\def\\tmp{#3}\
-     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{_{\\textnormal{#2}}^+}}@;\
+     {\\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}}\
+     \\ensuremath{_{\\textnormal{#2}}^+}}@;\
      \\newcommand\\%sgramparen[1]{(#1)}"
     pre pre pre pre pre
     pre pre pre pre pre;

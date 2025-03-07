@@ -5,16 +5,22 @@ include MiniLatex
 let print_header symbols fmt =
   documentclass (fun fmt ->
       fprintf fmt
-        "%a@;\
+        "%a%a%a@;\
+         %% https://tex.stackexchange.com/a/279787@;\
+         \\makeatletter@;\
+         \\let\\collectcell@notabu\\collectcell@;\
+         \\def\\collectcell@intabu#1#2\\tabu@cellleft{#2\\tabu@cellleft\\collectcell@notabu{#1}}@;\
+         \\def\\collectcell{\\tabu@ifenvir\\collectcell@intabu\\collectcell@notabu}@;\
+         \\makeatother@;\
          @[<v 2>\\newenvironment{%s}{@;\
-         @[<v 2>\\begin{tblr}{@;\
-         colspec={%@{}r%@{}c%@{}X%@{}},@;\
-         column{1}={cmd=\\%s}\
-         @]@;}@]@;\
+         \\begin{longtabu}{\
+         %@{}>{\\collectcell\\%s}r<{\\endcollectcell}%@{}c%@{}X%@{}}@]@;\
          }{@;<0 2>\
-         \\end{tblr}@;}@;@;\
+         \\end{longtabu}@;}@;@;\
          %a%a%a%a%a%a%a%a@;"
-        usepackage ("", "tabularray")
+        usepackage ("", "longtable")
+        usepackage ("", "tabu")
+        usepackage ("", "collcell")
         grammarname
         (command "gramnonterm")
         newcommand ("gramsp" ,0, None, print_string' "\\quad")
@@ -24,7 +30,7 @@ let print_header symbols fmt =
             fprintf fmt "$\\%s|\\%s$" (command "gramsp") (command "gramsp"))
         newcommand ("grambaranon", 0, None, print_string' "$|$")
         newcommand ("grameps", 0, None, print_string' "\\ensuremath{\\epsilon}")
-        newdocumentcommand ("gramnonterm", 1, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
+        newcommand ("gramnonterm", 1, None, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
         newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
         newcommand ("gramterm", 1, None, print_string' "#1")
     );
