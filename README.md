@@ -1,29 +1,8 @@
-# Obelisk ![Build Status](https://github.com/Lelio-Brun/Obelisk/actions/workflows/main.yml/badge.svg?branch=master) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)
-**Obelisk** is a simple tool that produces pretty-printed output from a [Menhir] parser file (_.mly_).
+# Obelisk <span style="float: right">![Build Status](https://github.com/Lelio-Brun/Obelisk/actions/workflows/main.yml/badge.svg?branch=master) [![Mentioned in Awesome OCaml](https://awesome.re/mentioned-badge.svg)](https://github.com/rizo/awesome-ocaml)</span>
+
+Obelisk is a simple tool that produces pretty-printed output from a [Menhir] parser file (_.mly_).
 
 It is inspired by [yacc2latex] and is also written in [OCaml] but is aimed at supporting features from Menhir instead of only those of [ocamlyacc].
-
-## Table of Contents
-* [Installation](#installation)
-  + [Dependencies](#dependencies)
-  + [OPAM](#opam)
-  + [Manual installation](#manual-installation)
-* [Usage](#usage)
-  + [Pattern recognition](#pattern-recognition)
-  + [Multi-format output](#multi-format-output)
-    - [EBNF](#ebnf)
-    - [LaTeX](#latex)
-    - [HTML](#html)
-  + [Example](#example)
-    - [Default](#default)
-    - [EBNF](#ebnf-1)
-    - [LaTeX](#latex-1)
-      * [Tabular](#tabular)
-      * [Syntax](#syntax)
-      * [Backnaur](#backnaur)
-    - [HTML](#html-1)
-      * [With CSS content properties](#with-css-content-properties)
-      * [Without CSS content properties](#without-css-content-properties)
 
 ## Installation
 ### Dependencies
@@ -49,7 +28,7 @@ opam install obelisk
 ```
 
 ### Manual installation
-`git clone` to clone the **Obelisk** repository,y, then type:
+`git clone` to clone the Obelisk repository,y, then type:
 ```
 dune build
 ```
@@ -66,13 +45,13 @@ dune install [--prefix <the destination directory>]
 obelisk [ebnf|latex|html] [options] <files>
 ```
 
-If multiple files are specified, **Obelisk** will output a concatenated result without consistency checks. 
+If multiple files are specified, Obelisk will output a concatenated result without consistency checks. 
 The user is responsible for avoiding, e.g., name clashes between the several files.
 
-By default, **Obelisk** defaults to standard output; use `-o <file>` to specify an output file.
+By default, Obelisk defaults to standard output; use `-o <file>` to specify an output file.
 
 ### Pattern recognition
-**Obelisk** can infer some common patterns (possibly parameterized):
+Obelisk can infer some common patterns (possibly parameterized):
 - options
 - lists and non-empty lists
 - separated lists and non-empty separated lists
@@ -109,7 +88,7 @@ my_rule:
   | my_separated_nonempty_list(E,S1)   {}
   | my_separated_list(F,S2)            {}
 ```
-**Obelisk** (`obelisk misc/reco.mly`) outputs:
+Obelisk (`obelisk misc/reco.mly`) outputs:
 ```
 <my_option(X, Y)> ::= [Y X]
 
@@ -205,7 +184,8 @@ These two files are then intended to be included in a user-provided main LaTeX f
 
 To avoid name clashes, in particular when using the `-package` option and, e.g., importing multiple grammars with the same LaTeX command names, or in the case where one of the syntax construction names matches one already defined LaTeX macro, you can specify a common prefix for the commands with the option `-prefix <myprefix>`.
 
-As `end`-beginning commands are forbidden in LaTeX, commands created from rules with names beginning with `end` are automatically prefixed with `zzz`.
+> [!WARNING]
+> As `end`-beginning commands are forbidden in LaTeX, commands created from rules with names beginning with `end` are automatically prefixed with `zzz`.
 
 #### HTML
 The HTML file uses an internal CSS stylesheet that allows customizing the output (in a poorer way than in the `latex` mode).
@@ -214,7 +194,7 @@ Still, some symbols are not treated as content and, for example, are not copy-pa
 Use the `-nocss` option to turn off the use of such properties.
 
 ### Example
-Here are the outputs of the different formats obtained by **Obelisk** from its own [parser](src/parser. my).
+Here are the outputs of the different formats obtained by Obelisk from its own [parser](src/parser. my).
 
 #### Default
 ```
