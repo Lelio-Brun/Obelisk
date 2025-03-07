@@ -13,7 +13,7 @@ It is inspired by [yacc2latex] and is also written in [OCaml] but is aimed at su
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
-In addition to the package [suffix], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
+In addition to the package [xparse], which is used to define starred commands, here is a summary of package dependencies for the different LaTeX modes: 
 
 - `-tabular` : [tabularray]
 - `-simplebnf` : [simplebnf]
@@ -372,7 +372,7 @@ parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
 [OPAM]: http://opam.ocaml.org/
 [wkhtmltopdf]: https://wkhtmltopdf.org/
 [imagemagick]: http://www.imagemagick.org/script/index.php
-[suffix]: https://ctan.org/pkg/suffix
+[xparse]: https://ctan.org/pkg/xparse
 [tabularray]: https://www.ctan.org/pkg/tabularray
 [mdwtools]: https://www.ctan.org/pkg/mdwtools
 [simplebnf]: https://www.ctan.org/pkg/simplebnf

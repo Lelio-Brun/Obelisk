@@ -24,7 +24,7 @@ let print_header symbols fmt =
             fprintf fmt "$\\%s|\\%s$" (command "gramsp") (command "gramsp"))
         newcommand ("grambaranon", 0, None, print_string' "$|$")
         newcommand ("grameps", 0, None, print_string' "\\ensuremath{\\epsilon}")
-        newcommand ("gramnonterm", 1, None, print_string' "\\def\\tmp{#1}\\ifx\\tmp\\empty\\else\\ensuremath{\\langle\\textnormal{#1}\\rangle}\\fi")
+        newdocumentcommand ("gramnonterm", 1, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
         newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
         newcommand ("gramterm", 1, None, print_string' "#1")
     );

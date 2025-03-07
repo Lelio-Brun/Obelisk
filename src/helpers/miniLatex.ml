@@ -21,7 +21,7 @@ let documentclass header =
          fprintf fmt "\\NeedsTeXFormat{LaTeX2e}@;\\ProvidesPackage{%s}@;@;" !pfile
        else
          fprintf fmt "\\documentclass[preview]{standalone}@;@;\\usepackage[T1]{fontenc}@;@;")
-    usepackage ("", "suffix")
+    usepackage ("", "xparse")
     header
 
 let forall_str p s =
@@ -93,43 +93,47 @@ let begin_document misc fmt symbols =
       |> replace "}" "\\}"
       |> replace "\\$" "\\$"
     in
-    fprintf !formatter_package "%a%a%a%a@;"
-      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
-           fprintf fmt "\\newcommand\\%s{%s}@;" (command (alias x)) (escape x)))
-      (Common.Symbols.terminals symbols @ List.map fst (Common.Symbols.defined symbols))
-      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
-           let cx = command (alias x) in
-           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-             cx (command "gramterm") cx))
+    let pp_symbol_cmd star_cmd fmt x =
+      fprintf fmt
+        "\\NewDocumentCommand\\%s{s}{\
+         \\def\\tmp{%s}\
+         \\IfBooleanTF#1{\\%s{\\tmp}}{\\tmp}}@;"
+        (command (alias x))
+        (escape x)
+        (command star_cmd)
+    in
+    let pp_symbol_cmds star_cmd =
+      pp_print_list ~pp_sep:(fun _ () -> ()) (pp_symbol_cmd star_cmd)
+    in
+    fprintf !formatter_package "%a%a%a@;"
+      (pp_symbol_cmds "gramterm")
       (Common.Symbols.terminals symbols)
-      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
-           let cx = command x in
-           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-             cx (command "gramnonterm") cx))
+      (pp_symbol_cmds "gramnonterm")
       (Common.Symbols.non_terminals symbols)
-      (pp_print_list ~pp_sep:(fun _ () -> ()) (fun fmt x ->
-           let cx = command x in
-           fprintf fmt "\\WithSuffix\\newcommand\\%s*{\\%s{\\%s}}@;"
-             cx (command "gramfunc") cx))
+      (pp_symbol_cmds "gramfunc")
       (List.map fst (Common.Symbols.functionals symbols))
   in
   commands symbols;
   let pre = pre () in
   fprintf !formatter_package
-    "\\newcommand\\%sgramopt[1]{[#1]}@;\
-     \\newcommand\\%sgramplus[1]{{#1}\\ensuremath{^+}}@;\
-     \\newcommand\\%sgramstar[1]{{#1}\\ensuremath{^*}}@;\
-     \\newcommand\\%sgramseplist[2]{{#2}\\ensuremath{_{\\textnormal{#1}}^*}}@;\
-     \\newcommand\\%sgramsepnelist[2]{{#2}\\ensuremath{_{\\textnormal{#1}}^+}}@;\
-     \\newcommand\\%sgramparen[1]{(#1)}@;\
-     \\WithSuffix\\newcommand\\%sgramopt*[1]{\\%sgramopt{#1}}@;\
-     \\WithSuffix\\newcommand\\%sgramplus*[1]{\\%sgramplus{\\%sgramparen{#1}}}@;\
-     \\WithSuffix\\newcommand\\%sgramstar*[1]{\\%sgramstar{\\%sgramparen{#1}}}@;\
-     \\WithSuffix\\newcommand\\%sgramseplist*[2]{\\%sgramseplist{#1}{\\%sgramparen{#2}}}@;\
-     \\WithSuffix\\newcommand\\%sgramsepnelist*[2]{\\%sgramsepnelist{#1}{\\%sgramparen{#2}}}"
-    pre pre pre pre pre pre
-    pre pre pre pre pre pre pre
-    pre pre pre pre pre pre pre;
+    "\\NewDocumentCommand\\%sgramopt{sm}{\
+     \\def\\tmp{[#2]}\
+     \\IfBooleanTF#1{\\tmp}{\\tmp}}@;\
+     \\NewDocumentCommand\\%sgramplus{sm}{\
+     \\def\\tmp{#2}\
+     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{^+}}@;\
+     \\NewDocumentCommand\\%sgramstar{sm}{\
+     \\def\\tmp{#2}\
+     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{^*}}@;\
+     \\NewDocumentCommand\\%sgramseplist{smm}{\
+     \\def\\tmp{#3}\
+     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{_{\\textnormal{#2}}^*}}@;\
+     \\NewDocumentCommand\\%sgramsepnelist{smm}{\
+     \\def\\tmp{#3}\
+     \\IfBooleanTF#1{\\%sgramparen{\\tmp}}{\\tmp}\\ensuremath{_{\\textnormal{#2}}^+}}@;\
+     \\newcommand\\%sgramparen[1]{(#1)}"
+    pre pre pre pre pre
+    pre pre pre pre pre;
   fprintf fmt "%s%t\\begin{%s}@;"
     (if use () then "" else "\n\n\\begin{document}\n\n")
     misc
@@ -143,6 +147,12 @@ let newcommand fmt (x, n, o, cmd) =
        | _ -> fprintf fmt "[%d]" n)
     n
     (pp_print_option (fun fmt -> fprintf fmt "[%s]")) o
+    cmd
+
+let newdocumentcommand fmt (x, n, cmd) =
+  fprintf fmt "\\NewDocumentCommand\\%s%s{%s}{%t}@;"
+    (pre ()) x
+    (String.make n 'm')
     cmd
 
 let end_document fmt =

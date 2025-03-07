@@ -37,7 +37,7 @@ let print_header symbols fmt =
         usepackage ("", "syntax")
         grammarname
         newcommand ("gramterm", 1, None, print_string' "\\lit{#1}")
-        newcommand ("gramnonterm", 1, None, print_string' "\\def\\tmp{#1}\\ifx\\tmp\\empty\\else\\synt{#1}\\fi")
+        newdocumentcommand ("gramnonterm", 1, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
         newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
         newcommand ("gramdef", 0, None, print_string' "::=")
         newcommand ("grambar", 0, None, print_string' "\\alt")
