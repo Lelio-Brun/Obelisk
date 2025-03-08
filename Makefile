@@ -7,10 +7,17 @@ PREFIX=my
 MAIN=main
 EXE=dune exec $(SRC)/main.exe --
 
-.PHONY: all latex htmlcss html default ebnf reco readme tests clean
+.PHONY: publish all latex htmlcss html default ebnf reco readme tests clean
 
 all:
 	@dune build
+
+publish:
+	@dune-release tag
+	@dune-release distrib
+	@dune-release publish
+	@dune-release opam pkg
+	@dune-release opam submit
 
 %.tex:
 	@$(EXE) latex -prefix $(PREFIX) -$* $(PARSER) -o $@
