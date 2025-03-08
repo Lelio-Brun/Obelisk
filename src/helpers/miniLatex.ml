@@ -153,12 +153,6 @@ let newcommand fmt (x, n, o, cmd) =
     (pp_print_option (fun fmt -> fprintf fmt "[%s]")) o
     cmd
 
-let newdocumentcommand fmt (x, n, cmd) =
-  fprintf fmt "\\NewDocumentCommand\\%s%s{%s}{%t}@;"
-    (pre ()) x
-    (String.make n 'm')
-    cmd
-
 let end_document fmt =
   fprintf fmt "\\end{%s}%s@]@."
     grammarname

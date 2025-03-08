@@ -23,7 +23,7 @@ let print_header symbols fmt =
         grammarname
         (command "gramnonterm")
         newcommand ("gramterm", 1, None, print_string' "#1")
-        newdocumentcommand ("gramnonterm", 1, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
+        newcommand ("gramnonterm", 1, None, print_string' "\\IfBlankF{#1}{\\ensuremath{\\langle\\textnormal{#1}\\rangle}}")
         newcommand ("gramfunc", 1, None, fun fmt -> fprintf fmt "\\%s{#1}" (command "gramnonterm"))
         newcommand ("gramdef", 0, None, print_string' "\\ensuremath{\\Coloneqq}")
         newcommand ("grambar", 0, None, print_string' "\\ensuremath{|}")
