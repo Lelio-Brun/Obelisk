@@ -6,10 +6,10 @@ It is inspired by [yacc2latex] and is also written in [OCaml] but is aimed at su
 
 ## Installation
 ### Dependencies
-- [OCaml] >= 4.08
-- [Dune] >= 2.2.0
-- [Menhir]
-- [Re]
+- [OCaml] ≥ 4.08
+- [Dune] ≥ 2.7
+- [Menhir] ≥ 20190613
+- [Re] ≥ 1.7.2
 
 The Makefile also uses [imagemagick] and [wkhtmltopdf] to build documentation images.
 
