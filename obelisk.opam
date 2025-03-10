@@ -12,13 +12,14 @@ homepage: "https://github.com/Lelio-Brun/Obelisk"
 doc: "https://github.com/Lelio-Brun/Obelisk/blob/master/README.md"
 bug-reports: "https://github.com/Lelio-Brun/obelisk/issues"
 depends: [
+  "dune" {>= "2.7"}
   "ocaml" {>= "4.08"}
-  "dune" {>= "2.2.0"}
   "menhir" {>= "20190613"}
-  "re"
+  "re" {>= "1.7.2"}
+  "odoc" {with-doc}
 ]
 build: [
-  ["dune" "subst"] {pinned}
+  ["dune" "subst"] {dev}
   [
     "dune"
     "build"

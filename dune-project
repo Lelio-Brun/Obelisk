@@ -1,4 +1,4 @@
-(lang dune 2.0)
+(lang dune 2.7)
 
 (name obelisk)
 (version 0.8.0)
@@ -20,6 +20,5 @@
                It is inspired from yacc2latex and is also written in OCaml, but is aimed at supporting features from Menhir instead of only those of ocamlyacc.")
  (depends
   (ocaml (>= 4.08))
-  (dune (>= 2.2.0))
   (menhir (>= "20190613"))
-  re))
+  (re (>= 1.7.2))))
