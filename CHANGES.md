@@ -1,3 +1,6 @@
+## v0.8.1 - 2025-03-24
+- support attributes in semantic actions to comply with Menhir v20231231 ([#15](https://github.com/Lelio-Brun/Obelisk/issues/15)) 
+
 ## v0.8.0 - 2025-03-08
 - add lower bound for Menhir version
 - update LaTeX backends 

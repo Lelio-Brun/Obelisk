@@ -48,6 +48,7 @@ optional_bar:
 
 group:
   prods=separated_nonempty_list(BAR, production) ACTION ioption(precedence)
+  ATTRIBUTE*
   { prods }
 
 production:

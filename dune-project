@@ -1,7 +1,7 @@
 (lang dune 2.7)
 
 (name obelisk)
-(version 0.8.0)
+(version 0.8.1)
 
 (using menhir 2.0)
 (generate_opam_files true)
