@@ -1,8 +1,9 @@
 _build/
 *.install
 *.merlin
-
-# latex
+.direnv/
+.envrc.local
+result
 *.tex
 *.aux
 *.fdb_latexmk
