@@ -195,3 +195,20 @@
   <main> ::= INT PLUS INT MINUS INT TIMES INT
   
   
+
+  $ cat > new-syntax-attributes.mly <<'EOF'
+  > %token FOO BAR COMMA
+  > %nonassoc P
+  > %start <unit> main
+  > %%
+  > let main :=
+  >   | y = FOO [@a]; b = BAR* [@b]; { () } [@c]
+  >   | separated_list(COMMA, FOO) [@d]; %prec P { () } [@e]
+  >   | BAR; { () } %prec P [@f]
+  > EOF
+  $ obelisk new-syntax-attributes.mly
+  <main> ::= FOO BAR*
+           | [FOO (COMMA FOO)*]
+           | BAR
+  
+  

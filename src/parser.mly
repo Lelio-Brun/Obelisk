@@ -122,13 +122,13 @@ let seq_expression :=
   | action_expression;                                                                  { [] }
 
 let symbol_expression :=
-  | id=ident; ps=parameters(expression); { Symbol (id, List.map (fun g -> Anonymous [g]) ps) }
-  | ~=symbol_expression; ~=modifier;     < Modifier >
+  | id=ident; ps=parameters(expression); ATTRIBUTE*; { Symbol (id, List.map (fun g -> Anonymous [g]) ps) }
+  | ~=symbol_expression; ~=modifier; ATTRIBUTE*;     < Modifier >
 
 let action_expression :=
-  | action
-  | action; precedence
-  | precedence; action
+  | action; ATTRIBUTE*
+  | action; precedence; ATTRIBUTE*
+  | precedence; action; ATTRIBUTE*
 
 let action := ACTION | POINTFREEACTION
 

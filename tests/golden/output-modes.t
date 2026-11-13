@@ -41,12 +41,12 @@
                      | <symbol_expression>
                      | <action_expression>
   
-  <symbol_expression> ::= <ident> <parameters(<expression>)>
-                        | <symbol_expression> <modifier>
+  <symbol_expression> ::= <ident> <parameters(<expression>)> ATTRIBUTE*
+                        | <symbol_expression> <modifier> ATTRIBUTE*
   
-  <action_expression> ::= <action>
-                        | <action> <precedence>
-                        | <precedence> <action>
+  <action_expression> ::= <action> ATTRIBUTE*
+                        | <action> <precedence> ATTRIBUTE*
+                        | <precedence> <action> ATTRIBUTE*
   
   <action> ::= ACTION
              | POINTFREEACTION
@@ -108,12 +108,12 @@
                    | symbol_expression
                    | action_expression
   
-  symbol_expression ::= ident parameters_2
-                      | symbol_expression modifier
+  symbol_expression ::= ident parameters_2 ATTRIBUTE*
+                      | symbol_expression modifier ATTRIBUTE*
   
-  action_expression ::= action
-                      | action precedence
-                      | precedence action
+  action_expression ::= action ATTRIBUTE*
+                      | action precedence ATTRIBUTE*
+                      | precedence action ATTRIBUTE*
   
   action ::= ACTION
            | POINTFREEACTION
@@ -306,13 +306,15 @@
     \\
   
   \symbolUNDERSCOREexpression{}& \gramdef & \ident*{}
-                                            \gramfunc{\parameters{}(\expression*{})}\\
+                                            \gramfunc{\parameters{}(\expression*{})}
+                                            \gramstar{\ATTRIBUTE*{}}\\
     & \grambar &\symbolUNDERSCOREexpression*{} \modifier*{}
+                \gramstar{\ATTRIBUTE*{}}
     \\
   
-  \actionUNDERSCOREexpression{}& \gramdef & \action*{}\\
-    & \grambar &\action*{} \precedence*{}\\
-    & \grambar &\precedence*{} \action*{}
+  \actionUNDERSCOREexpression{}& \gramdef & \action*{} \gramstar{\ATTRIBUTE*{}}\\
+    & \grambar &\action*{} \precedence*{} \gramstar{\ATTRIBUTE*{}}\\
+    & \grambar &\precedence*{} \action*{} \gramstar{\ATTRIBUTE*{}}
     \\
   
   \action{}& \gramdef & \ACTION*{}\\
@@ -491,11 +493,12 @@
   ;;
   \symbolUNDERSCOREexpression{} : ::= \ident*{}
                                       \gramfunc{\parameters{}(\expression*{})}
-    | \symbolUNDERSCOREexpression*{} \modifier*{}
+                                      \gramstar{\ATTRIBUTE*{}}
+    | \symbolUNDERSCOREexpression*{} \modifier*{} \gramstar{\ATTRIBUTE*{}}
   ;;
-  \actionUNDERSCOREexpression{} : ::= \action*{}
-    | \action*{} \precedence*{}
-    | \precedence*{} \action*{}
+  \actionUNDERSCOREexpression{} : ::= \action*{} \gramstar{\ATTRIBUTE*{}}
+    | \action*{} \precedence*{} \gramstar{\ATTRIBUTE*{}}
+    | \precedence*{} \action*{} \gramstar{\ATTRIBUTE*{}}
   ;;
   \action{} : ::= \ACTION*{}
     | \POINTFREEACTION*{}
@@ -660,11 +663,14 @@
   
   <\symbolUNDERSCOREexpression{}> \gramdef{} \ident*{}
                                              \gramfunc{\parameters{}(\expression*{})}
+                                             \gramstar{\ATTRIBUTE*{}}
     \grambar \symbolUNDERSCOREexpression*{} \modifier*{}
+             \gramstar{\ATTRIBUTE*{}}
   
   <\actionUNDERSCOREexpression{}> \gramdef{} \action*{}
-    \grambar \action*{} \precedence*{}
-    \grambar \precedence*{} \action*{}
+                                             \gramstar{\ATTRIBUTE*{}}
+    \grambar \action*{} \precedence*{} \gramstar{\ATTRIBUTE*{}}
+    \grambar \precedence*{} \action*{} \gramstar{\ATTRIBUTE*{}}
   
   <\action{}> \gramdef{} \ACTION*{}
     \grambar \POINTFREEACTION*{}
@@ -820,11 +826,14 @@
     \grambar \symbolUNDERSCOREexpression*{}\\
     \grambar \actionUNDERSCOREexpression*{}}\\
   \gramprod{\symbolUNDERSCOREexpression{}}{\ident*{}\gramsp
-                                           \gramfunc{\parameters{}(\expression*{})}\\
-    \grambar \symbolUNDERSCOREexpression*{}\gramsp \modifier*{}}\\
-  \gramprod{\actionUNDERSCOREexpression{}}{\action*{}\\
-    \grambar \action*{}\gramsp \precedence*{}\\
-    \grambar \precedence*{}\gramsp \action*{}}\\
+                                           \gramfunc{\parameters{}(\expression*{})}\gramsp
+                                           \gramstar{\ATTRIBUTE*{}}\\
+    \grambar \symbolUNDERSCOREexpression*{}\gramsp \modifier*{}\gramsp
+             \gramstar{\ATTRIBUTE*{}}}\\
+  \gramprod{\actionUNDERSCOREexpression{}}{\action*{}\gramsp
+                                           \gramstar{\ATTRIBUTE*{}}\\
+    \grambar \action*{}\gramsp \precedence*{}\gramsp \gramstar{\ATTRIBUTE*{}}\\
+    \grambar \precedence*{}\gramsp \action*{}\gramsp \gramstar{\ATTRIBUTE*{}}}\\
   \gramprod{\action{}}{\ACTION*{}\\
     \grambar \POINTFREEACTION*{}}\\
   \gramprod{\pattern{}}{\LID*{}\\
@@ -924,13 +933,16 @@
     \\
   
   \mysymbolUNDERSCOREexpression{}& \mygramdef & \myident*{}
-                                                \mygramfunc{\myparameters{}(\myexpression*{})}\\
+                                                \mygramfunc{\myparameters{}(\myexpression*{})}
+                                                \mygramstar{\myATTRIBUTE*{}}\\
     & \mygrambar &\mysymbolUNDERSCOREexpression*{} \mymodifier*{}
+                  \mygramstar{\myATTRIBUTE*{}}
     \\
   
-  \myactionUNDERSCOREexpression{}& \mygramdef & \myaction*{}\\
-    & \mygrambar &\myaction*{} \myprecedence*{}\\
-    & \mygrambar &\myprecedence*{} \myaction*{}
+  \myactionUNDERSCOREexpression{}& \mygramdef & \myaction*{}
+                                                \mygramstar{\myATTRIBUTE*{}}\\
+    & \mygrambar &\myaction*{} \myprecedence*{} \mygramstar{\myATTRIBUTE*{}}\\
+    & \mygrambar &\myprecedence*{} \myaction*{} \mygramstar{\myATTRIBUTE*{}}
     \\
   
   \myaction{}& \mygramdef & \myACTION*{}\\
@@ -1271,28 +1283,33 @@
         <tr class="rule">
           <th><span class="nonterminal">symbol_expression</span></th>
           <td><span class="nonterminal">ident</span>
-          <span class="nonterminal">parameters(<span class="nonterminal">expression</span>)</span></td>
+          <span class="nonterminal">parameters(<span class="nonterminal">expression</span>)</span>
+          <span class="list">ATTRIBUTE</span></td>
         </tr>
         <tr>
           <th class="bar"></th>
           <td><span class="nonterminal">symbol_expression</span>
-          <span class="nonterminal">modifier</span></td>
+          <span class="nonterminal">modifier</span>
+          <span class="list">ATTRIBUTE</span></td>
         </tr>
         
         
         <tr class="rule">
           <th><span class="nonterminal">action_expression</span></th>
-          <td><span class="nonterminal">action</span></td>
+          <td><span class="nonterminal">action</span>
+          <span class="list">ATTRIBUTE</span></td>
         </tr>
         <tr>
           <th class="bar"></th>
           <td><span class="nonterminal">action</span>
-          <span class="nonterminal">precedence</span></td>
+          <span class="nonterminal">precedence</span>
+          <span class="list">ATTRIBUTE</span></td>
         </tr>
         <tr>
           <th class="bar"></th>
           <td><span class="nonterminal">precedence</span>
-          <span class="nonterminal">action</span></td>
+          <span class="nonterminal">action</span>
+          <span class="list">ATTRIBUTE</span></td>
         </tr>
         
         
@@ -1579,28 +1596,33 @@
         <tr class="rule">
           <th>&lt;<span class="nonterminal">symbol_expression</span>&gt;&nbsp;::=&nbsp;</th>
           <td>&lt;<span class="nonterminal">ident</span>&gt;
-          &lt;<span class="nonterminal">parameters(&lt;<span class="nonterminal">expression</span>&gt;)</span>&gt;</td>
+          &lt;<span class="nonterminal">parameters(&lt;<span class="nonterminal">expression</span>&gt;)</span>&gt;
+          <span class="list">ATTRIBUTE</span><span class="list_after">*</span></td>
         </tr>
         <tr>
           <th class="bar">|&nbsp;</th>
           <td>&lt;<span class="nonterminal">symbol_expression</span>&gt;
-          &lt;<span class="nonterminal">modifier</span>&gt;</td>
+          &lt;<span class="nonterminal">modifier</span>&gt;
+          <span class="list">ATTRIBUTE</span><span class="list_after">*</span></td>
         </tr>
         
         
         <tr class="rule">
           <th>&lt;<span class="nonterminal">action_expression</span>&gt;&nbsp;::=&nbsp;</th>
-          <td>&lt;<span class="nonterminal">action</span>&gt;</td>
+          <td>&lt;<span class="nonterminal">action</span>&gt;
+          <span class="list">ATTRIBUTE</span><span class="list_after">*</span></td>
         </tr>
         <tr>
           <th class="bar">|&nbsp;</th>
           <td>&lt;<span class="nonterminal">action</span>&gt;
-          &lt;<span class="nonterminal">precedence</span>&gt;</td>
+          &lt;<span class="nonterminal">precedence</span>&gt;
+          <span class="list">ATTRIBUTE</span><span class="list_after">*</span></td>
         </tr>
         <tr>
           <th class="bar">|&nbsp;</th>
           <td>&lt;<span class="nonterminal">precedence</span>&gt;
-          &lt;<span class="nonterminal">action</span>&gt;</td>
+          &lt;<span class="nonterminal">action</span>&gt;
+          <span class="list">ATTRIBUTE</span><span class="list_after">*</span></td>
         </tr>
         
         
