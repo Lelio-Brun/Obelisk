@@ -39,6 +39,7 @@ rule main = parse
   | newline  { newline lexbuf main }
   | "(*"     { ocaml_comment lexbuf; main lexbuf }
   | "\""     { ocaml_string lexbuf; main lexbuf }
+  | "'"      { ocaml_char lexbuf; main lexbuf }
   | "%token" { token_aliases lexbuf }
   | "%%"     { prologue := false; token lexbuf }
   | eof      { EOF }
@@ -88,16 +89,26 @@ and ocaml_code = parse
   | newline { newline lexbuf ocaml_code }
   | "(*"    { ocaml_comment lexbuf; ocaml_code lexbuf }
   | "\""    { ocaml_string lexbuf; ocaml_code lexbuf }
+  | "'"     { ocaml_char lexbuf; ocaml_code lexbuf }
   | "}"     { ACTION }
   | "{"     { ignore (ocaml_code lexbuf); ocaml_code lexbuf}
   | eof     { error "Ocaml action not terminated"}
   | _       { ocaml_code lexbuf }
 
 and ocaml_string = parse
-  | newline        { newline lexbuf ocaml_string }
+  | "\\"? newline  { newline lexbuf ocaml_string }
   | "\\" _         { ocaml_string lexbuf }
   | "\""           { () }
+  | eof            { error "Ocaml string not terminated" }
   | _              { ocaml_string lexbuf }
+
+and ocaml_char = parse
+  | "\\"? newline "'"                                                 { new_line lexbuf }
+  | [^ '\\' '\''] "'"
+  | "\\" _ "'"
+  | "\\" ['0'-'9'] ['0'-'9'] ['0'-'9'] "'"
+  | "\\x" ['0'-'9' 'a'-'f' 'A'-'F'] ['0'-'9' 'a'-'f' 'A'-'F'] "'"
+  | ""                                                                { () }
 
 and pointfree_action = parse
   | whitespace* (lowercase | uppercase | '`') (identchar | '.')* whitespace* ">"
@@ -121,6 +132,8 @@ and ocaml_comment = parse
   | newline { newline lexbuf ocaml_comment  }
   | "*)"    { () }
   | "(*"    { ocaml_comment lexbuf; ocaml_comment lexbuf }
+  | "\""    { ocaml_string lexbuf; ocaml_comment lexbuf }
+  | "'"     { ocaml_char lexbuf; ocaml_comment lexbuf }
   | eof     { error "Ocaml-style comment not terminated" }
   | _       { ocaml_comment lexbuf}
 

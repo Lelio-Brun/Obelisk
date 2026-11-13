@@ -125,3 +125,21 @@
   \NewDocumentCommand\myendif{s}{\def\tmp{endif}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \myendif{}& \mygramdef & \myEND*{}\\
     & \mygrambar &\myENDIF*{}
+
+  $ cat > char-literals.mly <<'EOF'
+  > %{ let quote = '"' %}
+  > %token A
+  > %start <unit> main
+  > %%
+  > main: x { () }
+  > x:
+  >   | A { match c with '"' -> 1 | '{' -> 2 | '}' -> 3 | '\'' -> 4 | _ -> 0 }
+  >   | A A { (* "*)" '"' *) fun (l : 'a list) -> l }
+  > EOF
+  $ obelisk char-literals.mly
+  <main> ::= <x>
+  
+  <x> ::= A
+        | A A
+  
+  
