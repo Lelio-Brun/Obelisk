@@ -131,6 +131,16 @@
             pkgs.html-tidy
           ];
         };
+
+        devShells.docs = pkgs.mkShell {
+          name = "obelisk-docs-shell";
+          inputsFrom = [ self.devShells.${system}.default ];
+          packages = [
+            pkgs.imagemagick
+            pkgs.ghostscript
+            pkgs.wkhtmltopdf
+          ];
+        };
       }
     );
 }

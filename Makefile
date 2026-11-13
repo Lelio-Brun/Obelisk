@@ -26,7 +26,7 @@ publish:
 	pdflatex -interaction batchmode $<
 
 %.png: %.pdf
-	@magick convert -quiet -density 150 $< -format png $(MISC)/$@
+	@magick -quiet -density 150 $< -format png $(MISC)/$@
 	@rm -f $*.tex $< $*.aux $*.log
 
 latex: $(IMAGES:%=%.png)
