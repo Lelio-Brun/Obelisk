@@ -22,7 +22,8 @@ let alpha = (lalpha | ualpha)*
 let id_body = (alpha | digit | '_')
 let lid = lalpha id_body*
 let uid = ualpha id_body*
-let qid = ( "\"" ( [' ' - '~'] # ['"' '\\'] + ) "\"" )
+let qid_body =
+  ([^ '"' '\\' '\r' '\n'] | '\\' ['\\' '\'' '"' 't' 'b' 'r' ' '])*
 
 (* for point-free actions *)
 let lowercase = ['a'-'z' '\223'-'\246' '\248'-'\255' '_']
@@ -46,10 +47,10 @@ rule main = parse
   | _        { main lexbuf }
 
 and token_aliases = parse
- | newline                      { newline lexbuf main }
- | blank+                       { token_aliases lexbuf }
- | (uid as t) blank+ (qid as a) { Hashtbl.add tokens Re.Str.(global_replace (regexp "\"") "" a) t; token_aliases lexbuf }
- | _                            { token_aliases lexbuf }
+ | newline                                     { newline lexbuf main }
+ | blank+                                      { token_aliases lexbuf }
+ | (uid as t) blank+ '"' (qid_body as a) '"'   { Hashtbl.add tokens a t; token_aliases lexbuf }
+ | _                                           { token_aliases lexbuf }
 
 and token = parse
   | newline   { newline lexbuf token }
@@ -82,7 +83,7 @@ and token = parse
   | eof       { EOF }
   | lid as s  { LID s }
   | uid as s  { UID s }
-  | qid as s  { QID Re.Str.(global_replace (regexp "\"") "" s) }
+  | '"' (qid_body as s) '"' { QID s }
   | _ as c    { error (sprintf "illegal character %C" c) }
 
 and ocaml_code = parse

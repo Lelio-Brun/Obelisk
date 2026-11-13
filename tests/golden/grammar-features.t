@@ -161,3 +161,23 @@
   <y> ::= B
   
   
+
+  $ cat > alias-strings.mly <<'EOF'
+  > %token BACKSLASH "\\"
+  > %token QUOTE "\""
+  > %token APOSTROPHE "'"
+  > %token ARROW "→"
+  > %token A
+  > %start <unit> main
+  > %%
+  > main: A "\\" "\"" "'" "→" A {}
+  > EOF
+  $ obelisk alias-strings.mly
+  <main> ::= A '\\' '\"' ''' '→' A
+  
+  
+
+  $ obelisk -noaliases alias-strings.mly
+  <main> ::= A BACKSLASH QUOTE APOSTROPHE ARROW A
+  
+  
