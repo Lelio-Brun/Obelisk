@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -11,6 +13,7 @@
       self,
       nixpkgs,
       flake-utils,
+      treefmt-nix,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -42,8 +45,44 @@
             backnaur
           ]
         );
+
+        formatDuneFilesInPlace = pkgs.writeShellApplication {
+          name = "format-dune-files-in-place";
+          runtimeInputs = [
+            ocamlPackages.dune_3
+            pkgs.diffutils
+          ];
+          text = ''
+            for file in "$@"; do
+              formatted=$(mktemp)
+              dune format-dune-file "$file" > "$formatted"
+              if ! cmp -s "$formatted" "$file"; then
+                cat "$formatted" > "$file"
+              fi
+              rm "$formatted"
+            done
+          '';
+        };
+
+        treefmtEval = treefmt-nix.lib.evalModule pkgs {
+          programs.nixfmt.enable = true;
+          programs.ocamlformat = {
+            enable = true;
+            configFile = ./.ocamlformat;
+          };
+          settings.formatter.dune = {
+            command = pkgs.lib.getExe formatDuneFilesInPlace;
+            includes = [
+              "dune"
+              "*/dune"
+            ];
+          };
+        };
       in
       {
+        formatter = treefmtEval.config.build.wrapper;
+        checks.formatting = treefmtEval.config.build.check self;
+
         packages.default = ocamlPackages.buildDunePackage {
           pname = "obelisk";
           version = duneProjectVersion;
