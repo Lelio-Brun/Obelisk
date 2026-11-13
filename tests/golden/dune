@@ -1,0 +1,5 @@
+(cram
+ (deps %{bin:obelisk} ../../misc/reco.mly ../../src/parser.mly ../llists.mly
+   ../anonymous-nested.mly ../anonymous-param.mly ../pair-new-syntax.mly
+   ../parameterized-nonterminal.mly ../multi-token-alias-0.mly
+   ../multi-token-alias-1.mly ../multi-token-alias-2.mly ../forbid_end.mly))

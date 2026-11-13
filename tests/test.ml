@@ -23,23 +23,18 @@ let tmppkg = "tmppkg"
 let main = "main"
 
 let too_larges_for_tabular =
-  [
-    (* "fsharp.mly"; *)
-    "sysver.mly";
-    (* "ocaml.mly"; *)
-    (* "ocaml_parser_menhir.mly"; *)
-    (* "parser_raw.mly"; *)
-    (* "reason.3.3.7-reason_parser.mly"; *)
-    (* "reason_parser.mly"; *)
-    (* "verilog.mly"; *)
-  ]
+  [ "cca_cpp.mly"; "cca_fortran.mly"; "cca_verilog.mly"; "sysver.mly" ]
 
 let too_larges_for_simplebnf =
   [
+    "cca_cpp.mly";
+    "cca_fortran.mly";
+    "cca_verilog.mly";
     "coccinelle.1.0.2-parser_cocci_menhir.mly";
     "fsharp.mly";
     "ocaml.mly";
     "ocaml_parser_menhir.mly";
+    "oxcaml.mly";
     "parser_cocci_menhir.mly";
     "reason_parser.mly";
     "sysver.mly";
@@ -48,17 +43,20 @@ let too_larges_for_simplebnf =
 
 let too_larges_for_syntax =
   [
+    "cca_java.mly";
     "coccinelle.1.0.2-parser_cocci_menhir.mly";
     "fsharp.mly";
     "ocaml.mly";
     "ocaml_parser_menhir.mly";
+    "oxcaml.mly";
     "parser_cocci_menhir.mly";
     "reason.3.3.7-reason_parser.mly";
     "reason_parser.mly";
     "verilog.mly";
   ]
 
-let too_larges_for_backnaur = [ "sysver.mly" ]
+let too_larges_for_backnaur =
+  [ "cca_cpp.mly"; "cca_fortran.mly"; "cca_verilog.mly"; "sysver.mly" ]
 
 type mode = Default | Latex of latexmode | Html of htmlmode
 and latexmode = Tabular | Simplebnf | Syntax | Backnaur

@@ -102,6 +102,7 @@
             fileset = lib.fileset.unions [
               ./dune-project
               ./obelisk.opam
+              ./misc/reco.mly
               ./src
               ./tests
             ];

@@ -4,6 +4,7 @@
 (version 0.8.1)
 
 (using menhir 2.0)
+(cram enable)
 (generate_opam_files true)
 
 (source (github Lelio-Brun/obelisk))

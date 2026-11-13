@@ -1,0 +1,127 @@
+  $ obelisk ../anonymous-nested.mly
+  <id(X)> ::= X
+  
+  <foo> ::= A B
+  
+  <bar> ::= C D
+  
+  <phrase> ::= <id(<id(<foo> | <bar>)>)> <id(<foo> | <id(<bar>)>)> EOF
+  
+  
+
+  $ obelisk ebnf ../anonymous-nested.mly
+  foo ::= A B
+  
+  bar ::= C D
+  
+  phrase ::= id_0 id_2 EOF
+  
+  id_3 ::= bar
+  
+  id_1 ::= foo | bar
+  
+  id_0 ::= id_1
+  
+  id_2 ::= foo | id_3
+  
+  
+
+  $ obelisk ../anonymous-param.mly
+  <mixed_list(X, Y)> ::= (X | Y)*
+  
+  <phrase> ::= <mixed_list(A, B)> <mixed_list(C, D)> EOF
+  
+  
+
+  $ obelisk ebnf ../anonymous-param.mly
+  phrase ::= mixed_list_0 mixed_list_1 EOF
+  
+  mixed_list_0 ::= (A | B)*
+  
+  mixed_list_1 ::= (C | D)*
+  
+  
+
+  $ obelisk ../pair-new-syntax.mly
+  <pair(x, y)> ::= x y
+  
+  <fst(p)> ::= p
+  
+  <snd(p)> ::= p
+  
+  <main> ::= <pair(A, B)> <fst(<pair(A, B)>)> <snd(<pair(A, B)>)> C D EOF
+  
+  
+
+  $ obelisk -i ../pair-new-syntax.mly
+  <pair(x, y)> ::= x y
+  
+  <fst(p)> ::= p
+  
+  <snd(p)> ::= p
+  
+  <main> ::= <pair(A, B)> <fst(<pair(A, B)>)> <snd(<pair(A, B)>)> C D EOF
+  
+  
+
+  $ obelisk ../parameterized-nonterminal.mly
+  <a> ::= <b(A)>
+  
+  <b(X)> ::= <c(X)> <d>
+  
+  <d> ::= A
+  
+  <c(X)> ::= X
+  
+  
+
+  $ obelisk ebnf ../parameterized-nonterminal.mly
+  a ::= b_0
+  
+  d ::= A
+  
+  c_0 ::= A
+  
+  b_0 ::= c_0 d
+  
+  
+
+  $ obelisk ../multi-token-alias-0.mly ../multi-token-alias-1.mly ../multi-token-alias-2.mly
+  <atom> ::= '(' <term> ')'
+           | INT
+  
+  <factor> ::= <factor> '*' <atom>
+             | <factor> '/' <atom>
+             | <atom>
+  
+  <term> ::= <term> '+' <factor>
+           | <term> '-' <factor>
+           | <factor>
+  
+  
+
+  $ obelisk -noaliases ../multi-token-alias-0.mly ../multi-token-alias-1.mly ../multi-token-alias-2.mly
+  <atom> ::= LPAREN <term> RPAREN
+           | INT
+  
+  <factor> ::= <factor> MUL <atom>
+             | <factor> DIV <atom>
+             | <atom>
+  
+  <term> ::= <term> PLUS <factor>
+           | <term> MINUS <factor>
+           | <factor>
+  
+  
+
+  $ obelisk latex ../forbid_end.mly | grep -i "endif"
+  \NewDocumentCommand\zzzzzzENDIF{s}{\def\tmp{ENDIF}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\zzzzzzendif{s}{\def\tmp{endif}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \zzzzzzendif{}& \gramdef & \zzzzzzEND*{}\\
+    & \grambar &\zzzzzzENDIF*{}
+
+  $ obelisk latex -prefix my ../forbid_end.mly | grep -i "endif"
+  \NewDocumentCommand\myENDIF{s}{\def\tmp{ENDIF}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\myendif{s}{\def\tmp{endif}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
+  \myendif{}& \mygramdef & \myEND*{}\\
+    & \mygrambar &\myENDIF*{}

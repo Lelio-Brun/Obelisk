@@ -213,9 +213,7 @@ statement:
       | EOF _ | T_RCURLY _ -> statement
       | token ->
         let info = Js_token.info_of_tok token in
-        match info.Parse_info.fol with
-          | Some true -> statement
-          | _ -> $syntaxerror
+        statement
   }
 
 labeled_statement:

@@ -204,9 +204,7 @@ module_identifier:
   | MODULE sg = signature_identifier data = string CLOSE
       { Identifier.Module(sg, data) }
   | pos = Argument sg = signature_identifier data = string CLOSE
-      { match pos with
-        | None -> $syntaxerror
-        | Some pos -> Identifier.Argument(sg, pos, data) }
+      { Identifier.Argument(sg, pos, data) }
 
 module_type_identifier:
   | MODULE_TYPE sg = signature_identifier data = string CLOSE
@@ -790,9 +788,7 @@ tag:
 
 int:
 | data = Data
-    { try
-        int_of_string data
-      with Failure _ -> $syntaxerror }
+    { int_of_string data }
 
 line:
 | LINE line = int CLOSE
@@ -1122,9 +1118,7 @@ signature_item:
 
 digest:
   | DIGEST data = Data CLOSE
-      { try
-          Digest.from_hex data
-        with Invalid_argument _ -> $syntaxerror }
+      { Digest.from_hex data }
 
 unit_import:
   | IMPORT data = Data digest = digest? CLOSE

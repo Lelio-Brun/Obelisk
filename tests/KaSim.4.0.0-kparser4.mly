@@ -522,7 +522,7 @@ print_expr:
   | annot nonempty_print_expr { $2 }
   ;
 
-effect:
+effetto:
   | ASSIGN annot ID annot alg_expr
     { let (a,pend,p) = $5 in (Ast.UPDATE (($3,rhs_pos 3),a),pend,p) }
   | ASSIGN annot LABEL annot alg_expr
@@ -603,15 +603,15 @@ expecting '$DEL alg_expression kappa_expression'")) }
   ;
 
 partial_effect_list:
-  | effect SEMICOLON annot { let (e,_,_) = $1 in ([e],end_pos 2,$3) }
-  | effect { let (e,p,a) = $1 in ([e],p,a) }
-  | effect SEMICOLON annot partial_effect_list
+  | effetto SEMICOLON annot { let (e,_,_) = $1 in ([e],end_pos 2,$3) }
+  | effetto { let (e,p,a) = $1 in ([e],p,a) }
+  | effetto SEMICOLON annot partial_effect_list
     { let (e,_,_) = $1 in let (l,pend,a) = $4 in (e::l,pend,a) }
 
 effect_list:
   | OP_PAR annot partial_effect_list CL_PAR annot { $3 }
-  | effect SEMICOLON annot { let (e,_,_) = $1 in ([e],end_pos 2,$3) }
-  | effect SEMICOLON annot effect_list
+  | effetto SEMICOLON annot { let (e,_,_) = $1 in ([e],end_pos 2,$3) }
+  | effetto SEMICOLON annot effect_list
     { let (e,_,_) = $1 in let (l,pend,a) = $4 in (e::l,pend,a) }
   ;
 
@@ -683,7 +683,7 @@ model:
 interactive_command:
   | annot RUN annot SEMICOLON { Ast.RUN (Locality.dummy_annot Alg_expr.FALSE) }
   | annot RUN annot bool_expr SEMICOLON { let (pause,_,_) = $4 in Ast.RUN pause }
-  | annot effect SEMICOLON { let (eff,_,_) = $2 in Ast.MODIFY [eff] }
+  | annot effetto SEMICOLON { let (eff,_,_) = $2 in Ast.MODIFY [eff] }
   | annot EOF { Ast.QUIT }
   | error
     { raise (ExceptionDefn.Syntax_Error (add_pos 1 "Unrecognized command")) }

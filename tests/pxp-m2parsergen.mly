@@ -19,7 +19,7 @@
 %token Comma
 %token Colon
 %token <string * int * int> Code
-%token Error
+%token ERROR
 %token Alt
 %token Loop_plus
 %token Loop_star
@@ -122,7 +122,7 @@ pattern:
 	pat_modifier = Repetition;
       }
     }
-| symbol Error
+| symbol ERROR
     { { pat_symbol = $1;
 	pat_modifier = Option;
       }
@@ -161,7 +161,7 @@ comma_actual_arguments:
     { $2 :: $3 }
 
 opt_error_handler:
-  Error Code
+  ERROR Code
     { Some $2 }
 |
     { None }
