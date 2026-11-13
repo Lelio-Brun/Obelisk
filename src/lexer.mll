@@ -141,6 +141,10 @@ and attribute = parse
   | newline { newline lexbuf attribute }
   | "]"     { ATTRIBUTE }
   | "["     { ignore (attribute lexbuf); attribute lexbuf }
+  | "{"     { ignore (ocaml_code lexbuf); attribute lexbuf }
+  | "\""    { ocaml_string lexbuf; attribute lexbuf }
+  | "'"     { ocaml_char lexbuf; attribute lexbuf }
+  | "(*"    { ocaml_comment lexbuf; attribute lexbuf }
   | eof     { error "Attribute not terminated" }
   | _       { attribute lexbuf }
 

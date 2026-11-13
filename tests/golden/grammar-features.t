@@ -143,3 +143,21 @@
         | A A
   
   
+
+  $ cat > attribute-payloads.mly <<'EOF'
+  > %token A B
+  > %start <unit> main
+  > %%
+  > main [@rule "]"]:
+  >   x [@string "]"] y [@char ']'] { () } [@comment (* ] *)] [@braces { ] }]
+  > x: A {}
+  > y: B {}
+  > EOF
+  $ obelisk attribute-payloads.mly
+  <main> ::= <x> <y>
+  
+  <x> ::= A
+  
+  <y> ::= B
+  
+  
