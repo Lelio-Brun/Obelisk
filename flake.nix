@@ -19,17 +19,25 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        lib = pkgs.lib;
         ocamlPackages = pkgs.ocamlPackages;
 
-        duneProjectVersion = builtins.head (
-          builtins.head (
-            builtins.filter (match: match != null) (
-              map (builtins.match "\\(version ([^)]+)\\)") (
-                pkgs.lib.splitString "\n" (builtins.readFile ./dune-project)
-              )
-            )
-          )
-        );
+        captureFromFirstMatchingLine =
+          regex: file:
+          let
+            matches = builtins.filter (match: match != null) (
+              map (builtins.match regex) (lib.splitString "\n" (builtins.readFile file))
+            );
+          in
+          if matches == [ ] then
+            throw "no line of ${toString file} matches ${regex}"
+          else
+            builtins.head (builtins.head matches);
+
+        duneProjectVersion = captureFromFirstMatchingLine "\\(version ([^)]+)\\)" ./dune-project;
+
+        ocamlformatVersion = captureFromFirstMatchingLine "version *= *([^ ]+) *" ./.ocamlformat;
+        ocamlformat = pkgs."ocamlformat_${lib.replaceStrings [ "." ] [ "_" ] ocamlformatVersion}";
 
         latexTestDeps = pkgs.texliveSmall.withPackages (
           ps: with ps; [
@@ -68,10 +76,10 @@
           programs.nixfmt.enable = true;
           programs.ocamlformat = {
             enable = true;
-            configFile = ./.ocamlformat;
+            package = ocamlformat;
           };
           settings.formatter.dune = {
-            command = pkgs.lib.getExe formatDuneFilesInPlace;
+            command = lib.getExe formatDuneFilesInPlace;
             includes = [
               "dune"
               "*/dune"
@@ -81,17 +89,32 @@
       in
       {
         formatter = treefmtEval.config.build.wrapper;
-        checks.formatting = treefmtEval.config.build.check self;
+        checks = {
+          formatting = treefmtEval.config.build.check self;
+          package = self.packages.${system}.default;
+        };
 
         packages.default = ocamlPackages.buildDunePackage {
           pname = "obelisk";
           version = duneProjectVersion;
-          src = ./.;
+          src = lib.fileset.toSource {
+            root = ./.;
+            fileset = lib.fileset.unions [
+              ./dune-project
+              ./obelisk.opam
+              ./src
+              ./tests
+            ];
+          };
 
           strictDeps = true;
 
           nativeBuildInputs = [ ocamlPackages.menhir ];
           buildInputs = [ ocamlPackages.re ];
+
+          doCheck = true;
+
+          meta.mainProgram = "obelisk";
         };
 
         devShells.default = pkgs.mkShell {
@@ -100,7 +123,7 @@
           packages = [
             ocamlPackages.ocaml-lsp
             ocamlPackages.merlin
-            ocamlPackages.ocamlformat
+            ocamlformat
             ocamlPackages.ocp-indent
             ocamlPackages.utop
             latexTestDeps
