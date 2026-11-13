@@ -4,19 +4,14 @@ open ExtendedAst
 open Common
 open List
 
-(** Transform an actual.
-    Note that the anonymous rules are transformed with the help
-    of {!transform_group}. *)
+(** Transform an actual. Note that the anonymous rules are transformed with the
+    help of {!transform_group}. *)
 let rec transform_actual symbols = function
-  | Ast.Symbol (s, xs) ->
-    transform_symbol symbols s xs
-  | Ast.Modifier (x, m) ->
-    transform_modifier symbols x m
-  | Ast.Anonymous gs ->
-    let gs = map (transform_group symbols) gs in
-    match gs with
-    | [[ a ]] -> a
-    | _ -> Anonymous gs
+  | Ast.Symbol (s, xs) -> transform_symbol symbols s xs
+  | Ast.Modifier (x, m) -> transform_modifier symbols x m
+  | Ast.Anonymous gs -> (
+      let gs = map (transform_group symbols) gs in
+      match gs with [ [ a ] ] -> a | _ -> Anonymous gs)
 
 (** Transform all non defined symbols (see {!Common.Symbols.is_defined})
     corresponding to Menhir standard library symbols ([list], [pair], [option],
@@ -26,59 +21,37 @@ and transform_symbol symbols s xs =
   match Symbols.is_defined s symbols with
   | Some _ -> Symbol (s, xs)
   | None ->
-    begin match s, xs with
-      | ("endrule" | "midrule"), [x] ->
-        x
-
-      | ("option" | "ioption" | "boption" | "loption"), [x] ->
-        Pattern (Option x)
-
-      | "pair", [x; y] ->
-        Pattern (Pair (x, y))
-      | "separated_pair", [x; sep; y] ->
-        Pattern (SepPair (x, sep, y))
-      | "preceded", [o; x] ->
-        Pattern (Preceded (o, x))
-      | "terminated", [x; c] ->
-        Pattern (Terminated (x, c))
-      | "delimited", [o; x; c] ->
-        Pattern (Delimited (o, x, c))
-
-      | "list", [x] ->
-        Pattern (List x)
-      | "nonempty_list", [x] ->
-        Pattern (NEList x)
-      | "separated_list", [sep; x] ->
-        Pattern (SepList (sep, x))
-      | "separated_nonempty_list", [sep; x] ->
-        Pattern (SepNEList (sep, x))
-
-      | ("rev" | "flatten"), [x] ->
-        x
-      | "append", [x; y] ->
-        Pattern (Pair (x, y))
-
-      | _, _ ->
-        Symbol (s, xs)
-    end
+      begin match (s, xs) with
+      | ("endrule" | "midrule"), [ x ] -> x
+      | ("option" | "ioption" | "boption" | "loption"), [ x ] ->
+          Pattern (Option x)
+      | "pair", [ x; y ] -> Pattern (Pair (x, y))
+      | "separated_pair", [ x; sep; y ] -> Pattern (SepPair (x, sep, y))
+      | "preceded", [ o; x ] -> Pattern (Preceded (o, x))
+      | "terminated", [ x; c ] -> Pattern (Terminated (x, c))
+      | "delimited", [ o; x; c ] -> Pattern (Delimited (o, x, c))
+      | "list", [ x ] -> Pattern (List x)
+      | "nonempty_list", [ x ] -> Pattern (NEList x)
+      | "separated_list", [ sep; x ] -> Pattern (SepList (sep, x))
+      | "separated_nonempty_list", [ sep; x ] -> Pattern (SepNEList (sep, x))
+      | ("rev" | "flatten"), [ x ] -> x
+      | "append", [ x; y ] -> Pattern (Pair (x, y))
+      | _, _ -> Symbol (s, xs)
+      end
 
 (** Transform a "modified" actual. *)
 and transform_modifier symbols x m =
   let x = transform_actual symbols x in
-  let m = match m with
-    | Ast.Opt -> Opt
-    | Ast.Plus -> Plus
-    | Ast.Star -> Star
-  in
+  let m = match m with Ast.Opt -> Opt | Ast.Plus -> Plus | Ast.Star -> Star in
   Modifier (x, m)
 
 (** Transform a production by transforming its actuals. *)
 and transform_production symbols = map (transform_actual symbols)
 
-(** Transform a supposed singleton group by returning the transformation of
-    its unique production. *)
+(** Transform a supposed singleton group by returning the transformation of its
+    unique production. *)
 and transform_group symbols = function
-  | [p] -> transform_production symbols p
+  | [ p ] -> transform_production symbols p
   | _ -> assert false
 
 (** Transform a rule by transforming its groups into productions. *)

@@ -1,4 +1,4 @@
-(** Some common facilities.  *)
+(** Some common facilities. *)
 
 (** Find a rule by its left-hand side (name) in the grammar. *)
 let find_rule r rules =
@@ -7,64 +7,59 @@ let find_rule r rules =
 
 (** The signature for the set of symbols appearing in a grammar. *)
 module type SYMBOLS = sig
-  (** The set of symbols. *)
   type t
+  (** The set of symbols. *)
 
-  (** The empty set.  *)
-  val empty: t
+  val empty : t
+  (** The empty set. *)
 
+  val def_term : string -> t -> t
   (** Add a terminal to the symbols. *)
-  val def_term: string -> t -> t
 
+  val def_non_term : string -> t -> t
   (** Add a non terminal to the symbols *)
-  val def_non_term: string -> t -> t
 
-  (** Add a functional non terminal along with
-      its parameters to the symbols.  *)
-  val def_fun: string -> string list -> t -> t
+  val def_fun : string -> string list -> t -> t
+  (** Add a functional non terminal along with its parameters to the symbols. *)
 
-  (** Get the list of terminals.  *)
-  val terminals: t -> string list
+  val terminals : t -> string list
+  (** Get the list of terminals. *)
 
-  (** Get the list of non terminals.  *)
-  val non_terminals: t -> string list
+  val non_terminals : t -> string list
+  (** Get the list of non terminals. *)
 
-  (** Get the list of functional non terminals.  *)
-  val functionals: t -> (string * string list) list
+  val functionals : t -> (string * string list) list
+  (** Get the list of functional non terminals. *)
 
+  val defined : t -> (string * string list) list
   (** Get the list of "defined" symbols, that is both non terminals and
       functional non terminals. *)
-  val defined: t -> (string * string list) list
 
+  val is_term : string -> t -> bool
   (** Test if the given symbol is a terminal. *)
-  val is_term: string -> t -> bool
 
-  (** Test if the given symbol is a non terminal.  *)
-  val is_non_term: string -> t -> bool
+  val is_non_term : string -> t -> bool
+  (** Test if the given symbol is a non terminal. *)
 
-  (** Test if the given symbol is "defined" and returns its parameters.
-      See {!defined}. *)
-  val is_defined: string -> t -> string list option
+  val is_defined : string -> t -> string list option
+  (** Test if the given symbol is "defined" and returns its parameters. See
+      {!defined}. *)
 
+  val is_symbol : string -> t -> bool
   (** Test if the given symbol actually appears as a symbol. *)
-  val is_symbol: string -> t -> bool
-
 end
 
-(** The actual implementation for the set of symbols, see {!SYMBOLS}.  *)
+(** The actual implementation for the set of symbols, see {!SYMBOLS}. *)
 module Symbols : SYMBOLS = struct
+  (** The set of symbols is implemented by a map from identifiers to {!symbols}
+  *)
 
-  (** The set of symbols is implemented by a map
-      from identifiers to {!symbols} *)
+  module M = Map.Make (String)
 
-  module M = Map.Make(String)
   type t = symbol M.t
-  and symbol =
-    | Terminal
-    | NonTerminal
-    | Fun of string list
+  and symbol = Terminal | NonTerminal | Fun of string list
 
-  (** See {!SYMBOLS.empty}.  *)
+  (** See {!SYMBOLS.empty}. *)
   let empty = M.empty
 
   (** An internal helper to add a symbol. *)
@@ -81,54 +76,57 @@ module Symbols : SYMBOLS = struct
 
   (** See {!SYMBOLS.terminals}. *)
   let terminals m =
-    List.(filter_map (function s, Terminal -> Some s | _ -> None)
-      (M.bindings m))
+    List.(
+      filter_map (function s, Terminal -> Some s | _ -> None) (M.bindings m))
 
   (** See {!SYMBOLS.non_terminals}. *)
   let non_terminals m =
-    List.(filter_map (function s, NonTerminal -> Some s | _ -> None)
-      (M.bindings m))
+    List.(
+      filter_map
+        (function s, NonTerminal -> Some s | _ -> None)
+        (M.bindings m))
 
- (** See {!SYMBOLS.functionals}. *)
+  (** See {!SYMBOLS.functionals}. *)
   let functionals m =
-    List.(filter_map (function s, Fun xs -> Some (s, xs) | _ -> None)
+    List.(
+      filter_map
+        (function s, Fun xs -> Some (s, xs) | _ -> None)
         (M.bindings m))
 
   (** See {!SYMBOLS.defined}. *)
   let defined m =
-    List.(filter_map (function
-      | _, Terminal -> None
-      | s, NonTerminal -> Some (s, [])
-      | s, Fun xs -> Some (s, xs))
-    (M.bindings m))
+    List.(
+      filter_map
+        (function
+          | _, Terminal -> None
+          | s, NonTerminal -> Some (s, [])
+          | s, Fun xs -> Some (s, xs))
+        (M.bindings m))
 
   (** See {!SYMBOLS.is_term}. *)
   let is_term x m =
-    try begin match M.find x m with
-      | Terminal -> true
-      | _ -> false
-    end
+    try
+      begin match M.find x m with Terminal -> true | _ -> false
+      end
     with Not_found -> false
 
   (** See {!SYMBOLS.is_non_term}. *)
   let is_non_term x m =
-    try begin match M.find x m with
-      | NonTerminal -> true
-      | _ -> false
-    end
+    try
+      begin match M.find x m with NonTerminal -> true | _ -> false
+      end
     with Not_found -> false
 
   (** See {!SYMBOLS.is_defined}. *)
   let is_defined x m =
-    try begin match M.find x m with
+    try
+      begin match M.find x m with
       | NonTerminal -> Some []
       | Fun xs -> Some xs
       | _ -> None
-    end
+      end
     with Not_found -> None
 
   (** See {!SYMBOLS.is_symbol}. *)
-  let is_symbol x m =
-    M.mem x m
-
+  let is_symbol x m = M.mem x m
 end

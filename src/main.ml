@@ -5,30 +5,33 @@
     The resulting grammar is scanned ({!Scan}) to get back the symbols then
     normalized ({!Normalize}) and transformed ({!Transform}) to a simpler form.
     Finally, after an optional pass of pattern-recognition ({!Reduce}) it is
-    printed ({!Printers}).  *)
+    printed ({!Printers}). *)
 
 open List
 open Position
 open Format
 open Options
 
-(** @return the lexer buffers, a printer chosen from the according passed
-    options and a function to finally close the input and output channels.*)
+(** @return
+      the lexer buffers, a printer chosen from the according passed options and
+      a function to finally close the input and output channels.*)
 let get () =
   parse_opt ();
   try
     if !ifiles = [] then error ();
     let outf = if !ofile = "" then stdout else open_out !ofile in
     let formatter = formatter_of_out_channel outf in
-    let formatter', close_package = match !pfile with
-      | "" -> formatter, fun () -> ()
+    let formatter', close_package =
+      match !pfile with
+      | "" -> (formatter, fun () -> ())
       | pkg ->
-        if !ofile = "" then error ();
-        let f = open_out (pkg ^ ".sty") in
-        formatter_of_out_channel f, fun () -> close_out f
+          if !ofile = "" then error ();
+          let f = open_out (pkg ^ ".sty") in
+          (formatter_of_out_channel f, fun () -> close_out f)
     in
     formatter_package := formatter';
-    let p = match !mode with
+    let p =
+      match !mode with
       | Plain Default -> (module Printers.Default : GenericPrinter.PRINTER)
       | Plain EBNF -> (module Printers.Ebnf)
       | Latex Tabular -> (module Printers.LatexTabular)
@@ -38,43 +41,44 @@ let get () =
       | Html CSS -> (module Printers.HtmlCss)
       | Html NoCSS -> (module Printers.Html)
     in
-    let module P = (val p: GenericPrinter.PRINTER) in
+    let module P = (val p : GenericPrinter.PRINTER) in
     let print symbols = P.print_spec symbols formatter in
     let files = rev !ifiles in
     let infs = map open_in files in
     let lexbufs = map Lexing.from_channel infs in
-    let close () = iter close_in infs; close_out outf; close_package () in
-    combine files lexbufs, print, close
+    let close () =
+      iter close_in infs;
+      close_out outf;
+      close_package ()
+    in
+    (combine files lexbufs, print, close)
   with Sys_error s ->
     eprintf "System Error: %s@." s;
     exit 1
 
-(** @return the obtained grammars per input file / lexer buffer.  *)
-let parse (_, lexbuf as fl) =
+(** @return the obtained grammars per input file / lexer buffer. *)
+let parse ((_, lexbuf) as fl) =
   try
     Lexer.init ();
     Parser.specification Lexer.lexer lexbuf
   with
   | Lexer.LexingError s ->
-    err_loc_lexbuf fl (sprintf "Lexing Error: %s" s);
-    exit 1
+      err_loc_lexbuf fl (sprintf "Lexing Error: %s" s);
+      exit 1
   | Parser.Error ->
-    err_loc_lexbuf fl "Parsing Error";
-    exit 1
+      err_loc_lexbuf fl "Parsing Error";
+      exit 1
 
 let () =
   let lexbufs, print, close = get () in
   try
     let s = map parse lexbufs |> concat in
     let symbols = Scan.scan s in
-    s
-    |> Normalize.normalize
+    s |> Normalize.normalize
     |> Transform.transform symbols
     |> (if !mode = Plain EBNF then Specialize.specialize symbols else fun s -> s)
-    |> Reduce.reduce !inline
-    |> print symbols;
+    |> Reduce.reduce !inline |> print symbols;
     close ()
-  with
-  | Sys_error s ->
+  with Sys_error s ->
     eprintf "System Error: %s@." s;
     exit 1
