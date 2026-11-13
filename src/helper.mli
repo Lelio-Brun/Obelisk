@@ -69,8 +69,8 @@ val prod_bar : formatter -> unit
 val bar : formatter -> unit
 (** The bar for the anonymous rules. *)
 
-(* (\** The optionally parenthesizing function. *\)
- * val par: bool -> (unit -> unit) -> unit *)
+val par : bool -> (formatter -> unit) -> formatter -> unit
+(** To print a possibly parenthesized group of alternatives. *)
 
 val space : formatter -> unit
 (** The space. *)

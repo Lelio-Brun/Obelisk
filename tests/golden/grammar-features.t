@@ -212,3 +212,29 @@
            | BAR
   
   
+
+  $ cat > grouped-alternatives.mly <<'EOF'
+  > %token A B C D E
+  > %start <unit> main
+  > %%
+  > main:
+  >   | A endrule(B {} | C {}) D { () }
+  >   | midrule(B {} | C {}) { () }
+  >   | pair(endrule(A {} | B {}), C) { () }
+  >   | list(endrule(D {} | E {})) { () }
+  > EOF
+  $ obelisk grouped-alternatives.mly
+  <main> ::= A (B | C) D
+           | B | C
+           | (A | B) C
+           | (D | E)*
+  
+  
+
+  $ obelisk ebnf grouped-alternatives.mly
+  main ::= A (B | C) D
+         | B | C
+         | (A | B) C
+         | (D | E)*
+  
+  

@@ -131,6 +131,9 @@ let end_document fmt =
 
 let print_footer = end_document
 
+let par e print fmt =
+  if e then fprintf fmt "\\%sgramparen{%t}" (pre ()) print else print fmt
+
 let opt, plus, star =
   let cmd s e print fmt =
     fprintf fmt "\\%s%s%s{%t}" (pre ()) s (if e then "*" else "") print

@@ -41,6 +41,13 @@ module Make (H : HELPER) : PRINTER = struct
         false
     | _ -> true
 
+  (** [is_alternation a] decides if the actual [a] is an anonymous rule with
+      several alternatives. *)
+  let rec is_alternation = function
+    | Anonymous [ [ a ] ] -> is_alternation a
+    | Anonymous (_ :: _ :: _) -> true
+    | _ -> false
+
   (** Print a production by first calling {!val:Helper.production_begin} then
       printing the actuals and finally calling {!val:Helper.production_end}. *)
   let rec print_production symbols fmt actuals =
@@ -51,7 +58,12 @@ module Make (H : HELPER) : PRINTER = struct
       {!val:Helper.eps} is printed. *)
   and print_actuals symbols fmt = function
     | [] -> fprintf fmt "%t" H.eps
-    | xs -> print_sep (print_actual symbols) H.space fmt xs
+    | [ x ] -> print_actual symbols fmt x
+    | xs -> print_sep (print_actual_in_sequence symbols) H.space fmt xs
+
+  (** Print an actual that is next to other actuals in a sequence. *)
+  and print_actual_in_sequence symbols fmt a =
+    H.par (is_alternation a) (fun fmt -> print_actual symbols fmt a) fmt
 
   (** Print an actual. *)
   and print_actual symbols fmt = function
@@ -80,8 +92,8 @@ module Make (H : HELPER) : PRINTER = struct
       - [separated_list(sep, x)] and [separated_nonempty_list(sep, x)] are
         modularly printed, see {!val:Helper.print_sep_list} *)
   and print_pattern symbols fmt =
-    let print = print_actual symbols in
-    let print' x fmt = print fmt x in
+    let print = print_actual_in_sequence symbols in
+    let print' x fmt = print_actual symbols fmt x in
     function
     | Option x -> H.opt (is_not_atom x) (print' x) fmt
     | Pair (x, y) -> fprintf fmt "%a%t%a" print x print_space print y
