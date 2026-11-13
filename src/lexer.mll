@@ -47,16 +47,26 @@ rule main = parse
   | _        { main lexbuf }
 
 and token_aliases = parse
- | newline                                     { newline lexbuf main }
+ | newline                                     { newline lexbuf token_aliases }
  | blank+                                      { token_aliases lexbuf }
- | (uid as t) blank+ '"' (qid_body as a) '"'   { Hashtbl.add tokens a t; token_aliases lexbuf }
+ | (uid as t) blank* '"' (qid_body as a) '"'   { Hashtbl.add tokens a t; token_aliases lexbuf }
+ | "(*"                                        { ocaml_comment lexbuf; token_aliases lexbuf }
+ | "/*"                                        { c_comment lexbuf; token_aliases lexbuf }
+ | "//" [^ '\r' '\n']*                         { token_aliases lexbuf }
+ | "\""                                        { ocaml_string lexbuf; token_aliases lexbuf }
+ | "'"                                         { ocaml_char lexbuf; token_aliases lexbuf }
+ | "[@"                                        { ignore (attribute lexbuf); token_aliases lexbuf }
+ | "%token"                                    { token_aliases lexbuf }
+ | "%%"                                        { prologue := false; token lexbuf }
+ | "%"                                         { main lexbuf }
+ | eof                                         { EOF }
  | _                                           { token_aliases lexbuf }
 
 and token = parse
   | newline   { newline lexbuf token }
   | "%%"      { EOF }
   | blank+    { token lexbuf }
-  | "/*"      { c_comment lexbuf }
+  | "/*"      { c_comment lexbuf; token lexbuf }
   | "//"      { cpp_comment lexbuf }
   | "(*"      { ocaml_comment lexbuf; token lexbuf }
   | "{"       { ocaml_code lexbuf }
@@ -120,7 +130,7 @@ and pointfree_action = parse
 
 and c_comment = parse
   | newline { newline lexbuf c_comment  }
-  | "*/"    { token lexbuf }
+  | "*/"    { () }
   | eof     { error "C-style comment not terminated" }
   | _       { c_comment lexbuf}
 

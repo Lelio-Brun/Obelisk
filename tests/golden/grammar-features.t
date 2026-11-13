@@ -181,3 +181,17 @@
   <main> ::= A BACKSLASH QUOTE APOSTROPHE ARROW A
   
   
+
+  $ cat > multi-line-token-aliases.mly <<'EOF'
+  > %token
+  >   PLUS "+" MINUS "-"
+  >   TIMES"*"
+  > %token <int> INT
+  > %start <int> main
+  > %%
+  > main: INT "+" INT "-" INT "*" INT { 0 }
+  > EOF
+  $ obelisk -noaliases multi-line-token-aliases.mly
+  <main> ::= INT PLUS INT MINUS INT TIMES INT
+  
+  
