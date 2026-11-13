@@ -88,6 +88,7 @@ and token = parse
   | "%public" { PUBLIC }
   | "%inline" { INLINE }
   | "%prec"   { PREC }
+  | "%merge"  { MERGE }
   | "let"     { LET }
   | "[@"      { attribute lexbuf }
   | eof       { EOF }

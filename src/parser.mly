@@ -1,6 +1,7 @@
 %{ open Ast %}
 
 %token PUBLIC INLINE PREC LET
+%token MERGE
 %token LPAR RPAR BAR COLON EQ COLONEQ EQEQ SEMICOLON COMMA
 %token OPT PLUS STAR
 %token TILDE UNDERSCORE
@@ -33,7 +34,8 @@ rule:
 
 old_rule:
   flags? name=ident ATTRIBUTE* params=parameters(ident) COLON
-  optional_bar groups=separated_nonempty_list(BAR, group) SEMICOLON*
+  optional_bar groups=separated_nonempty_list(BAR, group) merge_function?
+  SEMICOLON*
   { { name; params; groups } }
 
 flags:
@@ -109,7 +111,7 @@ lax_actual:
 
 let new_rule :=
   PUBLIC?; LET; name=LID; ATTRIBUTE*; params=parameters(ident);
-  binder; es=expression;
+  binder; es=expression; merge_function?;
   { { name; params; groups = [es] } }
 
 let binder == COLONEQ | EQEQ
@@ -142,6 +144,9 @@ let pattern :=
   | OPT  { Opt }
   | PLUS { Plus }
   | STAR { Star }
+
+%inline merge_function:
+  MERGE ACTION { () }
 
 %inline precedence:
   PREC ident { () }

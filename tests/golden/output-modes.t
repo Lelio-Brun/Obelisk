@@ -5,7 +5,8 @@
            | <new_rule>
   
   <old_rule> ::= [<flags>] <ident> ATTRIBUTE* <parameters(<ident>)> COLON
-                 <optional_bar> <group> (BAR <group>)* SEMICOLON*
+                 <optional_bar> <group> (BAR <group>)* [<merge_function>]
+                 SEMICOLON*
   
   <flags> ::= PUBLIC
             | INLINE
@@ -29,7 +30,7 @@
                  | <group> (BAR <group>)*
   
   <new_rule> ::= [PUBLIC] LET LID ATTRIBUTE* <parameters(<ident>)> <binder>
-                 <expression>
+                 <expression> [<merge_function>]
   
   <binder> ::= COLONEQ
              | EQEQ
@@ -60,6 +61,8 @@
                | PLUS
                | STAR
   
+  <merge_function> ::= MERGE ACTION
+  
   <precedence> ::= PREC <ident>
   
   <parameters(X)> ::= [LPAR [X (COMMA X)*] RPAR]
@@ -77,7 +80,7 @@
          | new_rule
   
   old_rule ::= flags? ident ATTRIBUTE* parameters_0 COLON optional_bar group
-               (BAR group)* SEMICOLON*
+               (BAR group)* merge_function? SEMICOLON*
   
   flags ::= PUBLIC
           | INLINE
@@ -98,6 +101,7 @@
                | group (BAR group)*
   
   new_rule ::= PUBLIC? LET LID ATTRIBUTE* parameters_0 binder expression
+               merge_function?
   
   binder ::= COLONEQ
            | EQEQ
@@ -126,6 +130,8 @@
   modifier ::= OPT
              | PLUS
              | STAR
+  
+  merge_function ::= MERGE ACTION
   
   precedence ::= PREC ident
   
@@ -188,6 +194,7 @@
   \NewDocumentCommand\LET{s}{\def\tmp{LET}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LID{s}{\def\tmp{LID}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LPAR{s}{\def\tmp{LPAR}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\MERGE{s}{\def\tmp{MERGE}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\OPT{s}{\def\tmp{OPT}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\PLUS{s}{\def\tmp{PLUS}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\POINTFREEACTION{s}{\def\tmp{POINTFREEACTION}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
@@ -209,6 +216,7 @@
   \NewDocumentCommand\group{s}{\def\tmp{group}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\ident{s}{\def\tmp{ident}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\laxUNDERSCOREactual{s}{\def\tmp{lax\_actual}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\mergeUNDERSCOREfunction{s}{\def\tmp{merge\_function}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\modifier{s}{\def\tmp{modifier}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\newUNDERSCORErule{s}{\def\tmp{new\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\oldUNDERSCORErule{s}{\def\tmp{old\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
@@ -246,6 +254,7 @@
                                    \gramfunc{\parameters{}(\ident*{})}
                                    \COLON*{} \optionalUNDERSCOREbar*{}
                                    \gramsepnelist{\BAR*{}}{\group*{}}
+                                   \gramopt{\mergeUNDERSCOREfunction*{}}
                                    \gramstar{\SEMICOLON*{}}
     \\
   
@@ -287,6 +296,7 @@
                                    \gramstar{\ATTRIBUTE*{}}
                                    \gramfunc{\parameters{}(\ident*{})}
                                    \binder*{} \expression*{}
+                                   \gramopt{\mergeUNDERSCOREfunction*{}}
     \\
   
   \binder{}& \gramdef & \COLONEQ*{}\\
@@ -330,6 +340,9 @@
   \modifier{}& \gramdef & \OPT*{}\\
     & \grambar &\PLUS*{}\\
     & \grambar &\STAR*{}
+    \\
+  
+  \mergeUNDERSCOREfunction{}& \gramdef & \MERGE*{} \ACTION*{}
     \\
   
   \precedence{}& \gramdef & \PREC*{} \ident*{}
@@ -391,6 +404,7 @@
   \NewDocumentCommand\LET{s}{\def\tmp{LET}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LID{s}{\def\tmp{LID}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LPAR{s}{\def\tmp{LPAR}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\MERGE{s}{\def\tmp{MERGE}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\OPT{s}{\def\tmp{OPT}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\PLUS{s}{\def\tmp{PLUS}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\POINTFREEACTION{s}{\def\tmp{POINTFREEACTION}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
@@ -412,6 +426,7 @@
   \NewDocumentCommand\group{s}{\def\tmp{group}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\ident{s}{\def\tmp{ident}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\laxUNDERSCOREactual{s}{\def\tmp{lax\_actual}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\mergeUNDERSCOREfunction{s}{\def\tmp{merge\_function}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\modifier{s}{\def\tmp{modifier}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\newUNDERSCORErule{s}{\def\tmp{new\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\oldUNDERSCORErule{s}{\def\tmp{old\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
@@ -447,6 +462,7 @@
                              \gramfunc{\parameters{}(\ident*{})} \COLON*{}
                              \optionalUNDERSCOREbar*{}
                              \gramsepnelist{\BAR*{}}{\group*{}}
+                             \gramopt{\mergeUNDERSCOREfunction*{}}
                              \gramstar{\SEMICOLON*{}}
   ;;
   \flags{} : ::= \PUBLIC*{}
@@ -478,6 +494,7 @@
                              \gramstar{\ATTRIBUTE*{}}
                              \gramfunc{\parameters{}(\ident*{})} \binder*{}
                              \expression*{}
+                             \gramopt{\mergeUNDERSCOREfunction*{}}
   ;;
   \binder{} : ::= \COLONEQ*{}
     | \EQEQ*{}
@@ -511,6 +528,8 @@
   \modifier{} : ::= \OPT*{}
     | \PLUS*{}
     | \STAR*{}
+  ;;
+  \mergeUNDERSCOREfunction{} : ::= \MERGE*{} \ACTION*{}
   ;;
   \precedence{} : ::= \PREC*{} \ident*{}
   ;;
@@ -559,6 +578,7 @@
   \NewDocumentCommand\LET{s}{\def\tmp{LET}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LID{s}{\def\tmp{LID}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LPAR{s}{\def\tmp{LPAR}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\MERGE{s}{\def\tmp{MERGE}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\OPT{s}{\def\tmp{OPT}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\PLUS{s}{\def\tmp{PLUS}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\POINTFREEACTION{s}{\def\tmp{POINTFREEACTION}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
@@ -580,6 +600,7 @@
   \NewDocumentCommand\group{s}{\def\tmp{group}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\ident{s}{\def\tmp{ident}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\laxUNDERSCOREactual{s}{\def\tmp{lax\_actual}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\mergeUNDERSCOREfunction{s}{\def\tmp{merge\_function}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\modifier{s}{\def\tmp{modifier}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\newUNDERSCORErule{s}{\def\tmp{new\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\oldUNDERSCORErule{s}{\def\tmp{old\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
@@ -615,6 +636,7 @@
                                     \gramfunc{\parameters{}(\ident*{})}
                                     \COLON*{} \optionalUNDERSCOREbar*{}
                                     \gramsepnelist{\BAR*{}}{\group*{}}
+                                    \gramopt{\mergeUNDERSCOREfunction*{}}
                                     \gramstar{\SEMICOLON*{}}
   
   <\flags{}> \gramdef{} \PUBLIC*{}
@@ -647,6 +669,7 @@
                                     \gramstar{\ATTRIBUTE*{}}
                                     \gramfunc{\parameters{}(\ident*{})}
                                     \binder*{} \expression*{}
+                                    \gramopt{\mergeUNDERSCOREfunction*{}}
   
   <\binder{}> \gramdef{} \COLONEQ*{}
     \grambar \EQEQ*{}
@@ -683,6 +706,8 @@
   <\modifier{}> \gramdef{} \OPT*{}
     \grambar \PLUS*{}
     \grambar \STAR*{}
+  
+  <\mergeUNDERSCOREfunction{}> \gramdef{} \MERGE*{} \ACTION*{}
   
   <\precedence{}> \gramdef{} \PREC*{} \ident*{}
   
@@ -732,6 +757,7 @@
   \NewDocumentCommand\LET{s}{\def\tmp{LET}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LID{s}{\def\tmp{LID}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\LPAR{s}{\def\tmp{LPAR}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\MERGE{s}{\def\tmp{MERGE}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\OPT{s}{\def\tmp{OPT}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\PLUS{s}{\def\tmp{PLUS}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\POINTFREEACTION{s}{\def\tmp{POINTFREEACTION}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
@@ -753,6 +779,7 @@
   \NewDocumentCommand\group{s}{\def\tmp{group}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\ident{s}{\def\tmp{ident}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\laxUNDERSCOREactual{s}{\def\tmp{lax\_actual}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\mergeUNDERSCOREfunction{s}{\def\tmp{merge\_function}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\modifier{s}{\def\tmp{modifier}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\newUNDERSCORErule{s}{\def\tmp{new\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\oldUNDERSCORErule{s}{\def\tmp{old\_rule}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
@@ -787,6 +814,7 @@
                                   \COLON*{}\gramsp
                                   \optionalUNDERSCOREbar*{}\gramsp
                                   \gramsepnelist{\BAR*{}}{\group*{}}\gramsp
+                                  \gramopt{\mergeUNDERSCOREfunction*{}}\gramsp
                                   \gramstar{\SEMICOLON*{}}}\\
   \gramprod{\flags{}}{\PUBLIC*{}\\
     \grambar \INLINE*{}\\
@@ -813,7 +841,8 @@
                                   \LID*{}\gramsp
                                   \gramstar{\ATTRIBUTE*{}}\gramsp
                                   \gramfunc{\parameters{}(\ident*{})}\gramsp
-                                  \binder*{}\gramsp \expression*{}}\\
+                                  \binder*{}\gramsp \expression*{}\gramsp
+                                  \gramopt{\mergeUNDERSCOREfunction*{}}}\\
   \gramprod{\binder{}}{\COLONEQ*{}\\
     \grambar \EQEQ*{}}\\
   \gramprod{\expression{}}{\optionalUNDERSCOREbar*{}\gramsp
@@ -844,6 +873,7 @@
   \gramprod{\modifier{}}{\OPT*{}\\
     \grambar \PLUS*{}\\
     \grambar \STAR*{}}\\
+  \gramprod{\mergeUNDERSCOREfunction{}}{\MERGE*{}\gramsp \ACTION*{}}\\
   \gramprod{\precedence{}}{\PREC*{}\gramsp \ident*{}}\\
   \gramprod{\parameters{}(X)}{\gramopt*{\LPAR*{}\gramsp
                               \gramseplist{\COMMA*{}}{X}\gramsp \RPAR*{}}}\\
@@ -869,6 +899,7 @@
                                        \mygramfunc{\myparameters{}(\myident*{})}
                                        \myCOLON*{} \myoptionalUNDERSCOREbar*{}
                                        \mygramsepnelist{\myBAR*{}}{\mygroup*{}}
+                                       \mygramopt{\mymergeUNDERSCOREfunction*{}}
                                        \mygramstar{\mySEMICOLON*{}}
     \\
   
@@ -913,6 +944,7 @@
                                        \myLID*{} \mygramstar{\myATTRIBUTE*{}}
                                        \mygramfunc{\myparameters{}(\myident*{})}
                                        \mybinder*{} \myexpression*{}
+                                       \mygramopt{\mymergeUNDERSCOREfunction*{}}
     \\
   
   \mybinder{}& \mygramdef & \myCOLONEQ*{}\\
@@ -959,6 +991,9 @@
   \mymodifier{}& \mygramdef & \myOPT*{}\\
     & \mygrambar &\myPLUS*{}\\
     & \mygrambar &\mySTAR*{}
+    \\
+  
+  \mymergeUNDERSCOREfunction{}& \mygramdef & \myMERGE*{} \myACTION*{}
     \\
   
   \myprecedence{}& \mygramdef & \myPREC*{} \myident*{}
@@ -1018,6 +1053,7 @@
   \NewDocumentCommand\myLET{s}{\def\tmp{LET}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myLID{s}{\def\tmp{LID}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myLPAR{s}{\def\tmp{LPAR}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\myMERGE{s}{\def\tmp{MERGE}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myOPT{s}{\def\tmp{OPT}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myPLUS{s}{\def\tmp{PLUS}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myPOINTFREEACTION{s}{\def\tmp{POINTFREEACTION}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
@@ -1039,6 +1075,7 @@
   \NewDocumentCommand\mygroup{s}{\def\tmp{group}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myident{s}{\def\tmp{ident}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\mylaxUNDERSCOREactual{s}{\def\tmp{lax\_actual}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\mymergeUNDERSCOREfunction{s}{\def\tmp{merge\_function}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\mymodifier{s}{\def\tmp{modifier}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\mynewUNDERSCORErule{s}{\def\tmp{new\_rule}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
   \NewDocumentCommand\myoldUNDERSCORErule{s}{\def\tmp{old\_rule}\IfBooleanTF#1{\mygramnonterm{\tmp}}{\tmp}}
@@ -1147,6 +1184,7 @@
           COLON
           <span class="nonterminal">optional_bar</span>
           <span class="nonterminal">group</span><sup>+</sup><sub>BAR</sub>
+          <span class="option"><span class="nonterminal">merge_function</span></span>
           <span class="list">SEMICOLON</span></td>
         </tr>
         
@@ -1241,7 +1279,8 @@
           <span class="list">ATTRIBUTE</span>
           <span class="nonterminal">parameters(<span class="nonterminal">ident</span>)</span>
           <span class="nonterminal">binder</span>
-          <span class="nonterminal">expression</span></td>
+          <span class="nonterminal">expression</span>
+          <span class="option"><span class="nonterminal">merge_function</span></span></td>
         </tr>
         
         
@@ -1358,6 +1397,13 @@
         
         
         <tr class="rule">
+          <th><span class="nonterminal">merge_function</span></th>
+          <td>MERGE
+          ACTION</td>
+        </tr>
+        
+        
+        <tr class="rule">
           <th><span class="nonterminal">precedence</span></th>
           <td>PREC
           <span class="nonterminal">ident</span></td>
@@ -1460,6 +1506,7 @@
           COLON
           &lt;<span class="nonterminal">optional_bar</span>&gt;
           &lt;<span class="nonterminal">group</span>&gt;<sup>+</sup><sub>BAR</sub>
+          [<span class="option">&lt;<span class="nonterminal">merge_function</span>&gt;</span>]
           <span class="list">SEMICOLON</span><span class="list_after">*</span></td>
         </tr>
         
@@ -1554,7 +1601,8 @@
           <span class="list">ATTRIBUTE</span><span class="list_after">*</span>
           &lt;<span class="nonterminal">parameters(&lt;<span class="nonterminal">ident</span>&gt;)</span>&gt;
           &lt;<span class="nonterminal">binder</span>&gt;
-          &lt;<span class="nonterminal">expression</span>&gt;</td>
+          &lt;<span class="nonterminal">expression</span>&gt;
+          [<span class="option">&lt;<span class="nonterminal">merge_function</span>&gt;</span>]</td>
         </tr>
         
         
@@ -1667,6 +1715,13 @@
         <tr>
           <th class="bar">|&nbsp;</th>
           <td>STAR</td>
+        </tr>
+        
+        
+        <tr class="rule">
+          <th>&lt;<span class="nonterminal">merge_function</span>&gt;&nbsp;::=&nbsp;</th>
+          <td>MERGE
+          ACTION</td>
         </tr>
         
         
