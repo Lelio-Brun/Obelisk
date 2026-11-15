@@ -22,7 +22,7 @@ and transform_symbol symbols s xs =
   | Some _ -> Symbol (s, xs)
   | None ->
       begin match (s, xs) with
-      | ("endrule" | "midrule"), [ x ] -> x
+      | ("endrule" | "midrule" | "anonymous" | "embedded"), [ x ] -> x
       | ("option" | "ioption" | "boption" | "loption"), [ x ] ->
           Pattern (Option x)
       | "pair", [ x; y ] -> Pattern (Pair (x, y))
