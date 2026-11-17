@@ -79,13 +79,19 @@ let grammarname = command "obeliskgrammar"
 
 let begin_document misc fmt symbols =
   let commands symbols =
-    let replace r by = Re.Str.global_replace (Re.Str.regexp r) by in
     let escape s =
-      s
-      |> replace "\\\\" "\\textbackslash{}"
-      |> replace "_" "\\_" |> replace "&" "\\&" |> replace "%" "\\%"
-      |> replace "#" "\\#" |> replace "{" "\\{" |> replace "}" "\\}"
-      |> replace "\\$" "\\$"
+      let b = Buffer.create (String.length s) in
+      String.iter
+        (function
+          | '\\' -> Buffer.add_string b "\\textbackslash{}"
+          | '^' -> Buffer.add_string b "\\textasciicircum{}"
+          | '~' -> Buffer.add_string b "\\textasciitilde{}"
+          | ('_' | '&' | '%' | '#' | '{' | '}' | '$') as c ->
+              Buffer.add_char b '\\';
+              Buffer.add_char b c
+          | c -> Buffer.add_char b c)
+        s;
+      Buffer.contents b
     in
     let pp_symbol_cmd star_cmd fmt x =
       fprintf fmt
