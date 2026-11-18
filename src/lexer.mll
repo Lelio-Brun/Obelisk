@@ -9,6 +9,7 @@ let error s = raise (LexingError s)
 let newline lb p = new_line lb; p lb
 
 let tokens = Hashtbl.create 128
+let aliases = Hashtbl.create 128
 
 let prologue = ref true
 }
@@ -49,7 +50,7 @@ rule main = parse
 and token_aliases = parse
  | newline                                     { newline lexbuf token_aliases }
  | blank+                                      { token_aliases lexbuf }
- | (uid as t) blank* '"' (qid_body as a) '"'   { Hashtbl.add tokens a t; token_aliases lexbuf }
+ | (uid as t) blank* '"' (qid_body as a) '"'   { Hashtbl.add tokens a t; Hashtbl.add aliases t a; token_aliases lexbuf }
  | "(*"                                        { ocaml_comment lexbuf; token_aliases lexbuf }
  | "/*"                                        { c_comment lexbuf; token_aliases lexbuf }
  | "//" [^ '\r' '\n']*                         { token_aliases lexbuf }

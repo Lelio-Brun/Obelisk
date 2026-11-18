@@ -14,6 +14,9 @@ let par e print fmt =
 let print_rule_name_with opening closing print_params fmt name =
   fprintf fmt "%t%a%t%t" opening print_string name print_params closing
 
+let token_name s = Option.value (Hashtbl.find_opt Lexer.tokens s) ~default:s
+let token_alias t = Hashtbl.find_opt Lexer.aliases t
+
 let print_symbol_aux symbols opening closing print_params fmt s =
   let is_def =
     match Common.Symbols.is_defined s symbols with
@@ -21,9 +24,10 @@ let print_symbol_aux symbols opening closing print_params fmt s =
     | None -> false
   in
   let s =
-    match Hashtbl.find_opt Lexer.tokens s with
-    | Some a -> if !Options.no_aliases then a else "'" ^ s ^ "'"
-    | None -> s
+    let t = token_name s in
+    match token_alias t with
+    | Some a when not !Options.no_aliases -> "'" ^ a ^ "'"
+    | _ -> t
   in
   fprintf fmt "%t%a%t%t"
     (if is_def then opening else fun _ -> ())

@@ -2,9 +2,6 @@ open Options
 open Format
 include MiniHelper
 
-let alias s =
-  match Hashtbl.find_opt Lexer.tokens s with Some a -> a | None -> s
-
 let use () = !pfile <> ""
 
 let usepackage fmt (opts, s) =
@@ -93,22 +90,30 @@ let begin_document misc fmt symbols =
         s;
       Buffer.contents b
     in
-    let pp_symbol_cmd star_cmd fmt x =
+    let pp_symbol_cmd star_cmd fmt (name, text) =
       fprintf fmt
         "\\NewDocumentCommand\\%s{s}{\\def\\tmp{%s}\\IfBooleanTF#1{\\%s{\\tmp}}{\\tmp}}@;"
-        (command (alias x))
-        (escape x) (command star_cmd)
+        (command name) (escape text) (command star_cmd)
     in
     let pp_symbol_cmds star_cmd =
       pp_print_list ~pp_sep:(fun _ () -> ()) (pp_symbol_cmd star_cmd)
     in
+    let as_itself x = (x, x) in
+    let as_alias t = (t, Option.value (token_alias t) ~default:t) in
+    let tokens =
+      Common.Symbols.terminals symbols
+      |> List.map token_name
+      |> List.sort_uniq String.compare
+    in
     fprintf !formatter_package "%a%a%a@;"
       (pp_symbol_cmds "gramterm")
-      (Common.Symbols.terminals symbols)
+      (List.map as_alias tokens)
       (pp_symbol_cmds "gramnonterm")
-      (Common.Symbols.non_terminals symbols)
+      (List.map as_itself (Common.Symbols.non_terminals symbols))
       (pp_symbol_cmds "gramfunc")
-      (List.map fst (Common.Symbols.functionals symbols))
+      (List.map
+         (fun (f, _) -> as_itself f)
+         (Common.Symbols.functionals symbols))
   in
   commands symbols;
   let pre = pre () in
@@ -172,7 +177,7 @@ let print_symbol_aux symbols term non_term func undef print_params fmt s =
   match is_defined s symbols with
   | Some [] -> non_term fmt s
   | Some _ -> func print_params fmt s
-  | None -> if is_term s symbols then term fmt (alias s) else undef fmt s
+  | None -> if is_term s symbols then term fmt (token_name s) else undef fmt s
 
 let print_symbol symbols =
   print_symbol_aux symbols print_term print_non_term print_fun print_undef
