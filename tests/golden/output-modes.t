@@ -139,12 +139,12 @@
           | LID
           | QID
   
+  parameters_0 ::= (LPAR (ident (COMMA ident)*)? RPAR)?
+  
   generic_actual_0 ::= ident parameters_1
                      | actual modifier
   
   parameters_1 ::= (LPAR (lax_actual (COMMA lax_actual)*)? RPAR)?
-  
-  parameters_0 ::= (LPAR (ident (COMMA ident)*)? RPAR)?
   
   parameters_2 ::= (LPAR (expression (COMMA expression)*)? RPAR)?
   

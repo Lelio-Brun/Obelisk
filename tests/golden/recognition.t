@@ -35,15 +35,15 @@
   
   my_option_0 ::= (F E)?
   
+  my_list_0 ::= E*
+  
   my_nonempty_list_0 ::= F+
-  
-  my_separated_nonempty_list_1 ::= F (S2 F)*
-  
-  my_separated_list_0 ::= (F (S2 F)*)?
   
   my_separated_nonempty_list_0 ::= E (S1 E)*
   
-  my_list_0 ::= E*
+  my_separated_list_0 ::= (F (S2 F)*)?
+  
+  my_separated_nonempty_list_1 ::= F (S2 F)*
   
   
 

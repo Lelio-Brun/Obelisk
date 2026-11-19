@@ -16,13 +16,13 @@
   
   phrase ::= id_0 id_2 EOF
   
-  id_3 ::= bar
+  id_0 ::= id_1
   
   id_1 ::= foo | bar
   
-  id_0 ::= id_1
-  
   id_2 ::= foo | id_3
+  
+  id_3 ::= bar
   
   
 
@@ -80,9 +80,9 @@
   
   d ::= A
   
-  c_0 ::= A
-  
   b_0 ::= c_0 d
+  
+  c_0 ::= A
   
   
 
