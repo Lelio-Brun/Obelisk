@@ -64,14 +64,14 @@ let valid x =
     Re.Str.global_replace (Re.Str.regexp "_") "UNDERSCORE" s
   in
   let forbid_end x =
-    if !prefix = "" then
-      Re.Str.global_replace (Re.Str.regexp_case_fold "end") "zzz\\0" x
+    if !prefix = "" && Re.Str.string_match (Re.Str.regexp "end") x 0 then
+      "zzz" ^ x
     else x
   in
   x |> roman |> clear_underscore |> forbid_end
 
-let command x = !prefix ^ valid x |> valid
 let pre () = valid !prefix
+let command x = pre () ^ valid x
 let grammarname = command "obeliskgrammar"
 
 let begin_document misc fmt symbols =

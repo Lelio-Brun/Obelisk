@@ -115,10 +115,10 @@
   
 
   $ obelisk latex ../forbid_end.mly | grep -i "endif"
-  \NewDocumentCommand\zzzzzzENDIF{s}{\def\tmp{ENDIF}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
-  \NewDocumentCommand\zzzzzzendif{s}{\def\tmp{endif}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
-  \zzzzzzendif{}& \gramdef & \zzzzzzEND*{}\\
-    & \grambar &\zzzzzzENDIF*{}
+  \NewDocumentCommand\ENDIF{s}{\def\tmp{ENDIF}\IfBooleanTF#1{\gramterm{\tmp}}{\tmp}}
+  \NewDocumentCommand\zzzendif{s}{\def\tmp{endif}\IfBooleanTF#1{\gramnonterm{\tmp}}{\tmp}}
+  \zzzendif{}& \gramdef & \END*{}\\
+    & \grambar &\ENDIF*{}
 
   $ obelisk latex -prefix my ../forbid_end.mly | grep -i "endif"
   \NewDocumentCommand\myENDIF{s}{\def\tmp{ENDIF}\IfBooleanTF#1{\mygramterm{\tmp}}{\tmp}}
