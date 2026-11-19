@@ -12,14 +12,11 @@ let print_header symbols fmt =
       in
       function [] -> "" | xs -> sprintf "(%s)" (aux xs)
     in
-    let compare_length (s1, xs1) (s2, xs2) =
-      compare
-        (String.length (s2 ^ params xs2))
-        (String.length (s1 ^ params xs1))
-    in
+    let length (s, xs) = String.length (s ^ params xs) in
     let f, xs =
-      try List.(hd (sort compare_length (Symbols.defined symbols)))
-      with _ -> (" ", [])
+      List.fold_left
+        (fun longest d -> if length d > length longest then d else longest)
+        ("", []) (Symbols.defined symbols)
     in
     let max = f ^ params xs in
     Re.Str.global_replace (Re.Str.regexp "_") "\\_" max

@@ -238,3 +238,10 @@
          | (D | E)*
   
   
+
+  $ cat > no-rules.mly <<'EOF'
+  > %token A
+  > %%
+  > EOF
+  $ obelisk latex -syntax no-rules.mly | grep settowidth
+  \settowidth{\grammaxindent}{\synt{} \gramdef{} }
