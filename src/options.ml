@@ -100,7 +100,7 @@ let html_opt =
 (** Usage message. *)
 let msg =
   "Obelisk version %%VERSION_NUM%%\n\
-   Usage: obelisk [latex|html] [options] <source>\n\
+   Usage: obelisk [ebnf|latex|html] [options] <source>\n\
   \       obelisk <mode> -help for <mode>-specific help."
 
 (** Function called on anonymous arguments. It is used to trigger the LaTeX and
@@ -110,8 +110,7 @@ let parse_cmd =
   function
   | "ebnf" when !cpt < 1 ->
       incr cpt;
-      set_plainmode EBNF ();
-      options := Arg.align (!options @ latex_opt)
+      set_plainmode EBNF ()
   | "latex" when !cpt < 1 ->
       incr cpt;
       set_latexmode Tabular ();
