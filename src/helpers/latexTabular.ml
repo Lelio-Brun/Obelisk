@@ -1,25 +1,36 @@
 open Format
 include MiniLatex
 
+let theme_without_captions fmt =
+  fprintf fmt
+    "@[<v 2>\\NewTblrTheme{%s}{@;\
+     \\DefTblrTemplate{caption}{default}{}@;\
+     \\DefTblrTemplate{capcont}{default}{}@;\
+     \\DefTblrTemplate{conthead}{default}{}@;\
+     \\DefTblrTemplate{contfoot}{default}{}@]@;\
+     }@;"
+    grammarname
+
 let print_header symbols fmt =
+  (* A [longtblr] loses its first row in a [standalone] preview page. *)
+  let table, outer_spec =
+    if use () then
+      ("longtblr", sprintf "[theme=%s, entry=none, label=none]" grammarname)
+    else ("tblr", "")
+  in
   documentclass (fun fmt ->
       fprintf fmt
-        "%a%a%a@;\
-         %% https://tex.stackexchange.com/a/279787@;\
-         \\makeatletter@;\
-         \\let\\collectcell@notabu\\collectcell@;\
-         \\def\\collectcell@intabu#1#2\\tabu@cellleft{#2\\tabu@cellleft\\collectcell@notabu{#1}}@;\
-         \\def\\collectcell{\\tabu@ifenvir\\collectcell@intabu\\collectcell@notabu}@;\
-         \\makeatother@;\
-         @[<v 2>\\newenvironment{%s}{@;\
-         \\begin{longtabu}{%@{}>{\\collectcell\\%s}r<{\\endcollectcell}%@{}c%@{}X%@{}}@]@;\
-         }{@;\
-         <0 2>\\end{longtabu}@;\
-         }@;\
+        "%a@;\
+         %t@[<v 2>\\NewDocumentEnvironment{%s}{+b}{@;\
+         \\begin{%s}%s{colspec={%@{}r%@{}c%@{}X%@{}}, column{1}={cmd=\\%s}}@;\
+         #1@;\
+         \\end{%s}@]@;\
+         }{}@;\
          @;\
          %a%a%a%a%a%a%a%a@;"
-        usepackage ("", "longtable") usepackage ("", "tabu") usepackage
-        ("", "collcell") grammarname (command "gramnonterm") newcommand
+        usepackage ("", "tabularray")
+        (if use () then theme_without_captions else fun _ -> ())
+        grammarname table outer_spec (command "gramnonterm") table newcommand
         ("gramsp", 0, None, print_string' "\\quad")
         newcommand
         ( "gramdef",

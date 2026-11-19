@@ -45,8 +45,6 @@
             preview
             l3packages
             tools
-            tabu
-            collcell
             simplebnf
             tabularray
             mdwtools

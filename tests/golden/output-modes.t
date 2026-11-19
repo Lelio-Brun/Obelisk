@@ -156,21 +156,13 @@
   \usepackage[T1]{fontenc}
   
   \usepackage{xparse}
-  \usepackage{longtable}
-  \usepackage{tabu}
-  \usepackage{collcell}
+  \usepackage{tabularray}
   
-  % https://tex.stackexchange.com/a/279787
-  \makeatletter
-  \let\collectcell@notabu\collectcell
-  \def\collectcell@intabu#1#2\tabu@cellleft{#2\tabu@cellleft\collectcell@notabu{#1}}
-  \def\collectcell{\tabu@ifenvir\collectcell@intabu\collectcell@notabu}
-  \makeatother
-  \newenvironment{obeliskgrammar}{
-    \begin{longtabu}{@{}>{\collectcell\gramnonterm}r<{\endcollectcell}@{}c@{}X@{}}
-  }{
-    \end{longtabu}
-  }
+  \NewDocumentEnvironment{obeliskgrammar}{+b}{
+    \begin{tblr}{colspec={@{}r@{}c@{}X@{}}, column{1}={cmd=\gramnonterm}}
+    #1
+    \end{tblr}
+  }{}
   
   \newcommand\gramsp{\quad}
   \newcommand\gramdef{$\gramsp::=\gramsp$}
@@ -1015,21 +1007,19 @@
   \ProvidesPackage{definitions}
   
   \RequirePackage{xparse}
-  \RequirePackage{longtable}
-  \RequirePackage{tabu}
-  \RequirePackage{collcell}
+  \RequirePackage{tabularray}
   
-  % https://tex.stackexchange.com/a/279787
-  \makeatletter
-  \let\collectcell@notabu\collectcell
-  \def\collectcell@intabu#1#2\tabu@cellleft{#2\tabu@cellleft\collectcell@notabu{#1}}
-  \def\collectcell{\tabu@ifenvir\collectcell@intabu\collectcell@notabu}
-  \makeatother
-  \newenvironment{obeliskgrammar}{
-    \begin{longtabu}{@{}>{\collectcell\mygramnonterm}r<{\endcollectcell}@{}c@{}X@{}}
-  }{
-    \end{longtabu}
+  \NewTblrTheme{obeliskgrammar}{
+    \DefTblrTemplate{caption}{default}{}
+    \DefTblrTemplate{capcont}{default}{}
+    \DefTblrTemplate{conthead}{default}{}
+    \DefTblrTemplate{contfoot}{default}{}
   }
+  \NewDocumentEnvironment{obeliskgrammar}{+b}{
+    \begin{longtblr}[theme=obeliskgrammar, entry=none, label=none]{colspec={@{}r@{}c@{}X@{}}, column{1}={cmd=\mygramnonterm}}
+    #1
+    \end{longtblr}
+  }{}
   
   \newcommand\mygramsp{\quad}
   \newcommand\mygramdef{$\mygramsp::=\mygramsp$}

@@ -23,7 +23,23 @@ let tmppkg = "tmppkg"
 let main = "main"
 
 let too_larges_for_tabular =
-  [ "cca_cpp.mly"; "cca_fortran.mly"; "cca_verilog.mly"; "sysver.mly" ]
+  [
+    "cca_cpp.mly";
+    "cca_fortran.mly";
+    "cca_java.mly";
+    "cca_verilog.mly";
+    "coccinelle.1.0.2-parser_cocci_menhir.mly";
+    "fsharp.mly";
+    "ocaml.mly";
+    "ocaml_parser_menhir.mly";
+    "oxcaml.mly";
+    "parser_cocci_menhir.mly";
+    "parser_raw.mly";
+    "reason.3.3.7-reason_parser.mly";
+    "reason_parser.mly";
+    "sysver.mly";
+    "verilog.mly";
+  ]
 
 let too_larges_for_simplebnf =
   [
