@@ -245,3 +245,27 @@
   > EOF
   $ obelisk latex -syntax no-rules.mly | grep settowidth
   \settowidth{\grammaxindent}{\synt{} \gramdef{} }
+
+  $ cat > generated-name-clashes.mly <<'EOF'
+  > %token A B C D
+  > %start <unit> main
+  > %%
+  > main: f(A) f(B) f(C) f_0 f_1 {}
+  > f(X): X {}
+  > f_0: D {}
+  > f_1: D {}
+  > EOF
+  $ obelisk ebnf generated-name-clashes.mly
+  main ::= f_2 f_3 f_4 f_0 f_1
+  
+  f_0 ::= D
+  
+  f_1 ::= D
+  
+  f_2 ::= A
+  
+  f_3 ::= B
+  
+  f_4 ::= C
+  
+  

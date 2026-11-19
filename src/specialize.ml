@@ -13,17 +13,11 @@ end)
 let fresh =
   let h = Hashtbl.create 32 in
   fun symbols f ->
-    let n, fn =
-      match Hashtbl.find_opt h f with
-      | Some n ->
-          let rec next n =
-            let n = n + 1 in
-            let fn = Format.sprintf "%s_%d" f n in
-            if Common.Symbols.is_symbol fn symbols then next (n + 1) else (n, fn)
-          in
-          next n
-      | None -> (0, Format.sprintf "%s_0" f)
+    let rec next n =
+      let fn = Format.sprintf "%s_%d" f n in
+      if Common.Symbols.is_symbol fn symbols then next (n + 1) else (n, fn)
     in
+    let n, fn = next (Option.fold ~none:0 ~some:succ (Hashtbl.find_opt h f)) in
     Hashtbl.replace h f n;
     fn
 
