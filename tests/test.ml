@@ -1,7 +1,6 @@
 let exe = ref ""
 let mlys = ref []
 let width = ref 0
-let amount = ref 0
 let tmp = "tmp"
 let prefix = "my_prefix42"
 let verbose = ref false
@@ -159,12 +158,13 @@ let enter_mode mode =
 
 let exec_mode mode with_pkg too_larges =
   local_fail := 0;
-  List.iter (exec mode with_pkg)
-    (List.filter (fun f -> not (List.mem f too_larges)) !mlys);
+  let tested = List.filter (fun f -> not (List.mem f too_larges)) !mlys in
+  let total = List.length tested in
+  List.iter (exec mode with_pkg) tested;
   Format.printf "%s %s(%d/%d)@."
     (if !local_fail <> 0 then ko else ok)
     (if with_pkg then "(package mode) " else "")
-    (!amount - !local_fail) !amount
+    (total - !local_fail) total
 
 let test mode =
   enter_mode mode;
@@ -224,7 +224,6 @@ let () =
   exe := Sys.argv.(1);
   mlys := Re.Str.split (Re.Str.regexp " ") Sys.argv.(2);
   width := List.fold_left (fun w s -> max w (String.length s)) 0 !mlys;
-  amount := List.length !mlys;
   default ();
   html ();
   latex ();
